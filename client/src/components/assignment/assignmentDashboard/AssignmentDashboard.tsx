@@ -6,6 +6,7 @@ import {Button, ButtonGroup, Container, Grid, List, ListItem, Paper, Typography}
 import {LineChart, Line, CartesianGrid, XAxis, YAxis} from 'recharts';
 import {Link} from "react-router-dom";
 import {colors} from "../../../styles/colors";
+import {Routes} from "../../../code/interfaces/routes";
 
 const AssignmentDashboardComponent: React.FC = () => {
     const exampleData = [{name: 'Page A', uv: 400, pv: 2400, amt: 2400}, {
@@ -70,7 +71,7 @@ const AssignmentDashboardComponent: React.FC = () => {
                                                     alignItems="center"
                                                 >
                                                     <Button variant="text">
-                                                        <Link to={`/assignments/${d.id}`} css={linkName}>
+                                                        <Link to={`${Routes.Assignments}/${d.id}`} css={linkName}>
                                                             {d.name}
                                                         </Link>
                                                     </Button>

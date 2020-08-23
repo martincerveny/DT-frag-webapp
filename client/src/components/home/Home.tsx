@@ -1,25 +1,13 @@
 /** @jsx jsx */
 import React from 'react';
 import styled from '@emotion/styled';
-import { css, jsx } from '@emotion/core';
-import { Paper } from '@material-ui/core';
-import { Link } from 'react-router-dom';
+import {css, jsx} from '@emotion/core';
+import {AssignmentDashboard} from "../assignment/assignmentDashboard/AssignmentDashboard";
 
 const HomeComponent: React.FC = () => {
-  return (
-    <div>
-      <Paper>
-        <ul>
-          <li>
-            <Link to="/">Home</Link>
-          </li>
-          <li>
-            <Link to="/assignments">Assignments</Link>
-          </li>
-        </ul>
-      </Paper>
-    </div>
-  );
+    return (
+        <AssignmentDashboard/>
+    );
 };
 
 const StyledHome = styled(HomeComponent)``;
