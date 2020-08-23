@@ -2,9 +2,18 @@
 import React from 'react';
 import styled from '@emotion/styled';
 import {css, jsx} from '@emotion/core';
-import {Button, ButtonGroup, Container, Grid, List, ListItem, Paper, Typography} from "@material-ui/core";
-import {Link} from "react-router-dom";
+import {
+    Container,
+    Grid, IconButton,
+    Paper, Table, TableBody, TableCell,
+    TableContainer, TableHead, TableRow,
+    Typography
+} from "@material-ui/core";
 import {colors} from "../../styles/colors";
+import CheckBoxIcon from '@material-ui/icons/CheckBox';
+import CheckBoxOutlineBlankIcon from '@material-ui/icons/CheckBoxOutlineBlank';
+import IndeterminateCheckBoxIcon from '@material-ui/icons/IndeterminateCheckBox';
+import {SeminarTable} from "./comps/SeminarTable";
 
 const SeminarDashboardComponent: React.FC = () => {
     return (
@@ -18,7 +27,18 @@ const SeminarDashboardComponent: React.FC = () => {
                                     Seminar Dashboard
                                 </Typography>
                                 <p css={content}>
-                                            test
+                                    <Typography component="h2" variant="h6" color="primary" gutterBottom css={heading}>
+                                        Seminar 1
+                                    </Typography>
+                                    <SeminarTable/>
+                                    <Typography component="h2" variant="h6" color="primary" gutterBottom css={heading}>
+                                        Seminar 2
+                                    </Typography>
+                                    <SeminarTable/>
+                                    <Typography component="h2" variant="h6" color="primary" gutterBottom css={heading}>
+                                        Seminar 3
+                                    </Typography>
+                                    <SeminarTable/>
                                 </p>
                             </Grid>
                         </Paper>
@@ -37,18 +57,12 @@ const root = css`
   flex-grow: 1;
 `;
 
-const buttonGroupWrapper = css`
-  width: 450px;
+const greenIcon = css`
+  color: ${colors.green};
 `;
 
-const linkName = css`
-  color: ${colors.black};
-  text-decoration: none;
-`;
-
-const buttonWrapper = css`
-  width: 150px;
-  height: 40px;
+const grayIcon = css`
+  color: ${colors.gray};
 `;
 
 const container = css`

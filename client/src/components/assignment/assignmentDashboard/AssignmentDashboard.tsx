@@ -81,7 +81,7 @@ const AssignmentDashboardComponent: React.FC = () => {
                                                                  css={buttonGroupWrapper}>
                                                         <Button css={buttonWrapper}>Fail: {d.fail}</Button>
                                                         <Button css={buttonWrapper}>Pass: {d.pass}</Button>
-                                                        <Button css={buttonWrapper}>Not subm.: {d.notSubmitted}</Button>
+                                                        <Button css={buttonWrapper}>Not submitted: {d.notSubmitted}</Button>
                                                     </ButtonGroup>
                                                     <Typography>
                                                         {d.date}
@@ -137,7 +137,7 @@ const root = css`
 `;
 
 const buttonGroupWrapper = css`
-  width: 450px;
+  width: 570px;
 `;
 
 const linkName = css`
@@ -146,7 +146,7 @@ const linkName = css`
 `;
 
 const buttonWrapper = css`
-  width: 150px;
+  width: 190px;
   height: 40px;
 `;
 
