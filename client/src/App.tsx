@@ -36,7 +36,7 @@ const renderGlobalCssSettings = () => (
 );
 
 const App: React.FC<AppProps> = ({ loggedUser }) => {
-  const [isLoggedIn, setIsLoggedIn] = React.useState<boolean>(true); // true for testing purposes
+  const [isLoggedIn, setIsLoggedIn] = React.useState<boolean>(false); // true for testing purposes
 
   const handleIsLoggedIn = (loggedIn: boolean) => {
     setIsLoggedIn(loggedIn);
