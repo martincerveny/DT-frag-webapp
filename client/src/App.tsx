@@ -3,16 +3,17 @@ import { css, Global, jsx } from '@emotion/core';
 import React from 'react';
 import { DEFAULT_FONT_FAMILY } from './styles/stylingConstants';
 import { Login } from './components/login/Login';
-import { Home } from './components/home/Home';
 import { CssBaseline } from '@material-ui/core';
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 import { ThemeProvider } from '@material-ui/core/styles';
 import { MenuBar } from './components/menuBar/MenuBar';
 import { AssignmentView } from './components/assignment/assignmentView/AssignmentView';
 import { SeminarDashboard } from './components/seminar/SeminarDashboard';
-import { Routes } from './code/interfaces/routes';
+import { Routes } from './code/routes';
 import { APP_THEME } from './styles/themes';
 import { performUserLogin } from './store/general/actions';
+import { AssignmentDashboard } from './components/assignment/assignmentDashboard/AssignmentDashboard';
+import { AssignmentDashboardContainer } from './components/assignment/assignmentDashboard/AssignmentDashboardContainer';
 
 export interface StateProps {
   loggedUser: undefined;
@@ -35,7 +36,7 @@ const renderGlobalCssSettings = () => (
   />
 );
 
-const App: React.FC<AppProps> = ({ loggedUser }) => {
+const App: React.FC<AppProps> = ({ loggedUser, login }) => {
   const [isLoggedIn, setIsLoggedIn] = React.useState<boolean>(false); // true for testing purposes
 
   const handleIsLoggedIn = (loggedIn: boolean) => {
@@ -66,7 +67,7 @@ const App: React.FC<AppProps> = ({ loggedUser }) => {
             <SeminarDashboard />
           </Route>
           <Route path="/">
-            <Home />
+            <AssignmentDashboardContainer />
           </Route>
         </Switch>
       </div>

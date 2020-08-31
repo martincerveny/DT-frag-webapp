@@ -8,7 +8,7 @@ import SettingsIcon from '@material-ui/icons/Settings';
 import AccountCircleIcon from '@material-ui/icons/AccountCircle';
 import { Link } from 'react-router-dom';
 import { colors } from '../../styles/colors';
-import { Routes } from '../../code/interfaces/routes';
+import { Routes } from '../../code/routes';
 
 const MenuBarComponent: React.FC = () => {
   const [anchorElUser, setAnchorElUser] = React.useState(null);

@@ -1,14 +1,30 @@
 /** @jsx jsx */
-import React from 'react';
+import React, { useEffect } from 'react';
 import styled from '@emotion/styled';
 import { css, jsx } from '@emotion/core';
 import { Button, ButtonGroup, Container, Grid, List, ListItem, Paper, Typography } from '@material-ui/core';
 import { LineChart, Line, CartesianGrid, XAxis, YAxis } from 'recharts';
 import { Link } from 'react-router-dom';
 import { colors } from '../../../styles/colors';
-import { Routes } from '../../../code/interfaces/routes';
+import { Routes } from '../../../code/routes';
+import { Assignment } from '../../../code/interfaces/assignment';
+import { fetchAssignments } from '../../../store/assignment/actions';
 
-const AssignmentDashboardComponent: React.FC = () => {
+export interface StateProps {
+  assignments: Assignment[];
+}
+
+export interface DispatchProps {
+  fetchAssignments: typeof fetchAssignments;
+}
+
+type AssignmentProps = DispatchProps & StateProps;
+
+const AssignmentDashboardComponent: React.FC<AssignmentProps> = ({ assignments, fetchAssignments }) => {
+  useEffect(() => {
+    fetchAssignments();
+  }, []);
+
   const exampleData = [
     { name: 'Page A', uv: 400, pv: 2400, amt: 2400 },
     {
@@ -18,33 +34,6 @@ const AssignmentDashboardComponent: React.FC = () => {
       amt: 500,
     },
     { name: 'Page C', uv: 100, pv: 2200, amt: 1400 },
-  ];
-
-  const assigmentExampleData = [
-    {
-      id: 1,
-      name: 'hw1',
-      pass: '85%',
-      fail: '10%',
-      notSubmitted: '5%',
-      date: '20 days remaining',
-    },
-    {
-      id: 2,
-      name: 'hw2',
-      pass: '65%',
-      fail: '20%',
-      notSubmitted: '15%',
-      date: '25 days remaining',
-    },
-    {
-      id: 3,
-      name: 'hw3',
-      pass: '87%',
-      fail: '11%',
-      notSubmitted: '2%',
-      date: '19 days remaining',
-    },
   ];
 
   const renderLineChart = (
@@ -68,7 +57,7 @@ const AssignmentDashboardComponent: React.FC = () => {
                 </Typography>
                 <p css={content}>
                   <List component="nav" aria-label="main mailbox folders">
-                    {assigmentExampleData.map(d => (
+                    {assignments.map(d => (
                       <ListItem>
                         <Grid container direction="row" justify="space-around" alignItems="center">
                           <Button variant="text">
@@ -84,12 +73,12 @@ const AssignmentDashboardComponent: React.FC = () => {
                             css={buttonGroupWrapper}
                           >
                             <Button color="secondary" css={buttonWrapper}>
-                              Fail: {d.fail}
+                              Fail: 10%
                             </Button>
-                            <Button css={buttonWrapperPass}>Pass: {d.pass}</Button>
-                            <Button css={buttonWrapper}>Not submitted: {d.notSubmitted}</Button>
+                            <Button css={buttonWrapperPass}>Pass: 85%</Button>
+                            <Button css={buttonWrapper}>Not submitted: 5%</Button>
                           </ButtonGroup>
-                          <Typography>{d.date}</Typography>
+                          <Typography>25 days remaining</Typography>
                         </Grid>
                       </ListItem>
                     ))}
