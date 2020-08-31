@@ -55,10 +55,10 @@ const AssignmentDashboardComponent: React.FC<AssignmentProps> = ({ assignments, 
                 <Typography component="h2" variant="h6" color="primary" gutterBottom css={heading}>
                   Assignment Dashboard
                 </Typography>
-                <p css={content}>
+                <div css={content}>
                   <List component="nav" aria-label="main mailbox folders">
-                    {assignments.map(d => (
-                      <ListItem>
+                    {assignments.map((d, index) => (
+                      <ListItem key={index}>
                         <Grid container direction="row" justify="space-around" alignItems="center">
                           <Button variant="text">
                             <Link to={`${Routes.Assignments}/${d.id}`} css={linkName}>
@@ -83,7 +83,7 @@ const AssignmentDashboardComponent: React.FC<AssignmentProps> = ({ assignments, 
                       </ListItem>
                     ))}
                   </List>
-                </p>
+                </div>
               </Grid>
             </Paper>
           </Grid>
@@ -96,7 +96,7 @@ const AssignmentDashboardComponent: React.FC<AssignmentProps> = ({ assignments, 
                 <Typography component="h2" variant="h6" color="primary" gutterBottom css={heading}>
                   Statistics 1
                 </Typography>
-                <p css={content}>{renderLineChart}</p>
+                <div css={content}>{renderLineChart}</div>
               </Grid>
             </Paper>
           </Grid>
@@ -107,7 +107,7 @@ const AssignmentDashboardComponent: React.FC<AssignmentProps> = ({ assignments, 
                 <Typography component="h2" variant="h6" color="primary" gutterBottom css={heading}>
                   Statistics 2
                 </Typography>
-                <p css={content}>{renderLineChart}</p>
+                <div css={content}>{renderLineChart}</div>
               </Grid>
             </Paper>
           </Grid>
