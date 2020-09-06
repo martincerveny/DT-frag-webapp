@@ -16,7 +16,7 @@ const SeminarDashboardComponent: React.FC = () => {
                 <Typography component="h2" variant="h6" color="primary" gutterBottom css={heading}>
                   Seminar Dashboard
                 </Typography>
-                <p css={content}>
+                <div css={content}>
                   <Typography component="h2" variant="h6" color="primary" gutterBottom css={heading}>
                     Seminar 1
                   </Typography>
@@ -29,7 +29,7 @@ const SeminarDashboardComponent: React.FC = () => {
                     Seminar 3
                   </Typography>
                   <SeminarTable />
-                </p>
+                </div>
               </Grid>
             </Paper>
           </Grid>

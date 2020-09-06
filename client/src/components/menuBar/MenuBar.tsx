@@ -12,15 +12,6 @@ import { Routes } from '../../code/routes';
 
 const MenuBarComponent: React.FC = () => {
   const [anchorElUser, setAnchorElUser] = React.useState(null);
-  const [anchorElRole, setAnchorElRole] = React.useState(null);
-
-  const handleClickChangeRole = (event: any) => {
-    setAnchorElRole(event.currentTarget);
-  };
-
-  const handleCloseChangeRole = () => {
-    setAnchorElRole(null);
-  };
 
   const handleClickUser = (event: any) => {
     setAnchorElUser(event.currentTarget);
@@ -53,25 +44,6 @@ const MenuBarComponent: React.FC = () => {
               </Button>
             </Link>
           </div>
-          <Tooltip title="Change role">
-            <Button color="inherit" aria-controls="simple-menu" aria-haspopup="true" onClick={handleClickChangeRole}>
-              <SettingsIcon />
-              <span css={buttonText}>Vedu cvičení</span>
-              <ExpandMoreIcon />
-            </Button>
-          </Tooltip>
-          <Menu
-            id="simple-menu"
-            anchorEl={anchorElRole}
-            keepMounted
-            open={Boolean(anchorElRole)}
-            onClose={handleCloseChangeRole}
-          >
-            <MenuItem onClick={handleCloseChangeRole}>Vedu cvičení</MenuItem>
-            <MenuItem onClick={handleCloseChangeRole}>Opravuji domácí úkoly</MenuItem>
-            <MenuItem onClick={handleCloseChangeRole}>Zadávám domácí úkoly</MenuItem>
-          </Menu>
-
           <Button color="inherit" aria-controls="simple-menu" aria-haspopup="true" onClick={handleClickUser}>
             <AccountCircleIcon />
             <span css={buttonText}>xcerveny@fi.muni.cz</span>

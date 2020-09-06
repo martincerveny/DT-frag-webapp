@@ -12,7 +12,6 @@ import { SeminarDashboard } from './components/seminar/SeminarDashboard';
 import { Routes } from './code/routes';
 import { APP_THEME } from './styles/themes';
 import { performUserLogin } from './store/general/actions';
-import { AssignmentDashboard } from './components/assignment/assignmentDashboard/AssignmentDashboard';
 import { AssignmentDashboardContainer } from './components/assignment/assignmentDashboard/AssignmentDashboardContainer';
 
 export interface StateProps {
@@ -37,7 +36,7 @@ const renderGlobalCssSettings = () => (
 );
 
 const App: React.FC<AppProps> = ({ loggedUser, login }) => {
-  const [isLoggedIn, setIsLoggedIn] = React.useState<boolean>(false); // true for testing purposes
+  const [isLoggedIn, setIsLoggedIn] = React.useState<boolean>(true); // true for testing purposes
 
   const handleIsLoggedIn = (loggedIn: boolean) => {
     setIsLoggedIn(loggedIn);

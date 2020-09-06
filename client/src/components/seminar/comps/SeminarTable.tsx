@@ -5,10 +5,11 @@ import { css, jsx } from '@emotion/core';
 import { Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from '@material-ui/core';
 import { colors } from '../../../styles/colors';
 import { SquareFill, Square, XSquareFill } from 'react-bootstrap-icons';
+import {ProgressBar} from "../../shared/ProgressBar";
 
 const SeminarTableComponent: React.FC = () => {
   return (
-    <p css={content}>
+    <div css={content}>
       <TableContainer component={Paper}>
         <Table aria-label="simple table">
           <TableHead>
@@ -36,19 +37,13 @@ const SeminarTableComponent: React.FC = () => {
                 <Square size={20} css={iconMargin} />
               </TableCell>
               <TableCell align="right">
-                <SquareFill color="green" size={20} css={iconMargin} />
-                <SquareFill color="green" size={20} css={iconMargin} />
-                <SquareFill color="green" size={20} css={iconMargin} />
-                <SquareFill color="green" size={20} css={iconMargin} />
-                <Square size={20} css={iconMargin} />
-                <Square size={20} css={iconMargin} />
-                <Square size={20} css={iconMargin} />
+                <ProgressBar progress={20}/>
               </TableCell>
             </TableRow>
           </TableBody>
         </Table>
       </TableContainer>
-    </p>
+    </div>
   );
 };
 

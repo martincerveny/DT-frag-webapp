@@ -2,13 +2,12 @@
 import React, { useEffect } from 'react';
 import styled from '@emotion/styled';
 import { css, jsx } from '@emotion/core';
-import { Button, ButtonGroup, Container, Grid, List, ListItem, Paper, Typography } from '@material-ui/core';
+import { Container, Grid, Paper, Typography } from '@material-ui/core';
 import { LineChart, Line, CartesianGrid, XAxis, YAxis } from 'recharts';
-import { Link } from 'react-router-dom';
 import { colors } from '../../../styles/colors';
-import { Routes } from '../../../code/routes';
 import { Assignment } from '../../../code/interfaces/assignment';
 import { fetchAssignments } from '../../../store/assignment/actions';
+import { AssignmentList } from './comps/AssignmentList';
 
 export interface StateProps {
   assignments: Assignment[];
@@ -55,35 +54,7 @@ const AssignmentDashboardComponent: React.FC<AssignmentProps> = ({ assignments, 
                 <Typography component="h2" variant="h6" color="primary" gutterBottom css={heading}>
                   Assignment Dashboard
                 </Typography>
-                <div css={content}>
-                  <List component="nav" aria-label="main mailbox folders">
-                    {assignments.map((d, index) => (
-                      <ListItem key={index}>
-                        <Grid container direction="row" justify="space-around" alignItems="center">
-                          <Button variant="text">
-                            <Link to={`${Routes.Assignments}/${d.id}`} css={linkName}>
-                              {d.name}
-                            </Link>
-                          </Button>
-                          <ButtonGroup
-                            disableRipple
-                            disableFocusRipple
-                            variant="outlined"
-                            aria-label="outlined primary button group"
-                            css={buttonGroupWrapper}
-                          >
-                            <Button color="secondary" css={buttonWrapper}>
-                              Fail: 10%
-                            </Button>
-                            <Button css={buttonWrapperPass}>Pass: 85%</Button>
-                            <Button css={buttonWrapper}>Not submitted: 5%</Button>
-                          </ButtonGroup>
-                          <Typography>25 days remaining</Typography>
-                        </Grid>
-                      </ListItem>
-                    ))}
-                  </List>
-                </div>
+                <AssignmentList assignments={assignments} />
               </Grid>
             </Paper>
           </Grid>
@@ -126,7 +97,7 @@ const root = css`
 `;
 
 const buttonGroupWrapper = css`
-  width: 570px;
+  width: 400px;
 `;
 
 const linkName = css`
@@ -134,16 +105,20 @@ const linkName = css`
   text-decoration: none;
 `;
 
-const buttonWrapper = css`
-  width: 190px;
-  height: 40px;
-`;
+const buttonWrapper = (size: number) => {
+  return css`
+    width: ${size * 4}px;
+    height: 40px;
+  `;
+};
 
-const buttonWrapperPass = css`
-  width: 190px;
-  height: 40px;
-  color: ${colors.green};
-`;
+const buttonWrapperPass = (size: number) => {
+  return css`
+    width: ${size * 4}px;
+    height: 40px;
+    color: ${colors.green};
+  `;
+};
 
 const container = css`
   padding-top: 20px;
@@ -154,7 +129,7 @@ const paper = css`
   padding: 2px;
   display: flex;
   overflow: auto;
-  flexdirection: column;
+  flex-direction: column;
   height: 240;
 `;
 
