@@ -1,20 +1,31 @@
 /** @jsx jsx */
-import React from 'react';
+import React, { useEffect } from 'react';
 import styled from '@emotion/styled';
 import { css, jsx } from '@emotion/core';
-import {
-  Container,
-  Grid,
-  Paper,
-  Typography,
-} from '@material-ui/core';
+import { Container, Grid, Paper, Typography } from '@material-ui/core';
 import { useParams } from 'react-router-dom';
-import {GeneralTestGroupView} from "./comps/GeneralTestGroupView";
-import {StudentView} from "./comps/StudentView";
+import { GeneralTestGroupView } from './comps/GeneralTestGroupView';
+import { StudentView } from './comps/StudentView';
+import { AssignmentGroup } from '../../../code/interfaces/assignmentGroup';
+import { fetchGroupsByAssignment } from '../../../store/assignment/actions';
 
-const AssignmentViewComponent: React.FC = () => {
+export interface StateProps {
+  assignmentGroups: AssignmentGroup[];
+}
+
+export interface DispatchProps {
+  fetchGroupsByAssignment: typeof fetchGroupsByAssignment;
+}
+
+type AssignmentViewProps = DispatchProps & StateProps;
+
+const AssignmentViewComponent: React.FC<AssignmentViewProps> = ({ assignmentGroups, fetchGroupsByAssignment }) => {
   const { assignmentId } = useParams();
   const [selectedIndex, setSelectedIndex] = React.useState<number | null>(null);
+
+  useEffect(() => {
+    fetchGroupsByAssignment(assignmentId);
+  }, []);
 
   const handleClick = (index: number | null) => {
     if (selectedIndex === index) {
@@ -49,8 +60,8 @@ const AssignmentViewComponent: React.FC = () => {
                 <Typography component="h2" variant="h6" color="primary" gutterBottom css={heading}>
                   Assignment: {assignmentId}
                 </Typography>
-                <GeneralTestGroupView/>
-                <StudentView dataRows={dataRows} handleClick={handleClick} selectedIndex={selectedIndex}/>
+                <GeneralTestGroupView assignmentGroups={assignmentGroups} />
+                <StudentView dataRows={dataRows} handleClick={handleClick} selectedIndex={selectedIndex} />
               </Grid>
             </Paper>
           </Grid>

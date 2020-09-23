@@ -4,9 +4,9 @@ import styled from '@emotion/styled';
 import { css, jsx } from '@emotion/core';
 import { Button, ButtonGroup, Grid, List, ListItem, Tooltip, Typography } from '@material-ui/core';
 import { Link } from 'react-router-dom';
-import {Assignment} from "../../../../code/interfaces/assignment";
-import {Routes} from "../../../../code/routes";
-import {colors} from "../../../../styles/colors";
+import { Assignment } from '../../../../code/interfaces/assignment';
+import { Routes } from '../../../../code/routes';
+import { colors } from '../../../../styles/colors';
 
 export interface AssignmentListProps {
   assignments: Assignment[];

@@ -17,9 +17,9 @@ export interface DispatchProps {
   fetchAssignments: typeof fetchAssignments;
 }
 
-type AssignmentProps = DispatchProps & StateProps;
+type AssignmentDashboardProps = DispatchProps & StateProps;
 
-const AssignmentDashboardComponent: React.FC<AssignmentProps> = ({ assignments, fetchAssignments }) => {
+const AssignmentDashboardComponent: React.FC<AssignmentDashboardProps> = ({ assignments, fetchAssignments }) => {
   useEffect(() => {
     fetchAssignments();
   }, []);

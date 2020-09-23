@@ -7,12 +7,12 @@ import { CssBaseline } from '@material-ui/core';
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 import { ThemeProvider } from '@material-ui/core/styles';
 import { MenuBar } from './components/menuBar/MenuBar';
-import { AssignmentView } from './components/assignment/assignmentView/AssignmentView';
 import { SeminarDashboard } from './components/seminar/SeminarDashboard';
 import { Routes } from './code/routes';
 import { APP_THEME } from './styles/themes';
 import { performUserLogin } from './store/general/actions';
 import { AssignmentDashboardContainer } from './components/assignment/assignmentDashboard/AssignmentDashboardContainer';
+import { AssignmentViewContainer } from './components/assignment/assignmentView/AssignmentViewContainer';
 
 export interface StateProps {
   loggedUser: undefined;
@@ -60,7 +60,7 @@ const App: React.FC<AppProps> = ({ loggedUser, login }) => {
         {renderMenuBar()}
         <Switch>
           <Route path={Routes.AssignmentView}>
-            <AssignmentView />
+            <AssignmentViewContainer />
           </Route>
           <Route path={Routes.Seminars}>
             <SeminarDashboard />

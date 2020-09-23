@@ -4,29 +4,23 @@ import styled from '@emotion/styled';
 import { css, jsx } from '@emotion/core';
 import { Button, ButtonGroup, Grid, List, ListItem, Tooltip, Typography } from '@material-ui/core';
 import { colors } from '../../../../styles/colors';
+import { AssignmentGroup } from '../../../../code/interfaces/assignmentGroup';
 
-const GeneralTestGroupViewComponent: React.FC = () => {
-  const tests: any = [
-    {
-      name: 'subtest1',
-    },
-    {
-      name: 'subtest2',
-    },
-    {
-      name: 'subtest3',
-    },
-  ];
+interface GeneralTestGroupViewProps {
+  assignmentGroups: AssignmentGroup[];
+}
+
+const GeneralTestGroupViewComponent: React.FC<GeneralTestGroupViewProps> = ({ assignmentGroups }) => {
   return (
     <div css={content}>
       <List component="nav" aria-label="main mailbox folders">
-        {tests.map((t: any, index: any) => (
+        {assignmentGroups.map((ag: AssignmentGroup, index: any) => (
           <ListItem key={index}>
             <Grid container direction="column">
-              <Typography variant="h6">Test group {index}</Typography>
+              <Typography variant="h6">{ag.group}</Typography>
               <Grid container direction="row" justify="flex-start" alignItems="center">
                 <Button variant="text">
-                  <p> {t.name}</p>
+                  <p> test</p>
                 </Button>
                 <ButtonGroup
                   disableRipple

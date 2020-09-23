@@ -2,8 +2,9 @@ import { Module } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AssignmentModule } from './modules/assignment/assignment.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { Assignment } from './modules/assignment/assignment.entity';
+import { Assignment } from './modules/assignment/entities/assignment.entity';
 import { PostgresConnectionOptions } from 'typeorm/driver/postgres/PostgresConnectionOptions';
+import { AssignmentGroup } from './modules/assignment/entities/assignmentGroup.entity';
 
 const dbOptions: PostgresConnectionOptions = {
   type: 'postgres',
@@ -13,7 +14,7 @@ const dbOptions: PostgresConnectionOptions = {
   password: '',
   database: 'frag',
   schema: 'frag',
-  entities: [Assignment],
+  entities: [Assignment, AssignmentGroup],
   synchronize: true,
 };
 

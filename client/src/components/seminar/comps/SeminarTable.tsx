@@ -5,7 +5,7 @@ import { css, jsx } from '@emotion/core';
 import { Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from '@material-ui/core';
 import { colors } from '../../../styles/colors';
 import { SquareFill, Square, XSquareFill } from 'react-bootstrap-icons';
-import {ProgressBar} from "../../shared/ProgressBar";
+import { ProgressBar } from '../../shared/ProgressBar';
 
 const SeminarTableComponent: React.FC = () => {
   return (
@@ -37,7 +37,7 @@ const SeminarTableComponent: React.FC = () => {
                 <Square size={20} css={iconMargin} />
               </TableCell>
               <TableCell align="right">
-                <ProgressBar progress={20}/>
+                <ProgressBar progress={20} />
               </TableCell>
             </TableRow>
           </TableBody>
