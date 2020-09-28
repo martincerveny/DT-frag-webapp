@@ -1,11 +1,66 @@
 /** @jsx jsx */
-import React from 'react';
+import React, { useEffect } from 'react';
 import styled from '@emotion/styled';
 import { css, jsx } from '@emotion/core';
 import { Container, Grid, Paper, Typography } from '@material-ui/core';
-import { SeminarTable } from './comps/SeminarTable';
+import { Seminar } from '../../code/interfaces/seminar';
+import {
+  fetchActivity,
+  fetchAttendance,
+  fetchEnrollments,
+  fetchSeminars,
+  setLoadingState,
+} from '../../store/seminar/actions';
+import { Enrollment } from '../../code/interfaces/enrollment';
+import { Attendance } from '../../code/interfaces/attendance';
+import { SeminarContent } from './comps/SeminarContent';
+import { Activity } from '../../code/interfaces/activity';
+import { AssignmentPassed } from '../../code/interfaces/assignmentPassed';
+import { fetchAssignmentsPassed } from '../../store/assignment/actions';
+import { Loader } from '../shared/Loader';
+import { LoadingState } from '../../code/loading';
 
-const SeminarDashboardComponent: React.FC = () => {
+export interface StateProps {
+  seminars: Seminar[];
+  enrollments: Enrollment[];
+  attendance: Attendance[];
+  activity: Activity[];
+  assignmentsPassed: AssignmentPassed[];
+  loggedUser: undefined | number;
+  loadingState: LoadingState;
+}
+
+export interface DispatchProps {
+  fetchSeminars: typeof fetchSeminars;
+  fetchEnrollments: typeof fetchEnrollments;
+  fetchAttendance: typeof fetchAttendance;
+  fetchActivity: typeof fetchActivity;
+  fetchAssignmentsPassed: typeof fetchAssignmentsPassed;
+  setLoadingState: typeof setLoadingState;
+}
+
+type SeminarDashboardProps = DispatchProps & StateProps;
+
+const SeminarDashboardComponent: React.FC<SeminarDashboardProps> = ({
+  fetchSeminars,
+  seminars,
+  loggedUser,
+  enrollments,
+  fetchEnrollments,
+  fetchAttendance,
+  attendance,
+  activity,
+  fetchActivity,
+  assignmentsPassed,
+  fetchAssignmentsPassed,
+  loadingState,
+  setLoadingState,
+}) => {
+  useEffect(() => {
+    fetchSeminars(loggedUser);
+    fetchAssignmentsPassed();
+  }, []);
+
   return (
     <div css={root}>
       <Container maxWidth="lg" css={container}>
@@ -16,20 +71,20 @@ const SeminarDashboardComponent: React.FC = () => {
                 <Typography component="h2" variant="h6" color="primary" gutterBottom css={heading}>
                   Seminar Dashboard
                 </Typography>
-                <div css={content}>
-                  <Typography component="h2" variant="h6" color="primary" gutterBottom css={heading}>
-                    Seminar 1
-                  </Typography>
-                  <SeminarTable />
-                  <Typography component="h2" variant="h6" color="primary" gutterBottom css={heading}>
-                    Seminar 2
-                  </Typography>
-                  <SeminarTable />
-                  <Typography component="h2" variant="h6" color="primary" gutterBottom css={heading}>
-                    Seminar 3
-                  </Typography>
-                  <SeminarTable />
-                </div>
+                {seminars.length > 0 && (
+                  <SeminarContent
+                    enrollments={enrollments}
+                    seminars={seminars}
+                    fetchEnrollments={fetchEnrollments}
+                    attendance={attendance}
+                    fetchAttendance={fetchAttendance}
+                    activity={activity}
+                    fetchActivity={fetchActivity}
+                    assignmentsPassed={assignmentsPassed}
+                    loadingState={loadingState}
+                    setLoadingState={setLoadingState}
+                  />
+                )}
               </Grid>
             </Paper>
           </Grid>
@@ -61,9 +116,5 @@ const paper = css`
 `;
 
 const heading = css`
-  margin: 20px;
-`;
-
-const content = css`
   margin: 20px;
 `;

@@ -1,11 +1,7 @@
-import { Column, PrimaryColumn, ValueTransformer, ViewEntity } from 'typeorm';
+import { Column, PrimaryColumn, ViewEntity } from 'typeorm';
+import { bufferToStringTransformer } from '../../../code/transformers';
 
-export const bufferToStringTransformer: ValueTransformer = {
-  from: value => value.toString(),
-  to: value => value,
-};
-
-@ViewEntity({ name: 'eval_groups', synchronize: false })
+@ViewEntity({ name: 'eval_groups' })
 export class AssignmentGroup {
   @PrimaryColumn()
   assignment_id: number;

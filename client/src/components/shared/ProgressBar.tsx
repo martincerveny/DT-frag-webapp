@@ -2,17 +2,19 @@ import { Box, LinearProgress, Typography } from '@material-ui/core';
 import React from 'react';
 
 interface ProgressBarProps {
-  progress: number;
+  points: number;
+  maxPoints: number;
 }
 
-export const ProgressBar: React.FC<ProgressBarProps> = ({ progress }) => {
+export const ProgressBar: React.FC<ProgressBarProps> = ({ points, maxPoints }) => {
+  const progress = (points / maxPoints) * 100;
   return (
     <Box display="flex" alignItems="center">
       <Box width="100%" mr={1}>
         <LinearProgress variant="determinate" value={progress} />
       </Box>
       <Box minWidth={35}>
-        <Typography variant="body2" color="textSecondary">{`${Math.round(progress)}%`}</Typography>
+        <Typography variant="body2" color="textSecondary">{`${points} / ${maxPoints} pts`}</Typography>
       </Box>
     </Box>
   );

@@ -1,0 +1,39 @@
+import { bindActionCreators, Dispatch } from 'redux';
+import { connect } from 'react-redux';
+import { DispatchProps, StateProps } from './SeminarDashboard';
+import { SeminarDashboard } from './SeminarDashboard';
+import {
+  fetchActivity,
+  fetchAttendance,
+  fetchEnrollments,
+  fetchSeminars,
+  setLoadingState,
+} from '../../store/seminar/actions';
+import { State } from '../../store/combinedReducers';
+import { fetchAssignmentsPassed } from '../../store/assignment/actions';
+
+const mapStateToProps = (state: State): StateProps => ({
+  seminars: state.seminar.seminars,
+  enrollments: state.seminar.enrollments,
+  loggedUser: state.general.loggedUser,
+  attendance: state.seminar.attendance,
+  activity: state.seminar.activity,
+  assignmentsPassed: state.assignment.assignmentsPassed,
+  loadingState: state.seminar.loadingState,
+});
+
+const mapDispatchToProps = (dispatch: Dispatch): DispatchProps => ({
+  ...bindActionCreators(
+    {
+      fetchSeminars,
+      fetchEnrollments,
+      fetchAttendance,
+      fetchActivity,
+      fetchAssignmentsPassed,
+      setLoadingState,
+    },
+    dispatch,
+  ),
+});
+
+export const SeminarDashboardContainer = connect(mapStateToProps, mapDispatchToProps)(SeminarDashboard);

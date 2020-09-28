@@ -3,15 +3,18 @@ import { bindActionCreators, Dispatch } from 'redux';
 import { connect } from 'react-redux';
 import { fetchGroupsByAssignment } from '../../../store/assignment/actions';
 import { AssignmentView, DispatchProps, StateProps } from './AssignmentView';
+import { fetchEvaluations } from '../../../store/evaluation/actions';
 
 const mapStateToProps = (state: State): StateProps => ({
   assignmentGroups: state.assignment.assignmentGroups,
+  evaluations: state.evaluation.evaluations,
 });
 
 const mapDispatchToProps = (dispatch: Dispatch): DispatchProps => ({
   ...bindActionCreators(
     {
       fetchGroupsByAssignment,
+      fetchEvaluations,
     },
     dispatch,
   ),

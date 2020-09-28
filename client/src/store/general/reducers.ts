@@ -3,11 +3,11 @@ import { reducer } from 'ts-action';
 import { setLoggedUser } from './actions';
 
 export interface State {
-  loggedUser: undefined;
+  loggedUser: undefined | number;
 }
 
 export const initialState: State = {
-  loggedUser: undefined,
+  loggedUser: 633699,
 };
 
 export const generalReducer = reducer<State>(

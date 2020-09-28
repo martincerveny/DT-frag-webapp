@@ -8,23 +8,33 @@ import { GeneralTestGroupView } from './comps/GeneralTestGroupView';
 import { StudentView } from './comps/StudentView';
 import { AssignmentGroup } from '../../../code/interfaces/assignmentGroup';
 import { fetchGroupsByAssignment } from '../../../store/assignment/actions';
+import { Evaluation } from '../../../code/interfaces/evaluation';
+import { fetchEvaluations } from '../../../store/evaluation/actions';
 
 export interface StateProps {
   assignmentGroups: AssignmentGroup[];
+  evaluations: Evaluation[];
 }
 
 export interface DispatchProps {
   fetchGroupsByAssignment: typeof fetchGroupsByAssignment;
+  fetchEvaluations: typeof fetchEvaluations;
 }
 
 type AssignmentViewProps = DispatchProps & StateProps;
 
-const AssignmentViewComponent: React.FC<AssignmentViewProps> = ({ assignmentGroups, fetchGroupsByAssignment }) => {
+const AssignmentViewComponent: React.FC<AssignmentViewProps> = ({
+  assignmentGroups,
+  fetchGroupsByAssignment,
+  fetchEvaluations,
+  evaluations,
+}) => {
   const { assignmentId } = useParams();
   const [selectedIndex, setSelectedIndex] = React.useState<number | null>(null);
 
   useEffect(() => {
     fetchGroupsByAssignment(assignmentId);
+    fetchEvaluations(assignmentId);
   }, []);
 
   const handleClick = (index: number | null) => {
@@ -60,7 +70,7 @@ const AssignmentViewComponent: React.FC<AssignmentViewProps> = ({ assignmentGrou
                 <Typography component="h2" variant="h6" color="primary" gutterBottom css={heading}>
                   Assignment: {assignmentId}
                 </Typography>
-                <GeneralTestGroupView assignmentGroups={assignmentGroups} />
+                <GeneralTestGroupView assignmentGroups={assignmentGroups} evaluations={evaluations} />
                 <StudentView dataRows={dataRows} handleClick={handleClick} selectedIndex={selectedIndex} />
               </Grid>
             </Paper>

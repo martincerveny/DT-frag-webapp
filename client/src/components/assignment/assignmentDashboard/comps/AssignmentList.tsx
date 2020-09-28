@@ -7,6 +7,7 @@ import { Link } from 'react-router-dom';
 import { Assignment } from '../../../../code/interfaces/assignment';
 import { Routes } from '../../../../code/routes';
 import { colors } from '../../../../styles/colors';
+import { getRemainingDays } from '../../../../code/helpers';
 
 export interface AssignmentListProps {
   assignments: Assignment[];
@@ -16,12 +17,12 @@ const AssignmentListComponent: React.FC<AssignmentListProps> = ({ assignments })
   return (
     <div css={content}>
       <List component="nav" aria-label="main mailbox folders">
-        {assignments.map((d: Assignment, index: number) => (
+        {assignments.map((a: Assignment, index: number) => (
           <ListItem key={index}>
             <Grid container direction="row" justify="space-around" alignItems="center">
               <Button variant="text">
-                <Link to={`${Routes.Assignments}/${d.id}`} css={linkName}>
-                  {d.name}
+                <Link to={`${Routes.Assignments}/${a.id}`} css={linkName}>
+                  {a.name}
                 </Link>
               </Button>
               <ButtonGroup
@@ -43,7 +44,7 @@ const AssignmentListComponent: React.FC<AssignmentListProps> = ({ assignments })
                   <Button css={buttonWrapper(9)}>9%</Button>
                 </Tooltip>
               </ButtonGroup>
-              <Typography>25 days remaining</Typography>
+              <Typography>{getRemainingDays(a.end)}</Typography>
             </Grid>
           </ListItem>
         ))}
