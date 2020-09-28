@@ -15,19 +15,20 @@ import { Enrollment } from '../../code/interfaces/enrollment';
 import { Attendance } from '../../code/interfaces/attendance';
 import { SeminarContent } from './comps/SeminarContent';
 import { Activity } from '../../code/interfaces/activity';
-import { AssignmentPassed } from '../../code/interfaces/assignmentPassed';
-import { fetchAssignmentsPassed } from '../../store/assignment/actions';
-import { Loader } from '../shared/Loader';
 import { LoadingState } from '../../code/loading';
+import { fetchAssignments, fetchAuthorAssignments } from '../../store/assignment/actions';
+import { AssignmentArray } from '../../code/interfaces/assignmentArray';
+import { Assignment } from '../../code/interfaces/assignment';
 
 export interface StateProps {
   seminars: Seminar[];
   enrollments: Enrollment[];
   attendance: Attendance[];
   activity: Activity[];
-  assignmentsPassed: AssignmentPassed[];
+  authorAssignments: AssignmentArray | undefined;
   loggedUser: undefined | number;
   loadingState: LoadingState;
+  assignments: Assignment[];
 }
 
 export interface DispatchProps {
@@ -35,8 +36,9 @@ export interface DispatchProps {
   fetchEnrollments: typeof fetchEnrollments;
   fetchAttendance: typeof fetchAttendance;
   fetchActivity: typeof fetchActivity;
-  fetchAssignmentsPassed: typeof fetchAssignmentsPassed;
+  fetchAuthorAssignments: typeof fetchAuthorAssignments;
   setLoadingState: typeof setLoadingState;
+  fetchAssignments: typeof fetchAssignments;
 }
 
 type SeminarDashboardProps = DispatchProps & StateProps;
@@ -51,14 +53,17 @@ const SeminarDashboardComponent: React.FC<SeminarDashboardProps> = ({
   attendance,
   activity,
   fetchActivity,
-  assignmentsPassed,
-  fetchAssignmentsPassed,
+  authorAssignments,
+  fetchAuthorAssignments,
   loadingState,
   setLoadingState,
+  assignments,
+  fetchAssignments,
 }) => {
   useEffect(() => {
     fetchSeminars(loggedUser);
-    fetchAssignmentsPassed();
+    fetchAuthorAssignments();
+    fetchAssignments();
   }, []);
 
   return (
@@ -80,9 +85,10 @@ const SeminarDashboardComponent: React.FC<SeminarDashboardProps> = ({
                     fetchAttendance={fetchAttendance}
                     activity={activity}
                     fetchActivity={fetchActivity}
-                    assignmentsPassed={assignmentsPassed}
+                    authorAssignments={authorAssignments}
                     loadingState={loadingState}
                     setLoadingState={setLoadingState}
+                    assignments={assignments}
                   />
                 )}
               </Grid>
@@ -111,7 +117,7 @@ const paper = css`
   padding: 2px;
   display: flex;
   overflow: auto;
-  flexdirection: column;
+  flex-direction: column;
   height: 240;
 `;
 

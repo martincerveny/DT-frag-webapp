@@ -4,6 +4,7 @@ import { Assignment } from './entities/assignment.entity';
 import { Repository } from 'typeorm';
 import { AssignmentGroup } from './entities/assignmentGroup.entity';
 import { AssignmentPassed } from './entities/assignmentPassed.entity';
+import { AssignmentArray } from './dtos/assignmentArray';
 
 @Injectable()
 export class AssignmentService {
@@ -39,8 +40,8 @@ export class AssignmentService {
     return this.assignmentGroupRepository.find({ assignment_id: id });
   }
 
-  findAssignmentsPassed(): Promise<AssignmentPassed[]> {
-    return this.assignmentPassedRepository
+  async findAuthorAssignments(): Promise<AssignmentArray> {
+    const assignmentsPassed = await this.assignmentPassedRepository
       .createQueryBuilder('assignmentPassed')
       .select([
         'assignmentPassed.author as author',
@@ -53,5 +54,26 @@ export class AssignmentService {
         'assignment.id = assignmentPassed.assignment_id',
       )
       .getRawMany();
+
+    const assignmentNotPassed = await this.assignmentPassedRepository
+      .query(`SELECT DISTINCT subm.author,
+      subm.assignment_id,
+      subm.name as assignment_name
+      FROM (
+      SELECT assignment_pts.author,
+          person.login,
+          assignment_pts.assignment_id,
+          assignment.name
+      FROM frag.person
+      JOIN frag.assignment_pts ON assignment_pts.author = person.id
+      JOIN frag.assignment ON assignment_pts.assignment_id = assignment.id
+      JOIN frag.eval_pass ON eval_pass.assignment_id = assignment.id
+      WHERE assignment_pts.points < eval_pass.points
+      ) as subm`);
+
+    return {
+      assignmentsPassed: assignmentsPassed,
+      assignmentsNotPassed: assignmentNotPassed,
+    };
   }
 }

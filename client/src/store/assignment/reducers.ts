@@ -1,20 +1,20 @@
 import { on } from 'ts-action-immer';
 import { reducer } from 'ts-action';
-import { setAssignmentGroups, setAssignments, setAssignmentsPassed } from './actions';
+import { setAssignmentGroups, setAssignments, setAuthorAssignments } from './actions';
 import { Assignment } from '../../code/interfaces/assignment';
 import { AssignmentGroup } from '../../code/interfaces/assignmentGroup';
-import { AssignmentPassed } from '../../code/interfaces/assignmentPassed';
+import { AssignmentArray } from '../../code/interfaces/assignmentArray';
 
 export interface State {
   assignments: Assignment[];
   assignmentGroups: AssignmentGroup[];
-  assignmentsPassed: AssignmentPassed[];
+  authorAssignments: AssignmentArray | undefined;
 }
 
 export const initialState: State = {
   assignments: [],
   assignmentGroups: [],
-  assignmentsPassed: [],
+  authorAssignments: undefined,
 };
 
 export const assignmentReducer = reducer<State>(
@@ -25,7 +25,7 @@ export const assignmentReducer = reducer<State>(
   on(setAssignmentGroups, (state: State, { payload }) => {
     state.assignmentGroups = payload.assignmentGroups;
   }),
-  on(setAssignmentsPassed, (state: State, { payload }) => {
-    state.assignmentsPassed = payload.assignmentsPassed;
+  on(setAuthorAssignments, (state: State, { payload }) => {
+    state.authorAssignments = payload.authorAssignments;
   }),
 );

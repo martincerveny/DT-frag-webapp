@@ -10,7 +10,7 @@ import {
   setLoadingState,
 } from '../../store/seminar/actions';
 import { State } from '../../store/combinedReducers';
-import { fetchAssignmentsPassed } from '../../store/assignment/actions';
+import { fetchAssignments, fetchAuthorAssignments } from '../../store/assignment/actions';
 
 const mapStateToProps = (state: State): StateProps => ({
   seminars: state.seminar.seminars,
@@ -18,8 +18,9 @@ const mapStateToProps = (state: State): StateProps => ({
   loggedUser: state.general.loggedUser,
   attendance: state.seminar.attendance,
   activity: state.seminar.activity,
-  assignmentsPassed: state.assignment.assignmentsPassed,
+  authorAssignments: state.assignment.authorAssignments,
   loadingState: state.seminar.loadingState,
+  assignments: state.assignment.assignments,
 });
 
 const mapDispatchToProps = (dispatch: Dispatch): DispatchProps => ({
@@ -29,8 +30,9 @@ const mapDispatchToProps = (dispatch: Dispatch): DispatchProps => ({
       fetchEnrollments,
       fetchAttendance,
       fetchActivity,
-      fetchAssignmentsPassed,
+      fetchAuthorAssignments,
       setLoadingState,
+      fetchAssignments,
     },
     dispatch,
   ),

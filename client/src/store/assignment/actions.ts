@@ -5,17 +5,17 @@ import { State } from './reducers';
 import { Assignment } from '../../code/interfaces/assignment';
 import { http } from '../../code/http';
 import {AssignmentGroup} from "../../code/interfaces/assignmentGroup";
-import {AssignmentPassed} from "../../code/interfaces/assignmentPassed";
+import {AssignmentArray} from "../../code/interfaces/assignmentArray";
 
 export enum ActionTypes {
   SET_ASSIGNMENTS = '[assignment] SET_ASSIGNMENTS',
   SET_ASSIGNMENT_GROUPS = '[assignment] SET_ASSIGNMENT_GROUPS',
-  SET_ASSIGNMENTS_PASSED = '[assignment] SET_ASSIGNMENTS_PASSED',
+  SET_AUTHOR_ASSIGNMENTS = '[assignment] SET_AUTHOR_ASSIGNMENTS',
 }
 
 export const setAssignments = action(ActionTypes.SET_ASSIGNMENTS, payload<{ assignments: Assignment[] }>());
 export const setAssignmentGroups = action(ActionTypes.SET_ASSIGNMENT_GROUPS, payload<{ assignmentGroups: AssignmentGroup[] }>());
-export const setAssignmentsPassed = action(ActionTypes.SET_ASSIGNMENTS_PASSED, payload<{ assignmentsPassed: AssignmentPassed[] }>());
+export const setAuthorAssignments = action(ActionTypes.SET_AUTHOR_ASSIGNMENTS, payload<{ authorAssignments: AssignmentArray }>());
 
 export const fetchAssignments: ActionCreator<ThunkAction<Promise<void>, State, any, any>> = () => {
   return async (dispatch: Dispatch<Action>): Promise<void> => {
@@ -31,10 +31,10 @@ export const fetchGroupsByAssignment: ActionCreator<ThunkAction<Promise<void>, S
   };
 };
 
-export const fetchAssignmentsPassed: ActionCreator<ThunkAction<Promise<void>, State, any, any>> = () => {
+export const fetchAuthorAssignments: ActionCreator<ThunkAction<Promise<void>, State, any, any>> = () => {
   return async (dispatch: Dispatch<Action>): Promise<void> => {
-    const response = await http.get(`/assignments/passed`);
-    dispatch(setAssignmentsPassed({ assignmentsPassed: response.data }));
+    const response = await http.get(`/assignments/author`);
+    dispatch(setAuthorAssignments({ authorAssignments: response.data }));
   };
 };
 

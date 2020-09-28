@@ -3,24 +3,27 @@ import React from 'react';
 import styled from '@emotion/styled';
 import { css, jsx } from '@emotion/core';
 import { Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Tooltip } from '@material-ui/core';
-import { SquareFill } from 'react-bootstrap-icons';
+import { Square, SquareFill, XSquareFill } from 'react-bootstrap-icons';
 import { ProgressBar } from '../../shared/ProgressBar';
 import { Enrollment } from '../../../code/interfaces/enrollment';
 import { Attendance } from '../../../code/interfaces/attendance';
 import { getDateString } from '../../../code/helpers';
 import { Activity } from '../../../code/interfaces/activity';
-import { AssignmentPassed } from '../../../code/interfaces/assignmentPassed';
 import { setLoadingState } from '../../../store/seminar/actions';
 import { LoadingState } from '../../../code/loading';
+import { AssignmentArray } from '../../../code/interfaces/assignmentArray';
+import { AuthorAssignment } from '../../../code/interfaces/authorAssignment';
+import { Assignment } from '../../../code/interfaces/assignment';
 
 interface SeminarTableProps {
   enrollments: Enrollment[];
   currentSeminar: number;
   attendance: Attendance[];
   activity: Activity[];
-  assignmentsPassed: AssignmentPassed[];
+  authorAssignments: AssignmentArray | undefined;
   setLoadingState: typeof setLoadingState;
   loadingState: LoadingState;
+  assignments: Assignment[];
 }
 
 const SeminarTableComponent: React.FC<SeminarTableProps> = ({
@@ -28,12 +31,15 @@ const SeminarTableComponent: React.FC<SeminarTableProps> = ({
   currentSeminar,
   attendance,
   activity,
-  assignmentsPassed,
+  authorAssignments,
   setLoadingState,
   loadingState,
+  assignments,
 }) => {
   let studentActivity: Activity[] | null = null;
-  let studentAssignmentsPassed: AssignmentPassed[] | null = null;
+  let studentAssignmentsPassed: AuthorAssignment[] | null = null;
+  let studentAssignmentsNotPassed: AuthorAssignment[] | null = null;
+  let notSubmittedAssignments: string[] | null = null;
 
   return (
     <div css={content}>
@@ -61,11 +67,31 @@ const SeminarTableComponent: React.FC<SeminarTableProps> = ({
                     });
                   }
 
-                  if (assignmentsPassed.length > 0) {
-                    studentAssignmentsPassed = assignmentsPassed.filter((assignmentPassed: AssignmentPassed) => {
-                      return assignmentPassed['author'] === e.student;
-                    });
+                  if (authorAssignments && authorAssignments.assignmentsPassed.length > 0) {
+                    studentAssignmentsPassed = authorAssignments.assignmentsPassed.filter(
+                      (assignmentPassed: AuthorAssignment) => {
+                        return assignmentPassed['author'] === e.student;
+                      },
+                    );
                   }
+
+                  if (authorAssignments && authorAssignments.assignmentsNotPassed.length > 0) {
+                    studentAssignmentsNotPassed = authorAssignments.assignmentsNotPassed.filter(
+                      (assignmentNotPassed: AuthorAssignment) => {
+                        return assignmentNotPassed['author'] === e.student;
+                      },
+                    );
+                  }
+
+                  if (studentAssignmentsPassed && studentAssignmentsNotPassed) {
+                    const assignmentNames = assignments.map(({ name }) => name);
+                    const studentAssignments = studentAssignmentsPassed
+                      .concat(studentAssignmentsNotPassed)
+                      .map(({ assignment_name }) => assignment_name);
+
+                    notSubmittedAssignments = assignmentNames.filter(n => !studentAssignments.includes(n));
+                  }
+
                   return (
                     <TableRow key={index}>
                       <TableCell component="th" scope="row">
@@ -73,15 +99,29 @@ const SeminarTableComponent: React.FC<SeminarTableProps> = ({
                       </TableCell>
                       <TableCell align="right">
                         {studentAssignmentsPassed &&
-                          studentAssignmentsPassed.map((sap: AssignmentPassed, index: number) => {
+                          studentAssignmentsPassed.map((sap: AuthorAssignment, index: number) => {
                             return (
                               <Tooltip key={index} title={sap.assignment_name} placement="top">
                                 <SquareFill color="green" size={20} css={iconMargin} />
                               </Tooltip>
                             );
                           })}
-                        {/*<Square size={20} css={iconMargin} />*/}
-                        {/*<XSquareFill color="gray" size={20} css={iconMargin} />*/}
+                        {studentAssignmentsNotPassed &&
+                          studentAssignmentsNotPassed.map((sanp: AuthorAssignment, index: number) => {
+                            return (
+                              <Tooltip key={index} title={sanp.assignment_name} placement="top">
+                                <Square size={20} css={iconMargin} />
+                              </Tooltip>
+                            );
+                          })}
+                        {notSubmittedAssignments &&
+                          notSubmittedAssignments.map((nsa: string, index: number) => {
+                            return (
+                              <Tooltip key={index} title={nsa} placement="top">
+                                <XSquareFill color="gray" size={20} css={iconMargin} />
+                              </Tooltip>
+                            );
+                          })}
                       </TableCell>
                       <TableCell align="right">
                         {studentAttendance.map((sa: Attendance, index: number) => (
@@ -89,7 +129,6 @@ const SeminarTableComponent: React.FC<SeminarTableProps> = ({
                             <SquareFill color="green" size={20} css={iconMargin} />
                           </Tooltip>
                         ))}
-                        {/*<Square size={20} css={iconMargin} />*/}
                       </TableCell>
                       <TableCell align="right">
                         {studentActivity && activity.length > 0 && (
