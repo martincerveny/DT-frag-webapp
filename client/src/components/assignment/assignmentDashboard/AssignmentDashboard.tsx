@@ -4,24 +4,39 @@ import styled from '@emotion/styled';
 import { css, jsx } from '@emotion/core';
 import { Container, Grid, Paper, Typography } from '@material-ui/core';
 import { LineChart, Line, CartesianGrid, XAxis, YAxis } from 'recharts';
-import { colors } from '../../../styles/colors';
 import { Assignment } from '../../../code/interfaces/assignment';
-import { fetchAssignments } from '../../../store/assignment/actions';
+import { fetchAssignments, fetchAuthorAssignments } from '../../../store/assignment/actions';
 import { AssignmentList } from './comps/AssignmentList';
+import { AssignmentArray } from '../../../code/interfaces/assignmentArray';
+import { Enrollment } from '../../../code/interfaces/enrollment';
+import { fetchEnrollments } from '../../../store/seminar/actions';
 
 export interface StateProps {
   assignments: Assignment[];
+  authorAssignments: AssignmentArray | undefined;
+  allEnrollments: Enrollment[];
 }
 
 export interface DispatchProps {
   fetchAssignments: typeof fetchAssignments;
+  fetchAuthorAssignments: typeof fetchAuthorAssignments;
+  fetchEnrollments: typeof fetchEnrollments;
 }
 
 type AssignmentDashboardProps = DispatchProps & StateProps;
 
-const AssignmentDashboardComponent: React.FC<AssignmentDashboardProps> = ({ assignments, fetchAssignments }) => {
+const AssignmentDashboardComponent: React.FC<AssignmentDashboardProps> = ({
+  assignments,
+  fetchAssignments,
+  authorAssignments,
+  fetchAuthorAssignments,
+  allEnrollments,
+  fetchEnrollments,
+}) => {
   useEffect(() => {
     fetchAssignments();
+    fetchAuthorAssignments();
+    fetchEnrollments();
   }, []);
 
   const exampleData = [
@@ -54,7 +69,11 @@ const AssignmentDashboardComponent: React.FC<AssignmentDashboardProps> = ({ assi
                 <Typography component="h2" variant="h6" color="primary" gutterBottom css={heading}>
                   Assignment Dashboard
                 </Typography>
-                <AssignmentList assignments={assignments} />
+                <AssignmentList
+                  assignments={assignments}
+                  authorAssignments={authorAssignments}
+                  allEnrollments={allEnrollments}
+                />
               </Grid>
             </Paper>
           </Grid>
@@ -95,30 +114,6 @@ export const AssignmentDashboard = (props: any) => <StyledAssignmentDashboard {.
 const root = css`
   flex-grow: 1;
 `;
-
-const buttonGroupWrapper = css`
-  width: 400px;
-`;
-
-const linkName = css`
-  color: ${colors.black};
-  text-decoration: none;
-`;
-
-const buttonWrapper = (size: number) => {
-  return css`
-    width: ${size * 4}px;
-    height: 40px;
-  `;
-};
-
-const buttonWrapperPass = (size: number) => {
-  return css`
-    width: ${size * 4}px;
-    height: 40px;
-    color: ${colors.green};
-  `;
-};
 
 const container = css`
   padding-top: 20px;

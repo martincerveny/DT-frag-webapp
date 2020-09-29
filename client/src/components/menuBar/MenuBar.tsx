@@ -2,9 +2,8 @@
 import styled from '@emotion/styled';
 import { css, jsx } from '@emotion/core';
 import React from 'react';
-import { AppBar, Button, Menu, MenuItem, Toolbar, Tooltip, Typography } from '@material-ui/core';
+import { AppBar, Button, Menu, MenuItem, Toolbar, Typography } from '@material-ui/core';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
-import SettingsIcon from '@material-ui/icons/Settings';
 import AccountCircleIcon from '@material-ui/icons/AccountCircle';
 import { Link } from 'react-router-dom';
 import { colors } from '../../styles/colors';

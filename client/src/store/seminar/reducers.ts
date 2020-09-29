@@ -1,6 +1,13 @@
 import { on } from 'ts-action-immer';
 import { reducer } from 'ts-action';
-import { setActivity, setAttendance, setEnrollments, setLoadingState, setSeminars } from './actions';
+import {
+  setActivity,
+  setAllEnrollments,
+  setAttendance,
+  setLoadingState,
+  setSeminarEnrollments,
+  setSeminars,
+} from './actions';
 import { Seminar } from '../../code/interfaces/seminar';
 import { Enrollment } from '../../code/interfaces/enrollment';
 import { Attendance } from '../../code/interfaces/attendance';
@@ -10,7 +17,8 @@ import { LoadingState } from '../../code/loading';
 export interface State {
   loadingState: LoadingState;
   seminars: Seminar[];
-  enrollments: Enrollment[];
+  seminarEnrollments: Enrollment[];
+  allEnrollments: Enrollment[];
   attendance: Attendance[];
   activity: Activity[];
 }
@@ -18,7 +26,8 @@ export interface State {
 export const initialState: State = {
   loadingState: LoadingState.Initial,
   seminars: [],
-  enrollments: [],
+  seminarEnrollments: [],
+  allEnrollments: [],
   attendance: [],
   activity: [],
 };
@@ -28,10 +37,12 @@ export const seminarReducer = reducer<State>(
   on(setSeminars, (state: State, { payload }) => {
     state.seminars = payload.seminars;
   }),
-  on(setEnrollments, (state: State, { payload }) => {
-    state.enrollments = payload.enrollments;
+  on(setSeminarEnrollments, (state: State, { payload }) => {
+    state.seminarEnrollments = payload.seminarEnrollments;
   }),
-
+  on(setAllEnrollments, (state: State, { payload }) => {
+    state.allEnrollments = payload.allEnrollments;
+  }),
   on(setAttendance, (state: State, { payload }) => {
     state.attendance = payload.attendance;
   }),

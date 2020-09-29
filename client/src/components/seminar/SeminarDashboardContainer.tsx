@@ -14,7 +14,7 @@ import { fetchAssignments, fetchAuthorAssignments } from '../../store/assignment
 
 const mapStateToProps = (state: State): StateProps => ({
   seminars: state.seminar.seminars,
-  enrollments: state.seminar.enrollments,
+  seminarEnrollments: state.seminar.seminarEnrollments,
   loggedUser: state.general.loggedUser,
   attendance: state.seminar.attendance,
   activity: state.seminar.activity,

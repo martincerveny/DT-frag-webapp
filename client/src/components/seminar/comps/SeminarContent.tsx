@@ -15,7 +15,7 @@ import { Assignment } from '../../../code/interfaces/assignment';
 import { Square, SquareFill, XSquareFill } from 'react-bootstrap-icons';
 
 export interface SeminarContentProps {
-  enrollments: Enrollment[];
+  seminarEnrollments: Enrollment[];
   seminars: Seminar[];
   attendance: Attendance[];
   activity: Activity[];
@@ -29,7 +29,7 @@ export interface SeminarContentProps {
 }
 
 const SeminarContentComponent: React.FC<SeminarContentProps> = ({
-  enrollments,
+  seminarEnrollments,
   seminars,
   fetchEnrollments,
   attendance,
@@ -59,7 +59,7 @@ const SeminarContentComponent: React.FC<SeminarContentProps> = ({
             </Typography>
             <SeminarTable
               fetchEnrollments={fetchEnrollments}
-              enrollments={enrollments}
+              seminarEnrollments={seminarEnrollments}
               seminars={seminars}
               attendance={attendance}
               currentSeminar={s.id}
@@ -85,7 +85,6 @@ const renderIconDescription = () => {
       </Grid>
       <Grid item>
         <Square size={20} />
-
         <span css={descriptionWrapper}>- no / fail</span>
       </Grid>
       <Grid item>

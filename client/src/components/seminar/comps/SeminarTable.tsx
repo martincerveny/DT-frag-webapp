@@ -16,7 +16,7 @@ import { AuthorAssignment } from '../../../code/interfaces/authorAssignment';
 import { Assignment } from '../../../code/interfaces/assignment';
 
 interface SeminarTableProps {
-  enrollments: Enrollment[];
+  seminarEnrollments: Enrollment[];
   currentSeminar: number;
   attendance: Attendance[];
   activity: Activity[];
@@ -27,7 +27,7 @@ interface SeminarTableProps {
 }
 
 const SeminarTableComponent: React.FC<SeminarTableProps> = ({
-  enrollments,
+  seminarEnrollments,
   currentSeminar,
   attendance,
   activity,
@@ -43,7 +43,7 @@ const SeminarTableComponent: React.FC<SeminarTableProps> = ({
 
   return (
     <div css={content}>
-      {enrollments.length > 0 && (
+      {seminarEnrollments.length > 0 && (
         <TableContainer component={Paper}>
           <Table aria-label="simple table">
             <TableHead>
@@ -55,7 +55,7 @@ const SeminarTableComponent: React.FC<SeminarTableProps> = ({
               </TableRow>
             </TableHead>
             <TableBody>
-              {enrollments.map((e: Enrollment, index: number) => {
+              {seminarEnrollments.map((e: Enrollment, index: number) => {
                 if (currentSeminar === e.seminar_id) {
                   const studentAttendance = attendance.filter((a: Attendance) => {
                     return a['student'] === e.student && a['seminar_id'] === e.seminar_id;

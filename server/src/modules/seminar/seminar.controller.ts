@@ -3,7 +3,6 @@ import { SeminarService } from './seminar.service';
 import { Seminar } from './entities/seminar.entity';
 import { Enrollment } from './entities/enrollment.entity';
 import { Attendance } from './entities/attendance.entity';
-import { Activity } from './entities/activity.entity';
 import { ActivityDto } from './dtos/activityDto';
 
 @Controller('api/seminars')
@@ -17,6 +16,10 @@ export class SeminarController {
 
   @Get('/enrollment')
   findEnrollmentBySeminar(@Query() query): Promise<Enrollment[]> {
+    if (Object.keys(query).length === 0 && query.constructor === Object) {
+      return this.seminarService.findAllEnrollments();
+    }
+
     return this.seminarService.findEnrollmentBySeminar(query.seminar);
   }
 

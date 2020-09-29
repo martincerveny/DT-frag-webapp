@@ -3,7 +3,7 @@ import { AssignmentService } from './assignment.service';
 import { Assignment } from './entities/assignment.entity';
 import { AssignmentGroup } from './entities/assignmentGroup.entity';
 import { AssignmentPassed } from './entities/assignmentPassed.entity';
-import {AssignmentArray} from "./dtos/assignmentArray";
+import { AssignmentArray } from './dtos/assignmentArray';
 
 @Controller('api/assignments')
 export class AssignmentController {

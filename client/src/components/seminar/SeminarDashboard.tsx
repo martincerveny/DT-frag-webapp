@@ -22,7 +22,7 @@ import { Assignment } from '../../code/interfaces/assignment';
 
 export interface StateProps {
   seminars: Seminar[];
-  enrollments: Enrollment[];
+  seminarEnrollments: Enrollment[];
   attendance: Attendance[];
   activity: Activity[];
   authorAssignments: AssignmentArray | undefined;
@@ -47,7 +47,7 @@ const SeminarDashboardComponent: React.FC<SeminarDashboardProps> = ({
   fetchSeminars,
   seminars,
   loggedUser,
-  enrollments,
+  seminarEnrollments,
   fetchEnrollments,
   fetchAttendance,
   attendance,
@@ -78,7 +78,7 @@ const SeminarDashboardComponent: React.FC<SeminarDashboardProps> = ({
                 </Typography>
                 {seminars.length > 0 && (
                   <SeminarContent
-                    enrollments={enrollments}
+                    seminarEnrollments={seminarEnrollments}
                     seminars={seminars}
                     fetchEnrollments={fetchEnrollments}
                     attendance={attendance}

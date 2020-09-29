@@ -52,6 +52,19 @@ export class SeminarService {
       .getRawMany();
   }
 
+  findAllEnrollments(): Promise<Enrollment[]> {
+    return this.enrollmentRepository
+      .createQueryBuilder('enrollment')
+      .select([
+        'enrollment.seminar_id as seminar_id',
+        'enrollment.student as student',
+        'enrollment.completion as completion',
+        'person.name as name',
+      ])
+      .leftJoin('person', 'person', 'person.id = enrollment.student')
+      .getRawMany();
+  }
+
   findAttendanceBySeminar(ids: string): Promise<Attendance[]> {
     const idsArray = ids.split(',');
 

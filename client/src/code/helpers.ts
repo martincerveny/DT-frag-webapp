@@ -1,6 +1,6 @@
 import { Evaluation } from './interfaces/evaluation';
 
-export const removeArrayDuplicates = (arr: Array<any>, keyProps: Array<string>): Evaluation[] => {
+export const removeArrayDuplicatesByProp = (arr: Array<any>, keyProps: Array<string>): Evaluation[] => {
   return Object.values(
     arr.reduce((uniqueMap, entry) => {
       const key = keyProps.map(k => entry[k]).join('|');
@@ -8,6 +8,14 @@ export const removeArrayDuplicates = (arr: Array<any>, keyProps: Array<string>):
       return uniqueMap;
     }, {}),
   );
+};
+
+export const removeArrayDuplicates = (actualArr: Array<any>) => {
+  return actualArr.filter((item, index) => {
+    if (actualArr.indexOf(item) == index) {
+      return item;
+    }
+  });
 };
 
 export const getDateString = (date: string) => {
@@ -30,4 +38,8 @@ export const getRemainingDays = (date: string): string => {
   }
 
   return remainingDays + ' ' + days + ' remaining';
+};
+
+export const getPercents = (value: number, count: number) => {
+  return Math.floor((value / count) * 100);
 };

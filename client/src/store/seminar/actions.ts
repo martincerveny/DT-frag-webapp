@@ -11,14 +11,19 @@ import { LoadingState } from '../../code/loading';
 
 export enum ActionTypes {
   SET_SEMINARS = '[seminar] SET_SEMINARS',
-  SET_ENROLLMENTS = '[seminar] SET_ENROLLMENTS',
+  SET_SEMINAR_ENROLLMENTS = '[seminar] SET_SEMINAR_ENROLLMENTS',
+  SET_ALL_ENROLLMENTS = '[seminar] SET_ALL_ENROLLMENTS',
   SET_ATTENDANCE = '[seminar] SET_ATTENDANCE',
   SET_ACTIVITY = '[seminar] SET_ACTIVITY',
   SET_LOADING_STATE = '[seminar] SET_LOADING_STATE',
 }
 
 export const setSeminars = action(ActionTypes.SET_SEMINARS, payload<{ seminars: Seminar[] }>());
-export const setEnrollments = action(ActionTypes.SET_ENROLLMENTS, payload<{ enrollments: Enrollment[] }>());
+export const setSeminarEnrollments = action(
+  ActionTypes.SET_SEMINAR_ENROLLMENTS,
+  payload<{ seminarEnrollments: Enrollment[] }>(),
+);
+export const setAllEnrollments = action(ActionTypes.SET_ALL_ENROLLMENTS, payload<{ allEnrollments: Enrollment[] }>());
 export const setAttendance = action(ActionTypes.SET_ATTENDANCE, payload<{ attendance: Attendance[] }>());
 export const setActivity = action(ActionTypes.SET_ACTIVITY, payload<{ activity: Activity[] }>());
 export const setLoadingState = action(ActionTypes.SET_LOADING_STATE, payload<{ loadingState: LoadingState }>());
@@ -30,10 +35,16 @@ export const fetchSeminars: ActionCreator<ThunkAction<Promise<void>, State, any,
   };
 };
 
-export const fetchEnrollments: ActionCreator<ThunkAction<Promise<void>, State, any, any>> = (ids: string) => {
+export const fetchEnrollments: ActionCreator<ThunkAction<Promise<void>, State, any, any>> = (ids?: string) => {
   return async (dispatch: Dispatch<Action>): Promise<void> => {
-    const response = await http.get(`/seminars/enrollment?seminar=${ids}`);
-    dispatch(setEnrollments({ enrollments: response.data }));
+    let response;
+    if (ids) {
+      response = await http.get(`/seminars/enrollment?seminar=${ids}`);
+      dispatch(setSeminarEnrollments({ seminarEnrollments: response.data }));
+    } else {
+      response = await http.get(`/seminars/enrollment`);
+      dispatch(setAllEnrollments({ allEnrollments: response.data }));
+    }
   };
 };
 

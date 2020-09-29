@@ -6,7 +6,7 @@ import { Button, ButtonGroup, Grid, List, ListItem, Tooltip, Typography } from '
 import { colors } from '../../../../styles/colors';
 import { AssignmentGroup } from '../../../../code/interfaces/assignmentGroup';
 import { Evaluation } from '../../../../code/interfaces/evaluation';
-import { removeArrayDuplicates } from '../../../../code/helpers';
+import { getPercents, removeArrayDuplicatesByProp } from '../../../../code/helpers';
 
 interface GeneralTestGroupViewProps {
   assignmentGroups: AssignmentGroup[];
@@ -14,7 +14,7 @@ interface GeneralTestGroupViewProps {
 }
 
 const GeneralTestGroupViewComponent: React.FC<GeneralTestGroupViewProps> = ({ assignmentGroups, evaluations }) => {
-  const tests: Evaluation[] = removeArrayDuplicates(evaluations, ['group', 'name']);
+  const tests: Evaluation[] = removeArrayDuplicatesByProp(evaluations, ['group', 'name']);
 
   return (
     <div css={content}>
@@ -26,6 +26,18 @@ const GeneralTestGroupViewComponent: React.FC<GeneralTestGroupViewProps> = ({ as
                 <Typography variant="h6">{ag.group}</Typography>
                 {tests.map((t: Evaluation, index) => {
                   if (t.group === ag.group) {
+                    const passedTestEvaluations = evaluations.filter((e: Evaluation) => {
+                      return e.group === ag.group && e.name === t.name && e.passed;
+                    });
+
+                    const failedTestEvaluations = evaluations.filter((e: Evaluation) => {
+                      return e.group === ag.group && e.name === t.name && !e.passed;
+                    });
+
+                    const allEvaluations = passedTestEvaluations.length + failedTestEvaluations.length;
+                    const passedPercents = getPercents(passedTestEvaluations.length, allEvaluations);
+                    const failedPercents = getPercents(failedTestEvaluations.length, allEvaluations);
+
                     return (
                       <Grid key={index} container direction="row" justify="flex-start" alignItems="center">
                         <Button css={testNameButtonWrapper} variant="text">
@@ -39,11 +51,11 @@ const GeneralTestGroupViewComponent: React.FC<GeneralTestGroupViewProps> = ({ as
                           css={buttonGroupWrapper}
                         >
                           <Tooltip title="Pass" placement="top">
-                            <Button css={buttonWrapperPass(40)}>40%</Button>
+                            <Button css={buttonWrapperPass(passedPercents)}>{passedPercents} %</Button>
                           </Tooltip>
                           <Tooltip title="Fail" placement="top">
-                            <Button color="secondary" css={buttonWrapper(60)}>
-                              60%
+                            <Button color="secondary" css={buttonWrapper(failedPercents)}>
+                              {failedPercents} %
                             </Button>
                           </Tooltip>
                         </ButtonGroup>
@@ -69,7 +81,7 @@ const content = css`
 `;
 
 const buttonGroupWrapper = css`
-  width: 400px;
+  width: 600px;
   margin-left: 150px;
 `;
 
@@ -80,14 +92,16 @@ const testNameButtonWrapper = css`
 
 const buttonWrapper = (size: number) => {
   return css`
-    width: ${size * 4}px;
+    width: ${size * 4}%;
+    min-width: 60px;
     height: 40px;
   `;
 };
 
 const buttonWrapperPass = (size: number) => {
   return css`
-    width: ${size * 4}px;
+    width: ${size * 4}%;
+    min-width: 60px;
     height: 40px;
     background-color: ${colors.green};
   `;
