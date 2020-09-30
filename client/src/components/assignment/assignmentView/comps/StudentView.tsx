@@ -16,15 +16,22 @@ import {
 import RadioButtonUncheckedIcon from '@material-ui/icons/RadioButtonUnchecked';
 import FiberManualRecordIcon from '@material-ui/icons/FiberManualRecord';
 import { Evaluation } from '../../../../code/interfaces/evaluation';
-import { removeArrayDuplicatesByProp } from '../../../../code/helpers';
+import { removeArrayDuplicatesByProp, sumArrayProps } from '../../../../code/helpers';
+import { AssignmentGroup } from '../../../../code/interfaces/assignmentGroup';
 
 interface StudentViewProps {
   evaluations: Evaluation[];
+  assignmentGroups: AssignmentGroup[];
   handleClick: (index: number | null) => void;
   selectedIndex: number | null;
 }
 
-const StudentViewComponent: React.FC<StudentViewProps> = ({ evaluations, handleClick, selectedIndex }) => {
+const StudentViewComponent: React.FC<StudentViewProps> = ({
+  evaluations,
+  handleClick,
+  selectedIndex,
+  assignmentGroups,
+}) => {
   const uniqueStudentEvals = removeArrayDuplicatesByProp(evaluations, ['author_name']);
 
   return (
@@ -35,31 +42,52 @@ const StudentViewComponent: React.FC<StudentViewProps> = ({ evaluations, handleC
             <TableRow>
               <TableCell>Name</TableCell>
               <TableCell align="right">Date</TableCell>
-              <TableCell align="right">Test</TableCell>
+              {assignmentGroups.map((ag: AssignmentGroup, index: number) => (
+                <TableCell key={index} align="right">
+                  {ag.group}
+                </TableCell>
+              ))}
               <TableCell align="right">Points</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
             {uniqueStudentEvals.map((e: Evaluation, index: number) => {
+              const studentEvals = evaluations.filter((se: Evaluation) => se.author === e.author);
+              const maxEvalId = Math.max.apply(
+                Math,
+                studentEvals.map(function(o) {
+                  return o.eval_id;
+                }),
+              );
+              const maxStudentEval = studentEvals.filter((mse: Evaluation) => mse.eval_id === maxEvalId);
+              const points = sumArrayProps(maxStudentEval, 'points');
+
               return (
                 <React.Fragment key={index}>
                   <TableRow>
                     <TableCell component="th" scope="row">
                       {e.author_name}
                     </TableCell>
-                    <TableCell align="right">{new Date(e.stamp).toDateString()}</TableCell>
-                    <TableCell align="right">
-                      <IconButton aria-label="circle" size="small" onClick={() => handleClick(index)}>
-                        <RadioButtonUncheckedIcon fontSize="inherit" />
-                      </IconButton>
-                      <IconButton aria-label="circle" size="small" onClick={() => handleClick(index)}>
-                        <FiberManualRecordIcon fontSize="small" />
-                      </IconButton>
-                      <IconButton aria-label="circle" size="small" onClick={() => handleClick(index)}>
-                        <FiberManualRecordIcon fontSize="small" />
-                      </IconButton>
-                    </TableCell>
-                    <TableCell align="right">0</TableCell>
+                    <TableCell align="right">{new Date(maxStudentEval[0].stamp).toLocaleDateString()}</TableCell>
+                    {assignmentGroups.map((ag: AssignmentGroup, index: number) => {
+                      const studentTests = maxStudentEval.filter((mse: Evaluation) => ag.group === mse.group);
+                      return (
+                        <TableCell key={index} align="right">
+                          {studentTests.map((test: Evaluation, index: number) => {
+                            return (
+                              <IconButton aria-label="circle" size="small" key={index}>
+                                {test.passed ? (
+                                  <FiberManualRecordIcon fontSize="small" />
+                                ) : (
+                                  <RadioButtonUncheckedIcon fontSize="small" />
+                                )}
+                              </IconButton>
+                            );
+                          })}
+                        </TableCell>
+                      );
+                    })}
+                    <TableCell align="right">{points}</TableCell>
                   </TableRow>
                   <Collapse in={index === selectedIndex} timeout="auto" unmountOnExit>
                     <TableRow>

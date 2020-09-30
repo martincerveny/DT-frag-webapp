@@ -10,7 +10,6 @@ import { AssignmentGroup } from '../../../code/interfaces/assignmentGroup';
 import { fetchGroupsByAssignment } from '../../../store/assignment/actions';
 import { Evaluation } from '../../../code/interfaces/evaluation';
 import { fetchEvaluations } from '../../../store/evaluation/actions';
-import { removeArrayDuplicatesByProp } from '../../../code/helpers';
 
 export interface StateProps {
   assignmentGroups: AssignmentGroup[];
@@ -57,7 +56,12 @@ const AssignmentViewComponent: React.FC<AssignmentViewProps> = ({
                   Assignment: {assignmentId}
                 </Typography>
                 <GeneralTestGroupView assignmentGroups={assignmentGroups} evaluations={evaluations} />
-                <StudentView evaluations={evaluations} handleClick={handleClick} selectedIndex={selectedIndex} />
+                <StudentView
+                  evaluations={evaluations}
+                  handleClick={handleClick}
+                  selectedIndex={selectedIndex}
+                  assignmentGroups={assignmentGroups}
+                />
               </Grid>
             </Paper>
           </Grid>

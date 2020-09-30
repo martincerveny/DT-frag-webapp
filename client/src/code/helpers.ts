@@ -43,3 +43,7 @@ export const getRemainingDays = (date: string): string => {
 export const getPercents = (value: number, count: number) => {
   return Math.floor((value / count) * 100);
 };
+
+export const sumArrayProps = (array: Array<any>, key: string) => {
+  return array.reduce((a, b) => a + (b[key] || 0), 0);
+};
