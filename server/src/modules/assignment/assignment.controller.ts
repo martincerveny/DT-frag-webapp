@@ -3,7 +3,7 @@ import { AssignmentService } from './assignment.service';
 import { Assignment } from './entities/assignment.entity';
 import { AssignmentGroup } from './entities/assignmentGroup.entity';
 import { AssignmentPassed } from './entities/assignmentPassed.entity';
-import { AssignmentArray } from './dtos/assignmentArray';
+import { AssignmentArrayDto } from './dtos/assignmentArrayDto';
 
 @Controller('api/assignments')
 export class AssignmentController {
@@ -20,7 +20,7 @@ export class AssignmentController {
   }
 
   @Get('/author')
-  findAuthorAssignments(): Promise<AssignmentArray> {
+  findAuthorAssignments(): Promise<AssignmentArrayDto> {
     return this.assignmentService.findAuthorAssignments();
   }
 }

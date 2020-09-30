@@ -2,6 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Evaluation } from './entities/evaluation.entity';
 import { Repository } from 'typeorm';
+import { EvaluationDto } from './dtos/evaluationDto';
 
 @Injectable()
 export class EvaluationService {
@@ -10,7 +11,42 @@ export class EvaluationService {
     private evaluationRepository: Repository<Evaluation>,
   ) {}
 
-  findEvalsByAssignment(id: number): Promise<Evaluation[]> {
-    return this.evaluationRepository.find({ assignment_id: id });
+  async findEvalsByAssignment(id: number): Promise<EvaluationDto[]> {
+    // return this.evaluationRepository.find({ assignment_id: id });
+    const evals = await this.evaluationRepository
+      .createQueryBuilder('eval_out_pts')
+      .select([
+        'eval_out_pts.*',
+        'submission.author',
+        'person.name as author_name',
+        'person.login as login',
+      ])
+      .leftJoin(
+        'submission',
+        'submission',
+        'submission.id = eval_out_pts.submission_id',
+      )
+      .leftJoin('person', 'person', 'person.id = submission.author')
+      .where('eval_out_pts.assignment_id = :id', { id })
+      .getRawMany();
+
+    return evals.map(e => {
+      return {
+        eval_id: e.eval_id,
+        submission_id: e.submission_id,
+        assignment_id: e.assignment_id,
+        stamp: e.stamp,
+        group: e.group.toString(),
+        name: e.name,
+        active: e.active,
+        sequence: e.sequence,
+        content_sha: e.content_sha.toString(),
+        passed: e.passed,
+        points: e.points,
+        author: e.author,
+        author_name: e.author_name,
+        login: e.login.toString(),
+      };
+    });
   }
 }

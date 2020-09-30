@@ -4,7 +4,7 @@ import { Assignment } from './entities/assignment.entity';
 import { Repository } from 'typeorm';
 import { AssignmentGroup } from './entities/assignmentGroup.entity';
 import { AssignmentPassed } from './entities/assignmentPassed.entity';
-import { AssignmentArray } from './dtos/assignmentArray';
+import { AssignmentArrayDto } from './dtos/assignmentArrayDto';
 
 @Injectable()
 export class AssignmentService {
@@ -40,7 +40,7 @@ export class AssignmentService {
     return this.assignmentGroupRepository.find({ assignment_id: id });
   }
 
-  async findAuthorAssignments(): Promise<AssignmentArray> {
+  async findAuthorAssignments(): Promise<AssignmentArrayDto> {
     const assignmentsPassed = await this.assignmentPassedRepository
       .createQueryBuilder('assignmentPassed')
       .select([

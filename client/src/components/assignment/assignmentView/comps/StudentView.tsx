@@ -15,14 +15,18 @@ import {
 } from '@material-ui/core';
 import RadioButtonUncheckedIcon from '@material-ui/icons/RadioButtonUnchecked';
 import FiberManualRecordIcon from '@material-ui/icons/FiberManualRecord';
+import { Evaluation } from '../../../../code/interfaces/evaluation';
+import { removeArrayDuplicatesByProp } from '../../../../code/helpers';
 
 interface StudentViewProps {
-  dataRows: any;
+  evaluations: Evaluation[];
   handleClick: (index: number | null) => void;
   selectedIndex: number | null;
 }
 
-const StudentViewComponent: React.FC<StudentViewProps> = ({ dataRows, handleClick, selectedIndex }) => {
+const StudentViewComponent: React.FC<StudentViewProps> = ({ evaluations, handleClick, selectedIndex }) => {
+  const uniqueStudentEvals = removeArrayDuplicatesByProp(evaluations, ['author_name']);
+
   return (
     <div css={content}>
       <TableContainer component={Paper}>
@@ -36,14 +40,14 @@ const StudentViewComponent: React.FC<StudentViewProps> = ({ dataRows, handleClic
             </TableRow>
           </TableHead>
           <TableBody>
-            {dataRows.map((d: any, index: number) => {
+            {uniqueStudentEvals.map((e: Evaluation, index: number) => {
               return (
                 <React.Fragment key={index}>
                   <TableRow>
                     <TableCell component="th" scope="row">
-                      {d.name}
+                      {e.author_name}
                     </TableCell>
-                    <TableCell align="right">{d.date}</TableCell>
+                    <TableCell align="right">{new Date(e.stamp).toDateString()}</TableCell>
                     <TableCell align="right">
                       <IconButton aria-label="circle" size="small" onClick={() => handleClick(index)}>
                         <RadioButtonUncheckedIcon fontSize="inherit" />

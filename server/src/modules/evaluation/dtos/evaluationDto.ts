@@ -1,4 +1,4 @@
-export interface Evaluation {
+export class EvaluationDto {
   eval_id: number;
   submission_id: number;
   assignment_id: number;
