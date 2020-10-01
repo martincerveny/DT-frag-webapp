@@ -30,20 +30,11 @@ const AssignmentViewComponent: React.FC<AssignmentViewProps> = ({
   evaluations,
 }) => {
   const { assignmentId } = useParams();
-  const [selectedIndex, setSelectedIndex] = React.useState<number | null>(null);
 
   useEffect(() => {
     fetchGroupsByAssignment(assignmentId);
     fetchEvaluations(assignmentId);
   }, []);
-
-  const handleClick = (index: number | null) => {
-    if (selectedIndex === index) {
-      setSelectedIndex(null);
-    } else {
-      setSelectedIndex(index);
-    }
-  };
 
   return (
     <div css={root}>
@@ -58,8 +49,6 @@ const AssignmentViewComponent: React.FC<AssignmentViewProps> = ({
                 <GeneralTestGroupView assignmentGroups={assignmentGroups} evaluations={evaluations} />
                 <StudentView
                   evaluations={evaluations}
-                  handleClick={handleClick}
-                  selectedIndex={selectedIndex}
                   assignmentGroups={assignmentGroups}
                 />
               </Grid>

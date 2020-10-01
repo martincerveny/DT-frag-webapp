@@ -13,4 +13,5 @@ export interface Evaluation {
   author: number;
   author_name: string;
   login: string;
+  data: string
 }

@@ -13,4 +13,5 @@ export class EvaluationDto {
   author: number;
   author_name: string;
   login: string;
+  data: string;
 }

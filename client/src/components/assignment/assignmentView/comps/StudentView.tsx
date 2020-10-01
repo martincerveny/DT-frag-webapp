@@ -3,6 +3,7 @@ import React from 'react';
 import styled from '@emotion/styled';
 import { css, jsx } from '@emotion/core';
 import {
+  Box,
   Collapse,
   IconButton,
   Paper,
@@ -12,27 +13,41 @@ import {
   TableContainer,
   TableHead,
   TableRow,
+  Tooltip,
+  Typography,
 } from '@material-ui/core';
 import RadioButtonUncheckedIcon from '@material-ui/icons/RadioButtonUnchecked';
 import FiberManualRecordIcon from '@material-ui/icons/FiberManualRecord';
 import { Evaluation } from '../../../../code/interfaces/evaluation';
 import { removeArrayDuplicatesByProp, sumArrayProps } from '../../../../code/helpers';
 import { AssignmentGroup } from '../../../../code/interfaces/assignmentGroup';
+import { colors } from '../../../../styles/colors';
 
 interface StudentViewProps {
   evaluations: Evaluation[];
   assignmentGroups: AssignmentGroup[];
-  handleClick: (index: number | null) => void;
-  selectedIndex: number | null;
 }
 
-const StudentViewComponent: React.FC<StudentViewProps> = ({
-  evaluations,
-  handleClick,
-  selectedIndex,
-  assignmentGroups,
-}) => {
+const StudentViewComponent: React.FC<StudentViewProps> = ({ evaluations, assignmentGroups }) => {
   const uniqueStudentEvals = removeArrayDuplicatesByProp(evaluations, ['author_name']);
+  const [selectedRowIndex, setSelectedRowIndex] = React.useState<number | null>(null);
+  const [selectedTestIndex, setSelectedTestIndex] = React.useState<number | null>(null);
+  const [testName, setTestName] = React.useState<string>('');
+  const [data, setData] = React.useState<string>('');
+
+  const handleClick = (rowIndex: number | null, testIndex: number | null, data: string, testName: string) => {
+    if (selectedTestIndex === testIndex && selectedRowIndex === rowIndex) {
+      setSelectedRowIndex(null);
+      setSelectedTestIndex(null);
+      setData('');
+      setTestName('');
+    } else {
+      setSelectedRowIndex(rowIndex);
+      setSelectedTestIndex(testIndex);
+      setData(data);
+      setTestName(testName);
+    }
+  };
 
   return (
     <div css={content}>
@@ -51,7 +66,7 @@ const StudentViewComponent: React.FC<StudentViewProps> = ({
             </TableRow>
           </TableHead>
           <TableBody>
-            {uniqueStudentEvals.map((e: Evaluation, index: number) => {
+            {uniqueStudentEvals.map((e: Evaluation, rowIndex: number) => {
               const studentEvals = evaluations.filter((se: Evaluation) => se.author === e.author);
               const maxEvalId = Math.max.apply(
                 Math,
@@ -59,29 +74,35 @@ const StudentViewComponent: React.FC<StudentViewProps> = ({
                   return o.eval_id;
                 }),
               );
-              const maxStudentEval = studentEvals.filter((mse: Evaluation) => mse.eval_id === maxEvalId);
-              const points = sumArrayProps(maxStudentEval, 'points');
+              const currentStudentEval = studentEvals.filter((mse: Evaluation) => mse.eval_id === maxEvalId);
+              const points = sumArrayProps(currentStudentEval, 'points');
 
               return (
-                <React.Fragment key={index}>
+                <React.Fragment key={rowIndex}>
                   <TableRow>
                     <TableCell component="th" scope="row">
                       {e.author_name}
                     </TableCell>
-                    <TableCell align="right">{new Date(maxStudentEval[0].stamp).toLocaleDateString()}</TableCell>
-                    {assignmentGroups.map((ag: AssignmentGroup, index: number) => {
-                      const studentTests = maxStudentEval.filter((mse: Evaluation) => ag.group === mse.group);
+                    <TableCell align="right">{new Date(currentStudentEval[0].stamp).toLocaleDateString()}</TableCell>
+                    {assignmentGroups.map((ag: AssignmentGroup, groupIndex: number) => {
+                      const studentTests = currentStudentEval.filter((mse: Evaluation) => ag.group === mse.group);
                       return (
-                        <TableCell key={index} align="right">
-                          {studentTests.map((test: Evaluation, index: number) => {
+                        <TableCell key={groupIndex} align="right">
+                          {studentTests.map((test: Evaluation, testIndex: number) => {
                             return (
-                              <IconButton aria-label="circle" size="small" key={index}>
-                                {test.passed ? (
-                                  <FiberManualRecordIcon fontSize="small" />
-                                ) : (
-                                  <RadioButtonUncheckedIcon fontSize="small" />
-                                )}
-                              </IconButton>
+                              <Tooltip title={test.name} placement="top" key={testIndex}>
+                                <IconButton
+                                  aria-label="circle"
+                                  size="small"
+                                  onClick={() => handleClick(rowIndex, testIndex, test.data, test.name)}
+                                >
+                                  {test.passed ? (
+                                    <FiberManualRecordIcon fontSize="small" />
+                                  ) : (
+                                    <RadioButtonUncheckedIcon fontSize="small" />
+                                  )}
+                                </IconButton>
+                              </Tooltip>
                             );
                           })}
                         </TableCell>
@@ -89,11 +110,19 @@ const StudentViewComponent: React.FC<StudentViewProps> = ({
                     })}
                     <TableCell align="right">{points}</TableCell>
                   </TableRow>
-                  <Collapse in={index === selectedIndex} timeout="auto" unmountOnExit>
-                    <TableRow>
-                      <div css={collapseWrapper}>Test Info</div>
-                    </TableRow>
-                  </Collapse>
+
+                  <TableRow>
+                    <TableCell css={contentCellWrapper} colSpan={3 + assignmentGroups.length}>
+                      <Collapse in={rowIndex === selectedRowIndex} timeout="auto" unmountOnExit css={collapseWrapper}>
+                        <Box css={contentBoxWrapper}>
+                          <Typography variant="h6" color="primary">
+                            {testName}
+                          </Typography>
+                          <div css={dataWrapper}>{data}</div>
+                        </Box>
+                      </Collapse>
+                    </TableCell>
+                  </TableRow>
                 </React.Fragment>
               );
             })}
@@ -109,10 +138,25 @@ const StyledStudentViewComponent = styled(StudentViewComponent)``;
 export const StudentView = (props: any) => <StyledStudentViewComponent {...props} />;
 
 const collapseWrapper = css`
-  margin: 15px;
+  margin-top: 10px;
   height: 40px;
 `;
 
 const content = css`
   margin: 20px;
+`;
+
+const dataWrapper = css`
+  margin-top: 20px;
+`;
+
+const contentCellWrapper = css`
+  padding-top: 0px;
+  padding-bottom: 0px;
+  border: none;
+`;
+
+const contentBoxWrapper = css`
+  padding: 10px;
+  border: dashed 1px ${colors.gray};
 `;

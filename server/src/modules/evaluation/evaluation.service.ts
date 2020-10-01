@@ -12,7 +12,6 @@ export class EvaluationService {
   ) {}
 
   async findEvalsByAssignment(id: number): Promise<EvaluationDto[]> {
-    // return this.evaluationRepository.find({ assignment_id: id });
     const evals = await this.evaluationRepository
       .createQueryBuilder('eval_out_pts')
       .select([
@@ -20,6 +19,7 @@ export class EvaluationService {
         'submission.author',
         'person.name as author_name',
         'person.login as login',
+        'content.data',
       ])
       .leftJoin(
         'submission',
@@ -27,10 +27,11 @@ export class EvaluationService {
         'submission.id = eval_out_pts.submission_id',
       )
       .leftJoin('person', 'person', 'person.id = submission.author')
+      .leftJoin('content', 'content', 'content.sha = eval_out_pts.content_sha')
       .where('eval_out_pts.assignment_id = :id', { id })
       .getRawMany();
 
-    return evals.map(e => {
+    return evals.map((e: EvaluationDto) => {
       return {
         eval_id: e.eval_id,
         submission_id: e.submission_id,
@@ -46,6 +47,7 @@ export class EvaluationService {
         author: e.author,
         author_name: e.author_name,
         login: e.login.toString(),
+        data: e.data.toString()
       };
     });
   }
