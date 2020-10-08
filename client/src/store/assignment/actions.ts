@@ -31,6 +31,13 @@ export const fetchGroupsByAssignment: ActionCreator<ThunkAction<Promise<void>, S
   };
 };
 
+export const fetchAllAssignmentGroups: ActionCreator<ThunkAction<Promise<void>, State, any, any>> = () => {
+  return async (dispatch: Dispatch<Action>): Promise<void> => {
+    const response = await http.get(`/assignments/groups`);
+    dispatch(setAssignmentGroups({ assignmentGroups: response.data }));
+  };
+};
+
 export const fetchAuthorAssignments: ActionCreator<ThunkAction<Promise<void>, State, any, any>> = () => {
   return async (dispatch: Dispatch<Action>): Promise<void> => {
     const response = await http.get(`/assignments/author`);

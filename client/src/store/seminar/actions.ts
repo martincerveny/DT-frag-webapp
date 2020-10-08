@@ -6,7 +6,7 @@ import { http } from '../../code/http';
 import { Seminar } from '../../code/interfaces/seminar';
 import { Enrollment } from '../../code/interfaces/enrollment';
 import { Attendance } from '../../code/interfaces/attendance';
-import { Activity } from '../../code/interfaces/activity';
+import { ActivityPts } from '../../code/interfaces/activityPts';
 import { LoadingState } from '../../code/loading';
 
 export enum ActionTypes {
@@ -14,7 +14,7 @@ export enum ActionTypes {
   SET_SEMINAR_ENROLLMENTS = '[seminar] SET_SEMINAR_ENROLLMENTS',
   SET_ALL_ENROLLMENTS = '[seminar] SET_ALL_ENROLLMENTS',
   SET_ATTENDANCE = '[seminar] SET_ATTENDANCE',
-  SET_ACTIVITY = '[seminar] SET_ACTIVITY',
+  SET_ACTIVITY_PTS = '[seminar] SET_ACTIVITY_PTS',
   SET_LOADING_STATE = '[seminar] SET_LOADING_STATE',
 }
 
@@ -25,7 +25,7 @@ export const setSeminarEnrollments = action(
 );
 export const setAllEnrollments = action(ActionTypes.SET_ALL_ENROLLMENTS, payload<{ allEnrollments: Enrollment[] }>());
 export const setAttendance = action(ActionTypes.SET_ATTENDANCE, payload<{ attendance: Attendance[] }>());
-export const setActivity = action(ActionTypes.SET_ACTIVITY, payload<{ activity: Activity[] }>());
+export const setActivityPts = action(ActionTypes.SET_ACTIVITY_PTS, payload<{ activityPts: ActivityPts[] }>());
 export const setLoadingState = action(ActionTypes.SET_LOADING_STATE, payload<{ loadingState: LoadingState }>());
 
 export const fetchSeminars: ActionCreator<ThunkAction<Promise<void>, State, any, any>> = (id: number) => {
@@ -55,9 +55,9 @@ export const fetchAttendance: ActionCreator<ThunkAction<Promise<void>, State, an
   };
 };
 
-export const fetchActivity: ActionCreator<ThunkAction<Promise<void>, State, any, any>> = () => {
+export const fetchActivityPts: ActionCreator<ThunkAction<Promise<void>, State, any, any>> = () => {
   return async (dispatch: Dispatch<Action>): Promise<void> => {
     const response = await http.get(`/seminars/activity`);
-    dispatch(setActivity({ activity: response.data }));
+    dispatch(setActivityPts({ activityPts: response.data }));
   };
 };

@@ -5,10 +5,10 @@ import { css, jsx } from '@emotion/core';
 import { Grid, Typography } from '@material-ui/core';
 import { SeminarTable } from './SeminarTable';
 import { Seminar } from '../../../code/interfaces/seminar';
-import { fetchActivity, fetchAttendance, fetchEnrollments, setLoadingState } from '../../../store/seminar/actions';
+import { fetchActivityPts, fetchAttendance, fetchEnrollments, setLoadingState } from '../../../store/seminar/actions';
 import { Enrollment } from '../../../code/interfaces/enrollment';
 import { Attendance } from '../../../code/interfaces/attendance';
-import { Activity } from '../../../code/interfaces/activity';
+import { ActivityPts } from '../../../code/interfaces/activityPts';
 import { LoadingState } from '../../../code/loading';
 import { AssignmentArray } from '../../../code/interfaces/assignmentArray';
 import { Assignment } from '../../../code/interfaces/assignment';
@@ -18,10 +18,10 @@ export interface SeminarContentProps {
   seminarEnrollments: Enrollment[];
   seminars: Seminar[];
   attendance: Attendance[];
-  activity: Activity[];
+  activityPts: ActivityPts[];
   authorAssignments: AssignmentArray | undefined;
   fetchAttendance: typeof fetchAttendance;
-  fetchActivity: typeof fetchActivity;
+  fetchActivityPts: typeof fetchActivityPts;
   fetchEnrollments: typeof fetchEnrollments;
   loadingState: LoadingState;
   setLoadingState: typeof setLoadingState;
@@ -34,8 +34,8 @@ const SeminarContentComponent: React.FC<SeminarContentProps> = ({
   fetchEnrollments,
   attendance,
   fetchAttendance,
-  activity,
-  fetchActivity,
+  activityPts,
+  fetchActivityPts,
   authorAssignments,
   loadingState,
   setLoadingState,
@@ -45,7 +45,7 @@ const SeminarContentComponent: React.FC<SeminarContentProps> = ({
     const seminarIds = Array.prototype.map.call(seminars, s => s.id).toString();
     fetchEnrollments(seminarIds);
     fetchAttendance(seminarIds);
-    fetchActivity();
+    fetchActivityPts();
   }, [seminars]);
 
   return (
@@ -63,7 +63,7 @@ const SeminarContentComponent: React.FC<SeminarContentProps> = ({
               seminars={seminars}
               attendance={attendance}
               currentSeminar={s.id}
-              activity={activity}
+              activityPts={activityPts}
               authorAssignments={authorAssignments}
               setLoadingState={setLoadingState}
               loadingState={loadingState}

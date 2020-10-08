@@ -3,12 +3,14 @@ import * as general from './general/reducers';
 import * as assignment from './assignment/reducers';
 import * as evaluation from './evaluation/reducers';
 import * as seminar from './seminar/reducers';
+import * as student from './student/reducers';
 
 export interface State {
   general: general.State;
   assignment: assignment.State;
   evaluation: evaluation.State;
   seminar: seminar.State;
+  student: student.State;
 }
 
 export const initialState: State = {
@@ -16,6 +18,7 @@ export const initialState: State = {
   assignment: assignment.initialState,
   evaluation: evaluation.initialState,
   seminar: seminar.initialState,
+  student: student.initialState,
 };
 
 export const reducer = combineReducers<State>({
@@ -23,4 +26,5 @@ export const reducer = combineReducers<State>({
   assignment: assignment.assignmentReducer,
   evaluation: evaluation.evaluationReducer,
   seminar: seminar.seminarReducer,
+  student: student.studentReducer,
 });

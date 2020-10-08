@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { DispatchProps, StateProps } from './SeminarDashboard';
 import { SeminarDashboard } from './SeminarDashboard';
 import {
-  fetchActivity,
+  fetchActivityPts,
   fetchAttendance,
   fetchEnrollments,
   fetchSeminars,
@@ -17,7 +17,7 @@ const mapStateToProps = (state: State): StateProps => ({
   seminarEnrollments: state.seminar.seminarEnrollments,
   loggedUser: state.general.loggedUser,
   attendance: state.seminar.attendance,
-  activity: state.seminar.activity,
+  activityPts: state.seminar.activityPts,
   authorAssignments: state.assignment.authorAssignments,
   loadingState: state.seminar.loadingState,
   assignments: state.assignment.assignments,
@@ -29,7 +29,7 @@ const mapDispatchToProps = (dispatch: Dispatch): DispatchProps => ({
       fetchSeminars,
       fetchEnrollments,
       fetchAttendance,
-      fetchActivity,
+      fetchActivityPts,
       fetchAuthorAssignments,
       setLoadingState,
       fetchAssignments,

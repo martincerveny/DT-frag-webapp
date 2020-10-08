@@ -1,10 +1,20 @@
-import { Column, PrimaryColumn, ViewEntity } from 'typeorm';
+import { Column, Entity, PrimaryColumn } from 'typeorm';
 
-@ViewEntity({ name: 'activity_pts' })
+@Entity()
 export class Activity {
   @PrimaryColumn()
   student: number;
 
   @Column()
   points: number;
+
+  @Column({
+    type: 'timestamp',
+  })
+  stamp: string;
+
+  @Column({
+    type: 'text',
+  })
+  note: string;
 }

@@ -17,3 +17,10 @@ export const fetchEvaluations: ActionCreator<ThunkAction<Promise<void>, State, a
     dispatch(setEvaluations({ evaluations: response.data }));
   };
 };
+
+export const fetchEvaluationsByStudent: ActionCreator<ThunkAction<Promise<void>, State, any, any>> = (id: number) => {
+  return async (dispatch: Dispatch<Action>): Promise<void> => {
+    const response = await http.get(`/evals/${id}/student`);
+    dispatch(setEvaluations({ evaluations: response.data }));
+  };
+};

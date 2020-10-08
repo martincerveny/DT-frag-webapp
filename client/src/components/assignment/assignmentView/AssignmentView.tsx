@@ -5,7 +5,7 @@ import { css, jsx } from '@emotion/core';
 import { Container, Grid, Paper, Typography } from '@material-ui/core';
 import { useParams } from 'react-router-dom';
 import { GeneralTestGroupView } from './comps/GeneralTestGroupView';
-import { StudentView } from './comps/StudentView';
+import { StudentTableView } from './comps/StudentTableView';
 import { AssignmentGroup } from '../../../code/interfaces/assignmentGroup';
 import { fetchGroupsByAssignment } from '../../../store/assignment/actions';
 import { Evaluation } from '../../../code/interfaces/evaluation';
@@ -47,10 +47,7 @@ const AssignmentViewComponent: React.FC<AssignmentViewProps> = ({
                   Assignment: {assignmentId}
                 </Typography>
                 <GeneralTestGroupView assignmentGroups={assignmentGroups} evaluations={evaluations} />
-                <StudentView
-                  evaluations={evaluations}
-                  assignmentGroups={assignmentGroups}
-                />
+                <StudentTableView evaluations={evaluations} assignmentGroups={assignmentGroups} />
               </Grid>
             </Paper>
           </Grid>

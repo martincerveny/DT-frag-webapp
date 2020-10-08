@@ -23,19 +23,19 @@ import { removeArrayDuplicatesByProp, sumArrayProps } from '../../../../code/hel
 import { AssignmentGroup } from '../../../../code/interfaces/assignmentGroup';
 import { colors } from '../../../../styles/colors';
 
-interface StudentViewProps {
+interface StudentTableViewProps {
   evaluations: Evaluation[];
   assignmentGroups: AssignmentGroup[];
 }
 
-const StudentViewComponent: React.FC<StudentViewProps> = ({ evaluations, assignmentGroups }) => {
+const StudentTableViewComponent: React.FC<StudentTableViewProps> = ({ evaluations, assignmentGroups }) => {
   const uniqueStudentEvals = removeArrayDuplicatesByProp(evaluations, ['author_name']);
   const [selectedRowIndex, setSelectedRowIndex] = React.useState<number | null>(null);
-  const [selectedTestIndex, setSelectedTestIndex] = React.useState<number | null>(null);
+  const [selectedTestIndex, setSelectedTestIndex] = React.useState<string | null>(null);
   const [testName, setTestName] = React.useState<string>('');
   const [data, setData] = React.useState<string>('');
 
-  const handleClick = (rowIndex: number | null, testIndex: number | null, data: string, testName: string) => {
+  const handleClick = (rowIndex: number | null, testIndex: string | null, data: string, testName: string) => {
     if (selectedTestIndex === testIndex && selectedRowIndex === rowIndex) {
       setSelectedRowIndex(null);
       setSelectedTestIndex(null);
@@ -56,13 +56,13 @@ const StudentViewComponent: React.FC<StudentViewProps> = ({ evaluations, assignm
           <TableHead>
             <TableRow>
               <TableCell>Name</TableCell>
-              <TableCell align="right">Date</TableCell>
+              <TableCell align="left">Date</TableCell>
               {assignmentGroups.map((ag: AssignmentGroup, index: number) => (
-                <TableCell key={index} align="right">
+                <TableCell key={index} align="left">
                   {ag.group}
                 </TableCell>
               ))}
-              <TableCell align="right">Points</TableCell>
+              <TableCell align="left">Points</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
@@ -83,18 +83,25 @@ const StudentViewComponent: React.FC<StudentViewProps> = ({ evaluations, assignm
                     <TableCell component="th" scope="row">
                       {e.author_name}
                     </TableCell>
-                    <TableCell align="right">{new Date(currentStudentEval[0].stamp).toLocaleDateString()}</TableCell>
+                    <TableCell align="left">{new Date(currentStudentEval[0].stamp).toLocaleDateString()}</TableCell>
                     {assignmentGroups.map((ag: AssignmentGroup, groupIndex: number) => {
                       const studentTests = currentStudentEval.filter((mse: Evaluation) => ag.group === mse.group);
                       return (
-                        <TableCell key={groupIndex} align="right">
+                        <TableCell key={groupIndex} align="left">
                           {studentTests.map((test: Evaluation, testIndex: number) => {
                             return (
                               <Tooltip title={test.name} placement="top" key={testIndex}>
                                 <IconButton
                                   aria-label="circle"
                                   size="small"
-                                  onClick={() => handleClick(rowIndex, testIndex, test.data, test.name)}
+                                  onClick={() =>
+                                    handleClick(
+                                      rowIndex,
+                                      groupIndex.toString() + testIndex.toString(),
+                                      test.data,
+                                      test.name,
+                                    )
+                                  }
                                 >
                                   {test.passed ? (
                                     <FiberManualRecordIcon fontSize="small" />
@@ -108,7 +115,7 @@ const StudentViewComponent: React.FC<StudentViewProps> = ({ evaluations, assignm
                         </TableCell>
                       );
                     })}
-                    <TableCell align="right">{points}</TableCell>
+                    <TableCell align="left">{points}</TableCell>
                   </TableRow>
 
                   <TableRow>
@@ -133,9 +140,9 @@ const StudentViewComponent: React.FC<StudentViewProps> = ({ evaluations, assignm
   );
 };
 
-const StyledStudentViewComponent = styled(StudentViewComponent)``;
+const StyledStudentTableViewComponent = styled(StudentTableViewComponent)``;
 
-export const StudentView = (props: any) => <StyledStudentViewComponent {...props} />;
+export const StudentTableView = (props: any) => <StyledStudentTableViewComponent {...props} />;
 
 const collapseWrapper = css`
   margin-top: 10px;

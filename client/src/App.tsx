@@ -13,6 +13,7 @@ import { performUserLogin } from './store/general/actions';
 import { AssignmentDashboardContainer } from './components/assignment/assignmentDashboard/AssignmentDashboardContainer';
 import { AssignmentViewContainer } from './components/assignment/assignmentView/AssignmentViewContainer';
 import { SeminarDashboardContainer } from './components/seminar/SeminarDashboardContainer';
+import { StudentViewContainer } from './components/student/StudentViewContainer';
 
 export interface StateProps {
   loggedUser: undefined | number;
@@ -65,7 +66,10 @@ const App: React.FC<AppProps> = ({ loggedUser, login }) => {
           <Route path={Routes.Seminars}>
             <SeminarDashboardContainer />
           </Route>
-          <Route path="/">
+          <Route path={Routes.StudentView}>
+            <StudentViewContainer />
+          </Route>
+          <Route path={Routes.Home}>
             <AssignmentDashboardContainer />
           </Route>
         </Switch>

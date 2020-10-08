@@ -8,18 +8,21 @@ import { ProgressBar } from '../../shared/ProgressBar';
 import { Enrollment } from '../../../code/interfaces/enrollment';
 import { Attendance } from '../../../code/interfaces/attendance';
 import { getDateString } from '../../../code/helpers';
-import { Activity } from '../../../code/interfaces/activity';
+import { ActivityPts } from '../../../code/interfaces/activityPts';
 import { setLoadingState } from '../../../store/seminar/actions';
 import { LoadingState } from '../../../code/loading';
 import { AssignmentArray } from '../../../code/interfaces/assignmentArray';
 import { AuthorAssignment } from '../../../code/interfaces/authorAssignment';
 import { Assignment } from '../../../code/interfaces/assignment';
+import { colors } from '../../../styles/colors';
+import { Routes } from '../../../code/routes';
+import { Link } from 'react-router-dom';
 
 interface SeminarTableProps {
   seminarEnrollments: Enrollment[];
   currentSeminar: number;
   attendance: Attendance[];
-  activity: Activity[];
+  activityPts: ActivityPts[];
   authorAssignments: AssignmentArray | undefined;
   setLoadingState: typeof setLoadingState;
   loadingState: LoadingState;
@@ -30,13 +33,13 @@ const SeminarTableComponent: React.FC<SeminarTableProps> = ({
   seminarEnrollments,
   currentSeminar,
   attendance,
-  activity,
+  activityPts,
   authorAssignments,
   setLoadingState,
   loadingState,
   assignments,
 }) => {
-  let studentActivity: Activity[] | null = null;
+  let studentActivity: ActivityPts[] | null = null;
   let studentAssignmentsPassed: AuthorAssignment[] | null = null;
   let studentAssignmentsNotPassed: AuthorAssignment[] | null = null;
   let notSubmittedAssignments: string[] | null = null;
@@ -61,9 +64,9 @@ const SeminarTableComponent: React.FC<SeminarTableProps> = ({
                     return a['student'] === e.student && a['seminar_id'] === e.seminar_id;
                   });
 
-                  if (activity.length > 0) {
-                    studentActivity = activity.filter((activity: Activity) => {
-                      return activity['student'] === e.student;
+                  if (activityPts.length > 0) {
+                    studentActivity = activityPts.filter((activityPts: ActivityPts) => {
+                      return activityPts['student'] === e.student;
                     });
                   }
 
@@ -95,7 +98,9 @@ const SeminarTableComponent: React.FC<SeminarTableProps> = ({
                   return (
                     <TableRow key={index}>
                       <TableCell component="th" scope="row">
-                        {e.name}
+                        <Link to={`${Routes.Student}/${e.student}`} css={linkName}>
+                          {e.name}
+                        </Link>
                       </TableCell>
                       <TableCell align="right">
                         {studentAssignmentsPassed &&
@@ -131,7 +136,7 @@ const SeminarTableComponent: React.FC<SeminarTableProps> = ({
                         ))}
                       </TableCell>
                       <TableCell align="right">
-                        {studentActivity && activity.length > 0 && (
+                        {studentActivity && activityPts.length > 0 && (
                           <ProgressBar points={studentActivity[0].points} maxPoints={studentActivity[0].maxPoints} />
                         )}
                       </TableCell>
@@ -157,4 +162,13 @@ const iconMargin = css`
 
 const content = css`
   margin: 20px;
+`;
+
+const linkName = css`
+  color: ${colors.black};
+  text-decoration: none;
+  &:hover {
+    text-decoration: underline !important;
+    color: ${colors.blue} !important;
+  }
 `;

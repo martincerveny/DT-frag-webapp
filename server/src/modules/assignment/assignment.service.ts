@@ -40,6 +40,10 @@ export class AssignmentService {
     return this.assignmentGroupRepository.find({ assignment_id: id });
   }
 
+  findAllAssignmentGroups(): Promise<AssignmentGroup[]> {
+    return this.assignmentGroupRepository.find();
+  }
+
   async findAuthorAssignments(): Promise<AssignmentArrayDto> {
     const assignmentsPassed = await this.assignmentPassedRepository
       .createQueryBuilder('assignmentPassed')

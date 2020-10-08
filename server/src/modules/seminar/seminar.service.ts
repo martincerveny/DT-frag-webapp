@@ -4,9 +4,11 @@ import { Seminar } from './entities/seminar.entity';
 import { Repository } from 'typeorm';
 import { Enrollment } from './entities/enrollment.entity';
 import { Attendance } from './entities/attendance.entity';
-import { Activity } from './entities/activity.entity';
+import { ActivityView } from './entities/activityView.entity';
 import { ActivityMax } from './entities/activityMax.entity';
-import { ActivityDto } from './dtos/activityDto';
+import { ActivityViewDto } from './dtos/activityViewDto';
+import { Activity } from './entities/activity.entity';
+import { StudentAttendanceDto } from './dtos/studentAttendanceDto';
 
 @Injectable()
 export class SeminarService {
@@ -17,6 +19,8 @@ export class SeminarService {
     private enrollmentRepository: Repository<Enrollment>,
     @InjectRepository(Attendance)
     private attendanceRepository: Repository<Attendance>,
+    @InjectRepository(ActivityView)
+    private activityViewRepository: Repository<ActivityView>,
     @InjectRepository(Activity)
     private activityRepository: Repository<Activity>,
     @InjectRepository(ActivityMax)
@@ -80,19 +84,47 @@ export class SeminarService {
       .getRawMany();
   }
 
-  async findActivity(): Promise<ActivityDto[]> {
+  findAttendanceByStudent(id: number): Promise<StudentAttendanceDto[]> {
+    return this.attendanceRepository
+      .createQueryBuilder('attendance')
+      .select([
+        'attendance.student as student',
+        'attendance.seminar_id as seminar_id',
+        'attendance.date as date',
+        'attendance.stamp as stamp',
+        'seminar.name as seminar_name',
+      ])
+      .leftJoin('seminar', 'seminar', 'seminar.id = attendance.seminar_id')
+      .where('attendance.student = :id', { id })
+      .getRawMany();
+  }
+
+  async findActivityPts(): Promise<ActivityViewDto[]> {
     const activityMaxPoints = await this.activityMaxRepository.find();
 
-    const studentPoints = await this.activityRepository
-      .createQueryBuilder('activity')
+    const studentPoints = await this.activityViewRepository
+      .createQueryBuilder('activityView')
       .getMany();
 
-    return studentPoints.map((s: Activity) => {
+    return studentPoints.map((s: ActivityView) => {
       return {
         student: s.student,
         points: s.points,
         maxPoints: activityMaxPoints[0].points,
       };
     });
+  }
+
+  findActivityByStudent(id: number): Promise<Activity[]> {
+    return this.activityRepository
+      .createQueryBuilder('activity')
+      .select([
+        'activity.student as student',
+        'activity.points as points',
+        'activity.stamp as stamp',
+        'activity.note as note',
+      ])
+      .where('activity.student = :id', { id })
+      .getRawMany();
   }
 }

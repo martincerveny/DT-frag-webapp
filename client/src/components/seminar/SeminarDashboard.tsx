@@ -5,7 +5,7 @@ import { css, jsx } from '@emotion/core';
 import { Container, Grid, Paper, Typography } from '@material-ui/core';
 import { Seminar } from '../../code/interfaces/seminar';
 import {
-  fetchActivity,
+  fetchActivityPts,
   fetchAttendance,
   fetchEnrollments,
   fetchSeminars,
@@ -14,7 +14,7 @@ import {
 import { Enrollment } from '../../code/interfaces/enrollment';
 import { Attendance } from '../../code/interfaces/attendance';
 import { SeminarContent } from './comps/SeminarContent';
-import { Activity } from '../../code/interfaces/activity';
+import { ActivityPts } from '../../code/interfaces/activityPts';
 import { LoadingState } from '../../code/loading';
 import { fetchAssignments, fetchAuthorAssignments } from '../../store/assignment/actions';
 import { AssignmentArray } from '../../code/interfaces/assignmentArray';
@@ -24,7 +24,7 @@ export interface StateProps {
   seminars: Seminar[];
   seminarEnrollments: Enrollment[];
   attendance: Attendance[];
-  activity: Activity[];
+  activityPts: ActivityPts[];
   authorAssignments: AssignmentArray | undefined;
   loggedUser: undefined | number;
   loadingState: LoadingState;
@@ -35,7 +35,7 @@ export interface DispatchProps {
   fetchSeminars: typeof fetchSeminars;
   fetchEnrollments: typeof fetchEnrollments;
   fetchAttendance: typeof fetchAttendance;
-  fetchActivity: typeof fetchActivity;
+  fetchActivityPts: typeof fetchActivityPts;
   fetchAuthorAssignments: typeof fetchAuthorAssignments;
   setLoadingState: typeof setLoadingState;
   fetchAssignments: typeof fetchAssignments;
@@ -51,8 +51,8 @@ const SeminarDashboardComponent: React.FC<SeminarDashboardProps> = ({
   fetchEnrollments,
   fetchAttendance,
   attendance,
-  activity,
-  fetchActivity,
+  activityPts,
+  fetchActivityPts,
   authorAssignments,
   fetchAuthorAssignments,
   loadingState,
@@ -83,8 +83,8 @@ const SeminarDashboardComponent: React.FC<SeminarDashboardProps> = ({
                     fetchEnrollments={fetchEnrollments}
                     attendance={attendance}
                     fetchAttendance={fetchAttendance}
-                    activity={activity}
-                    fetchActivity={fetchActivity}
+                    activityPts={activityPts}
+                    fetchActivityPts={fetchActivityPts}
                     authorAssignments={authorAssignments}
                     loadingState={loadingState}
                     setLoadingState={setLoadingState}

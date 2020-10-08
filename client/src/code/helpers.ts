@@ -1,6 +1,4 @@
-import { Evaluation } from './interfaces/evaluation';
-
-export const removeArrayDuplicatesByProp = (arr: Array<any>, keyProps: Array<string>): Evaluation[] => {
+export const removeArrayDuplicatesByProp = (arr: Array<any>, keyProps: Array<string>): any => {
   return Object.values(
     arr.reduce((uniqueMap, entry) => {
       const key = keyProps.map(k => entry[k]).join('|');

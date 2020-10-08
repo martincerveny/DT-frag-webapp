@@ -2,7 +2,6 @@ import { Controller, Get, Param } from '@nestjs/common';
 import { AssignmentService } from './assignment.service';
 import { Assignment } from './entities/assignment.entity';
 import { AssignmentGroup } from './entities/assignmentGroup.entity';
-import { AssignmentPassed } from './entities/assignmentPassed.entity';
 import { AssignmentArrayDto } from './dtos/assignmentArrayDto';
 
 @Controller('api/assignments')
@@ -17,6 +16,11 @@ export class AssignmentController {
   @Get('/:id/groups')
   findGroupsByAssignment(@Param('id') id): Promise<AssignmentGroup[]> {
     return this.assignmentService.findGroupsByAssignment(id);
+  }
+
+  @Get('/groups')
+  findAllAssignmentGroups(): Promise<AssignmentGroup[]> {
+    return this.assignmentService.findAllAssignmentGroups();
   }
 
   @Get('/author')

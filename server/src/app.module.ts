@@ -11,9 +11,10 @@ import { Seminar } from './modules/seminar/entities/seminar.entity';
 import { SeminarModule } from './modules/seminar/seminar.module';
 import { Enrollment } from './modules/seminar/entities/enrollment.entity';
 import { Attendance } from './modules/seminar/entities/attendance.entity';
-import { Activity } from './modules/seminar/entities/activity.entity';
+import { ActivityView } from './modules/seminar/entities/activityView.entity';
 import { ActivityMax } from './modules/seminar/entities/activityMax.entity';
 import { AssignmentPassed } from './modules/assignment/entities/assignmentPassed.entity';
+import { Activity } from './modules/seminar/entities/activity.entity';
 
 const dbOptions: PostgresConnectionOptions = {
   type: 'postgres',
@@ -30,9 +31,10 @@ const dbOptions: PostgresConnectionOptions = {
     Seminar,
     Enrollment,
     Attendance,
-    Activity,
+    ActivityView,
     ActivityMax,
     AssignmentPassed,
+    Activity,
   ],
 };
 
