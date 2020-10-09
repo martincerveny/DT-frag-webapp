@@ -66,7 +66,7 @@ const StudentTableViewComponent: React.FC<StudentTableViewProps> = ({ evaluation
             </TableRow>
           </TableHead>
           <TableBody>
-            {uniqueStudentEvals.map((e: Evaluation, rowIndex: number) => {
+            {uniqueStudentEvals.slice(0,15).map((e: Evaluation, rowIndex: number) => {
               const studentEvals = evaluations.filter((se: Evaluation) => se.author === e.author);
               const maxEvalId = Math.max.apply(
                 Math,
@@ -150,7 +150,7 @@ const collapseWrapper = css`
 `;
 
 const content = css`
-  margin: 20px;
+  margin: 50px 20px;
 `;
 
 const dataWrapper = css`

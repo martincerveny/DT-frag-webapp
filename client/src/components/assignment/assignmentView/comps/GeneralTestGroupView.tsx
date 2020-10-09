@@ -77,7 +77,7 @@ const StyledGeneralTestGroupViewComponent = styled(GeneralTestGroupViewComponent
 export const GeneralTestGroupView = (props: any) => <StyledGeneralTestGroupViewComponent {...props} />;
 
 const content = css`
-  margin: 10px;
+  margin: 50px 10px;
 `;
 
 const buttonGroupWrapper = css`

@@ -2,7 +2,7 @@
 import React, { useEffect } from 'react';
 import styled from '@emotion/styled';
 import { css, jsx } from '@emotion/core';
-import { Container, Grid, Paper, Typography } from '@material-ui/core';
+import { Button, Container, Grid, Paper, Typography } from '@material-ui/core';
 import { useParams } from 'react-router-dom';
 import { GeneralTestGroupView } from './comps/GeneralTestGroupView';
 import { StudentTableView } from './comps/StudentTableView';
@@ -10,6 +10,11 @@ import { AssignmentGroup } from '../../../code/interfaces/assignmentGroup';
 import { fetchGroupsByAssignment } from '../../../store/assignment/actions';
 import { Evaluation } from '../../../code/interfaces/evaluation';
 import { fetchEvaluations } from '../../../store/evaluation/actions';
+import { StudentMenu } from '../../../code/studentMenu';
+import { AssignmentTable } from '../../student/comps/AssignmentTable';
+import { ActivityList } from '../../student/comps/ActivityList';
+import { AttendanceDetails } from '../../student/comps/AttendanceDetails';
+import { AssignmentViewMenu } from '../../../code/assignmentViewMenu';
 
 export interface StateProps {
   assignmentGroups: AssignmentGroup[];
@@ -30,11 +35,49 @@ const AssignmentViewComponent: React.FC<AssignmentViewProps> = ({
   evaluations,
 }) => {
   const { assignmentId } = useParams();
+  const [selectedMenuItem, setSelectedMenuItem] = React.useState<AssignmentViewMenu>(AssignmentViewMenu.Stats);
+
+  const handleMenuClick = (menuItem: AssignmentViewMenu) => {
+    setSelectedMenuItem(menuItem);
+  };
 
   useEffect(() => {
     fetchGroupsByAssignment(assignmentId);
     fetchEvaluations(assignmentId);
   }, []);
+
+  const renderHorizontalMenu = () => {
+    return (
+      <Grid container direction="row">
+        <Button
+          variant="contained"
+          color={selectedMenuItem === AssignmentViewMenu.Stats ? 'primary' : 'default'}
+          disableElevation
+          css={menuButton}
+          onClick={() => handleMenuClick(AssignmentViewMenu.Stats)}
+        >
+          Stats
+        </Button>
+        <Button
+          variant="contained"
+          color={selectedMenuItem === AssignmentViewMenu.Students ? 'primary' : 'default'}
+          disableElevation
+          css={menuButton}
+          onClick={() => handleMenuClick(AssignmentViewMenu.Students)}
+        >
+          Students
+        </Button>
+      </Grid>
+    );
+  };
+
+  const renderDataComponent = () => {
+    if (selectedMenuItem === AssignmentViewMenu.Stats) {
+      return <GeneralTestGroupView assignmentGroups={assignmentGroups} evaluations={evaluations} />;
+    } else if (selectedMenuItem === AssignmentViewMenu.Students) {
+      return <StudentTableView evaluations={evaluations} assignmentGroups={assignmentGroups} />;
+    }
+  };
 
   return (
     <div css={root}>
@@ -46,8 +89,8 @@ const AssignmentViewComponent: React.FC<AssignmentViewProps> = ({
                 <Typography component="h2" variant="h6" color="primary" gutterBottom css={heading}>
                   Assignment: {assignmentId}
                 </Typography>
-                <GeneralTestGroupView assignmentGroups={assignmentGroups} evaluations={evaluations} />
-                <StudentTableView evaluations={evaluations} assignmentGroups={assignmentGroups} />
+                {renderHorizontalMenu()}
+                {renderDataComponent()}
               </Grid>
             </Paper>
           </Grid>
@@ -80,4 +123,8 @@ const paper = css`
 
 const heading = css`
   margin: 20px;
+`;
+
+const menuButton = css`
+  margin-left: 20px;
 `;
