@@ -4,4 +4,5 @@ export const colors = {
   white: '#FFF',
   green: '#017718',
   blue: '#3f51b5',
+  lightPurple: '#8884d8',
 };

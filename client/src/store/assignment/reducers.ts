@@ -1,20 +1,23 @@
 import { on } from 'ts-action-immer';
 import { reducer } from 'ts-action';
-import { setAssignmentGroups, setAssignments, setAuthorAssignments } from './actions';
+import { setAssignmentGroups, setAssignments, setAuthorAssignments, setSubmissionCountPerHour } from './actions';
 import { Assignment } from '../../code/interfaces/assignment';
 import { AssignmentGroup } from '../../code/interfaces/assignmentGroup';
 import { AssignmentArray } from '../../code/interfaces/assignmentArray';
+import { SubmissionPerHourCountDto } from '../../../../server/src/modules/assignment/dtos/submissionPerHourCountDto';
 
 export interface State {
   assignments: Assignment[];
   assignmentGroups: AssignmentGroup[];
   authorAssignments: AssignmentArray | undefined;
+  submissionCountPerHour: SubmissionPerHourCountDto[];
 }
 
 export const initialState: State = {
   assignments: [],
   assignmentGroups: [],
   authorAssignments: undefined,
+  submissionCountPerHour: [],
 };
 
 export const assignmentReducer = reducer<State>(
@@ -27,5 +30,8 @@ export const assignmentReducer = reducer<State>(
   }),
   on(setAuthorAssignments, (state: State, { payload }) => {
     state.authorAssignments = payload.authorAssignments;
+  }),
+  on(setSubmissionCountPerHour, (state: State, { payload }) => {
+    state.submissionCountPerHour = payload.submissionCountPerHour;
   }),
 );

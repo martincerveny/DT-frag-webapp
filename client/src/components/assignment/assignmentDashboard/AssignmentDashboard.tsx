@@ -3,24 +3,32 @@ import React, { useEffect } from 'react';
 import styled from '@emotion/styled';
 import { css, jsx } from '@emotion/core';
 import { Container, Grid, Paper, Typography } from '@material-ui/core';
-import { LineChart, Line, CartesianGrid, XAxis, YAxis } from 'recharts';
+import { LineChart, Line, CartesianGrid, XAxis, YAxis, Tooltip, Legend, Bar, BarChart } from 'recharts';
 import { Assignment } from '../../../code/interfaces/assignment';
-import { fetchAssignments, fetchAuthorAssignments } from '../../../store/assignment/actions';
+import {
+  fetchAssignments,
+  fetchAuthorAssignments,
+  fetchSubmissionCountPerHour,
+} from '../../../store/assignment/actions';
 import { AssignmentList } from './comps/AssignmentList';
 import { AssignmentArray } from '../../../code/interfaces/assignmentArray';
 import { Enrollment } from '../../../code/interfaces/enrollment';
 import { fetchEnrollments } from '../../../store/seminar/actions';
+import { colors } from '../../../styles/colors';
+import { SubmissionCountPerHour } from '../../../code/interfaces/submissionCountPerHour';
 
 export interface StateProps {
   assignments: Assignment[];
   authorAssignments: AssignmentArray | undefined;
   allEnrollments: Enrollment[];
+  submissionCountPerHour: SubmissionCountPerHour[];
 }
 
 export interface DispatchProps {
   fetchAssignments: typeof fetchAssignments;
   fetchAuthorAssignments: typeof fetchAuthorAssignments;
   fetchEnrollments: typeof fetchEnrollments;
+  fetchSubmissionCountPerHour: typeof fetchSubmissionCountPerHour;
 }
 
 type AssignmentDashboardProps = DispatchProps & StateProps;
@@ -32,31 +40,44 @@ const AssignmentDashboardComponent: React.FC<AssignmentDashboardProps> = ({
   fetchAuthorAssignments,
   allEnrollments,
   fetchEnrollments,
+  submissionCountPerHour,
+  fetchSubmissionCountPerHour,
 }) => {
   useEffect(() => {
     fetchAssignments();
     fetchAuthorAssignments();
     fetchEnrollments();
+    fetchSubmissionCountPerHour();
   }, []);
 
   const exampleData = [
-    { name: 'Page A', uv: 400, pv: 2400, amt: 2400 },
+    { name: 'Page A', uv: 200 },
     {
       name: 'Page B',
-      uv: 900,
-      pv: 3400,
-      amt: 500,
+      uv: 1900,
     },
-    { name: 'Page C', uv: 100, pv: 2200, amt: 1400 },
+    { name: 'Page C', uv: 100 },
+    { name: 'Page D', uv: 1200 },
+    { name: 'Page D', uv: 50 },
   ];
 
   const renderLineChart = (
     <LineChart width={500} height={300} data={exampleData}>
-      <Line type="monotone" dataKey="uv" stroke="#8884d8" />
+      <Line type="monotone" dataKey="uv" stroke={colors.lightPurple} />
       <CartesianGrid stroke="#ccc" />
       <XAxis dataKey="name" />
       <YAxis />
     </LineChart>
+  );
+
+  const renderBarChart = (
+    <BarChart width={500} height={300} data={submissionCountPerHour}>
+      <CartesianGrid strokeDasharray="3 3" />
+      <XAxis name="Hour of the day" dataKey="hour" />
+      <YAxis />
+      <Tooltip />
+      <Bar name="Submission count" dataKey="submission_count" fill={colors.lightPurple} />
+    </BarChart>
   );
 
   return (
@@ -95,9 +116,9 @@ const AssignmentDashboardComponent: React.FC<AssignmentDashboardProps> = ({
             <Paper css={paper}>
               <Grid container direction="column">
                 <Typography component="h2" variant="h6" color="primary" gutterBottom css={heading}>
-                  Statistics 2
+                  All submissions per hour of the day
                 </Typography>
-                <div css={content}>{renderLineChart}</div>
+                <div css={content}>{renderBarChart}</div>
               </Grid>
             </Paper>
           </Grid>

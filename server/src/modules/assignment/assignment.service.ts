@@ -5,6 +5,8 @@ import { Repository } from 'typeorm';
 import { AssignmentGroup } from './entities/assignmentGroup.entity';
 import { AssignmentPassed } from './entities/assignmentPassed.entity';
 import { AssignmentArrayDto } from './dtos/assignmentArrayDto';
+import { Submission } from './entities/submission.entity';
+import { SubmissionPerHourCountDto } from './dtos/submissionPerHourCountDto';
 
 @Injectable()
 export class AssignmentService {
@@ -15,6 +17,8 @@ export class AssignmentService {
     private assignmentGroupRepository: Repository<AssignmentGroup>,
     @InjectRepository(AssignmentPassed)
     private assignmentPassedRepository: Repository<AssignmentPassed>,
+    @InjectRepository(Submission)
+    private submissionRepository: Repository<Submission>,
   ) {}
 
   findAll(): Promise<Assignment[]> {
@@ -79,5 +83,20 @@ export class AssignmentService {
       assignmentsPassed: assignmentsPassed,
       assignmentsNotPassed: assignmentNotPassed,
     };
+  }
+
+  findSubmissionCountPerHour(): Promise<SubmissionPerHourCountDto[]> {
+    return this.submissionRepository
+      .createQueryBuilder('submission')
+      .select([
+        "DATE_PART('hour',stamp) as hour",
+        'COUNT(*) as submission_count',
+      ])
+      .where(
+        'submission.assignment_id IN (SELECT assignment_id FROM assignment_now)',
+      )
+      .groupBy("DATE_PART('hour',stamp)")
+      .orderBy('hour', 'ASC')
+      .getRawMany();
   }
 }

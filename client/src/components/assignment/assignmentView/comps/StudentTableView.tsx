@@ -12,6 +12,7 @@ import {
   TableCell,
   TableContainer,
   TableHead,
+  TablePagination,
   TableRow,
   Tooltip,
   Typography,
@@ -34,6 +35,21 @@ const StudentTableViewComponent: React.FC<StudentTableViewProps> = ({ evaluation
   const [selectedTestIndex, setSelectedTestIndex] = React.useState<string | null>(null);
   const [testName, setTestName] = React.useState<string>('');
   const [data, setData] = React.useState<string>('');
+  const [page, setPage] = React.useState<number>(0);
+  const [rowsPerPage, setRowsPerPage] = React.useState<number>(10);
+
+  const handleChangePage = (event: any, newPage: number) => {
+    setPage(newPage);
+    setSelectedRowIndex(null);
+    setSelectedTestIndex(null);
+    setData('');
+    setTestName('');
+  };
+
+  const handleChangeRowsPerPage = (event: any) => {
+    setRowsPerPage(+event.target.value);
+    setPage(0);
+  };
 
   const handleClick = (rowIndex: number | null, testIndex: string | null, data: string, testName: string) => {
     if (selectedTestIndex === testIndex && selectedRowIndex === rowIndex) {
@@ -66,76 +82,87 @@ const StudentTableViewComponent: React.FC<StudentTableViewProps> = ({ evaluation
             </TableRow>
           </TableHead>
           <TableBody>
-            {uniqueStudentEvals.slice(0,15).map((e: Evaluation, rowIndex: number) => {
-              const studentEvals = evaluations.filter((se: Evaluation) => se.author === e.author);
-              const maxEvalId = Math.max.apply(
-                Math,
-                studentEvals.map(function(o) {
-                  return o.eval_id;
-                }),
-              );
-              const currentStudentEval = studentEvals.filter((mse: Evaluation) => mse.eval_id === maxEvalId);
-              const points = sumArrayProps(currentStudentEval, 'points');
+            {uniqueStudentEvals
+              .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+              .map((e: Evaluation, rowIndex: number) => {
+                const studentEvals = evaluations.filter((se: Evaluation) => se.author === e.author);
+                const maxEvalId = Math.max.apply(
+                  Math,
+                  studentEvals.map(function(o) {
+                    return o.eval_id;
+                  }),
+                );
+                const currentStudentEval = studentEvals.filter((mse: Evaluation) => mse.eval_id === maxEvalId);
+                const points = sumArrayProps(currentStudentEval, 'points');
 
-              return (
-                <React.Fragment key={rowIndex}>
-                  <TableRow>
-                    <TableCell component="th" scope="row">
-                      {e.author_name}
-                    </TableCell>
-                    <TableCell align="left">{new Date(currentStudentEval[0].stamp).toLocaleDateString()}</TableCell>
-                    {assignmentGroups.map((ag: AssignmentGroup, groupIndex: number) => {
-                      const studentTests = currentStudentEval.filter((mse: Evaluation) => ag.group === mse.group);
-                      return (
-                        <TableCell key={groupIndex} align="left">
-                          {studentTests.map((test: Evaluation, testIndex: number) => {
-                            return (
-                              <Tooltip title={test.name} placement="top" key={testIndex}>
-                                <IconButton
-                                  aria-label="circle"
-                                  size="small"
-                                  onClick={() =>
-                                    handleClick(
-                                      rowIndex,
-                                      groupIndex.toString() + testIndex.toString(),
-                                      test.data,
-                                      test.name,
-                                    )
-                                  }
-                                >
-                                  {test.passed ? (
-                                    <FiberManualRecordIcon fontSize="small" />
-                                  ) : (
-                                    <RadioButtonUncheckedIcon fontSize="small" />
-                                  )}
-                                </IconButton>
-                              </Tooltip>
-                            );
-                          })}
-                        </TableCell>
-                      );
-                    })}
-                    <TableCell align="left">{points}</TableCell>
-                  </TableRow>
+                return (
+                  <React.Fragment key={rowIndex}>
+                    <TableRow>
+                      <TableCell component="th" scope="row">
+                        {e.author_name}
+                      </TableCell>
+                      <TableCell align="left">{new Date(currentStudentEval[0].stamp).toLocaleDateString()}</TableCell>
+                      {assignmentGroups.map((ag: AssignmentGroup, groupIndex: number) => {
+                        const studentTests = currentStudentEval.filter((mse: Evaluation) => ag.group === mse.group);
+                        return (
+                          <TableCell key={groupIndex} align="left">
+                            {studentTests.map((test: Evaluation, testIndex: number) => {
+                              return (
+                                <Tooltip title={test.name} placement="top" key={testIndex}>
+                                  <IconButton
+                                    aria-label="circle"
+                                    size="small"
+                                    onClick={() =>
+                                      handleClick(
+                                        rowIndex,
+                                        groupIndex.toString() + testIndex.toString(),
+                                        test.data,
+                                        test.name,
+                                      )
+                                    }
+                                  >
+                                    {test.passed ? (
+                                      <FiberManualRecordIcon fontSize="small" />
+                                    ) : (
+                                      <RadioButtonUncheckedIcon fontSize="small" />
+                                    )}
+                                  </IconButton>
+                                </Tooltip>
+                              );
+                            })}
+                          </TableCell>
+                        );
+                      })}
+                      <TableCell align="left">{points}</TableCell>
+                    </TableRow>
 
-                  <TableRow>
-                    <TableCell css={contentCellWrapper} colSpan={3 + assignmentGroups.length}>
-                      <Collapse in={rowIndex === selectedRowIndex} timeout="auto" unmountOnExit css={collapseWrapper}>
-                        <Box css={contentBoxWrapper}>
-                          <Typography variant="h6" color="primary">
-                            {testName}
-                          </Typography>
-                          <div css={dataWrapper}>{data}</div>
-                        </Box>
-                      </Collapse>
-                    </TableCell>
-                  </TableRow>
-                </React.Fragment>
-              );
-            })}
+                    <TableRow>
+                      <TableCell css={contentCellWrapper} colSpan={3 + assignmentGroups.length}>
+                        <Collapse in={rowIndex === selectedRowIndex} timeout="auto" unmountOnExit css={collapseWrapper}>
+                          <Box css={contentBoxWrapper}>
+                            <Typography variant="h6" color="primary">
+                              {testName}
+                            </Typography>
+                            <div css={dataWrapper}>{data}</div>
+                          </Box>
+                        </Collapse>
+                      </TableCell>
+                    </TableRow>
+                  </React.Fragment>
+                );
+              })}
           </TableBody>
         </Table>
       </TableContainer>
+      <TablePagination
+        rowsPerPageOptions={[10, 15, 20, 50]}
+        component="div"
+        count={uniqueStudentEvals.length}
+        rowsPerPage={rowsPerPage}
+        page={page}
+        onChangePage={handleChangePage}
+        onChangeRowsPerPage={handleChangeRowsPerPage}
+      />
     </div>
   );
 };

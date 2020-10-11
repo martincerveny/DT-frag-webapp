@@ -15,6 +15,7 @@ import { ActivityView } from './modules/seminar/entities/activityView.entity';
 import { ActivityMax } from './modules/seminar/entities/activityMax.entity';
 import { AssignmentPassed } from './modules/assignment/entities/assignmentPassed.entity';
 import { Activity } from './modules/seminar/entities/activity.entity';
+import { Submission } from './modules/assignment/entities/submission.entity';
 
 const dbOptions: PostgresConnectionOptions = {
   type: 'postgres',
@@ -35,6 +36,7 @@ const dbOptions: PostgresConnectionOptions = {
     ActivityMax,
     AssignmentPassed,
     Activity,
+    Submission,
   ],
 };
 

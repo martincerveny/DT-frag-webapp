@@ -10,10 +10,6 @@ import { AssignmentGroup } from '../../../code/interfaces/assignmentGroup';
 import { fetchGroupsByAssignment } from '../../../store/assignment/actions';
 import { Evaluation } from '../../../code/interfaces/evaluation';
 import { fetchEvaluations } from '../../../store/evaluation/actions';
-import { StudentMenu } from '../../../code/studentMenu';
-import { AssignmentTable } from '../../student/comps/AssignmentTable';
-import { ActivityList } from '../../student/comps/ActivityList';
-import { AttendanceDetails } from '../../student/comps/AttendanceDetails';
 import { AssignmentViewMenu } from '../../../code/assignmentViewMenu';
 
 export interface StateProps {
