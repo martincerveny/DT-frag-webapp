@@ -10,14 +10,14 @@ import {
 import { Assignment } from '../../code/interfaces/assignment';
 import { AssignmentGroup } from '../../code/interfaces/assignmentGroup';
 import { AssignmentArray } from '../../code/interfaces/assignmentArray';
-import { SubmissionPerHourCountDto } from '../../../../server/src/modules/assignment/dtos/submissionPerHourCountDto';
 import { LoadingState } from '../../code/loading';
+import {SubmissionCountPerHour} from "../../code/interfaces/submissionCountPerHour";
 
 export interface State {
   assignments: Assignment[];
   assignmentGroups: AssignmentGroup[];
   authorAssignments: AssignmentArray | undefined;
-  submissionCountPerHour: SubmissionPerHourCountDto[];
+  submissionCountPerHour: SubmissionCountPerHour[];
   loadingState: LoadingState;
 }
 
