@@ -16,15 +16,16 @@ import { ActivityMax } from './modules/seminar/entities/activityMax.entity';
 import { AssignmentPassed } from './modules/assignment/entities/assignmentPassed.entity';
 import { Activity } from './modules/seminar/entities/activity.entity';
 import { Submission } from './modules/assignment/entities/submission.entity';
+import { ConfigModule } from '@nestjs/config';
 
 const dbOptions: PostgresConnectionOptions = {
   type: 'postgres',
-  host: 'localhost',
-  port: 5432,
-  username: 'postgres',
-  password: '',
-  database: 'frag',
-  schema: 'frag',
+  host: process.env.DB_HOST,
+  port: parseInt(process.env.DB_PORT, 10),
+  username: process.env.DB_USERNAME,
+  password: process.env.DB_PASSWORD,
+  database: process.env.DB_NAME,
+  schema: process.env.DB_SCHEMA,
   entities: [
     Assignment,
     AssignmentGroup,
@@ -43,6 +44,7 @@ const dbOptions: PostgresConnectionOptions = {
 @Module({
   imports: [
     TypeOrmModule.forRoot(dbOptions),
+    ConfigModule.forRoot(),
     AssignmentModule,
     EvaluationModule,
     SeminarModule,
