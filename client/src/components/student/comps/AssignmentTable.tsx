@@ -24,6 +24,7 @@ import { colors } from '../../../styles/colors';
 import { useParams } from 'react-router';
 import { fetchEvaluationsByStudent } from '../../../store/evaluation/actions';
 import { Evaluation } from '../../../code/interfaces/evaluation';
+import { Loader } from '../../shared/Loader';
 
 interface AssignmentTableProps {
   assignments: Assignment[];
@@ -65,74 +66,78 @@ const AssignmentTableComponent: React.FC<AssignmentTableProps> = ({
 
   return (
     <div css={content}>
-      <TableContainer component={Paper}>
-        <Table aria-label="simple table">
-          <TableHead>
-            <TableRow>
-              <TableCell>Assignment</TableCell>
-              <TableCell>Tests</TableCell>
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            {assignments.map((a: Assignment, rowIndex: number) => {
-              const assignmentEvals = evaluations.filter((ae: Evaluation) => ae.assignment_id === a.id);
-              const maxEvalId = Math.max.apply(
-                Math,
-                assignmentEvals.map(function(o) {
-                  return o.eval_id;
-                }),
-              );
-              const currentAssignmentEval = assignmentEvals.filter((cae: Evaluation) => cae.eval_id === maxEvalId);
+      {assignments && evaluations ? (
+        <TableContainer component={Paper}>
+          <Table aria-label="simple table">
+            <TableHead>
+              <TableRow>
+                <TableCell>Assignment</TableCell>
+                <TableCell>Tests</TableCell>
+              </TableRow>
+            </TableHead>
+            <TableBody>
+              {assignments.map((a: Assignment, rowIndex: number) => {
+                const assignmentEvals = evaluations.filter((ae: Evaluation) => ae.assignment_id === a.id);
+                const maxEvalId = Math.max.apply(
+                  Math,
+                  assignmentEvals.map(function(o) {
+                    return o.eval_id;
+                  }),
+                );
+                const currentAssignmentEval = assignmentEvals.filter((cae: Evaluation) => cae.eval_id === maxEvalId);
 
-              return (
-                <React.Fragment key={rowIndex}>
-                  <TableRow>
-                    <TableCell component="th" scope="row">
-                      {a.name}
-                    </TableCell>
-                    <TableCell align="left">
-                      {currentAssignmentEval.length > 0 ? (
-                        currentAssignmentEval.map((test: Evaluation, testIndex: number) => {
-                          return (
-                            <Tooltip title={test.name} placement="top" key={testIndex}>
-                              <IconButton
-                                aria-label="circle"
-                                size="small"
-                                onClick={() => handleClick(rowIndex, testIndex, test.data, test.name)}
-                              >
-                                {test.passed ? (
-                                  <FiberManualRecordIcon fontSize="small" />
-                                ) : (
-                                  <RadioButtonUncheckedIcon fontSize="small" />
-                                )}
-                              </IconButton>
-                            </Tooltip>
-                          );
-                        })
-                      ) : (
-                        <div>N/A</div>
-                      )}
-                    </TableCell>
-                  </TableRow>
+                return (
+                  <React.Fragment key={rowIndex}>
+                    <TableRow>
+                      <TableCell component="th" scope="row">
+                        {a.name}
+                      </TableCell>
+                      <TableCell align="left">
+                        {currentAssignmentEval.length > 0 ? (
+                          currentAssignmentEval.map((test: Evaluation, testIndex: number) => {
+                            return (
+                              <Tooltip title={test.name} placement="top" key={testIndex}>
+                                <IconButton
+                                  aria-label="circle"
+                                  size="small"
+                                  onClick={() => handleClick(rowIndex, testIndex, test.data, test.name)}
+                                >
+                                  {test.passed ? (
+                                    <FiberManualRecordIcon fontSize="small" />
+                                  ) : (
+                                    <RadioButtonUncheckedIcon fontSize="small" />
+                                  )}
+                                </IconButton>
+                              </Tooltip>
+                            );
+                          })
+                        ) : (
+                          <div>N/A</div>
+                        )}
+                      </TableCell>
+                    </TableRow>
 
-                  <TableRow>
-                    <TableCell css={contentCellWrapper} colSpan={2}>
-                      <Collapse in={rowIndex === selectedRowIndex} timeout="auto" unmountOnExit css={collapseWrapper}>
-                        <Box css={contentBoxWrapper}>
-                          <Typography variant="h6" color="primary">
-                            {testName}
-                          </Typography>
-                          <div css={dataWrapper}>{data}</div>
-                        </Box>
-                      </Collapse>
-                    </TableCell>
-                  </TableRow>
-                </React.Fragment>
-              );
-            })}
-          </TableBody>
-        </Table>
-      </TableContainer>
+                    <TableRow>
+                      <TableCell css={contentCellWrapper} colSpan={2}>
+                        <Collapse in={rowIndex === selectedRowIndex} timeout="auto" unmountOnExit css={collapseWrapper}>
+                          <Box css={contentBoxWrapper}>
+                            <Typography variant="h6" color="primary">
+                              {testName}
+                            </Typography>
+                            <div css={dataWrapper}>{data}</div>
+                          </Box>
+                        </Collapse>
+                      </TableCell>
+                    </TableRow>
+                  </React.Fragment>
+                );
+              })}
+            </TableBody>
+          </Table>
+        </TableContainer>
+      ) : (
+        <Loader />
+      )}
     </div>
   );
 };

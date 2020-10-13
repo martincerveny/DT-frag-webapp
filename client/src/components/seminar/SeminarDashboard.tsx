@@ -19,6 +19,7 @@ import { LoadingState } from '../../code/loading';
 import { fetchAssignments, fetchAuthorAssignments } from '../../store/assignment/actions';
 import { AssignmentArray } from '../../code/interfaces/assignmentArray';
 import { Assignment } from '../../code/interfaces/assignment';
+import { Loader } from '../shared/Loader';
 
 export interface StateProps {
   seminars: Seminar[];
@@ -76,7 +77,7 @@ const SeminarDashboardComponent: React.FC<SeminarDashboardProps> = ({
                 <Typography component="h2" variant="h6" color="primary" gutterBottom css={heading}>
                   Seminar Dashboard
                 </Typography>
-                {seminars.length > 0 && (
+                {seminars.length > 0 ? (
                   <SeminarContent
                     seminarEnrollments={seminarEnrollments}
                     seminars={seminars}
@@ -90,6 +91,8 @@ const SeminarDashboardComponent: React.FC<SeminarDashboardProps> = ({
                     setLoadingState={setLoadingState}
                     assignments={assignments}
                   />
+                ) : (
+                  <Loader />
                 )}
               </Grid>
             </Paper>

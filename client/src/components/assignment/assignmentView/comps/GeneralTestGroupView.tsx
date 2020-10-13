@@ -7,6 +7,7 @@ import { colors } from '../../../../styles/colors';
 import { AssignmentGroup } from '../../../../code/interfaces/assignmentGroup';
 import { Evaluation } from '../../../../code/interfaces/evaluation';
 import { getPercents, removeArrayDuplicatesByProp } from '../../../../code/helpers';
+import { Loader } from '../../../shared/Loader';
 
 interface GeneralTestGroupViewProps {
   assignmentGroups: AssignmentGroup[];
@@ -18,7 +19,7 @@ const GeneralTestGroupViewComponent: React.FC<GeneralTestGroupViewProps> = ({ as
 
   return (
     <div css={content}>
-      {tests.length > 0 && (
+      {tests.length > 0 ? (
         <List component="nav" aria-label="main mailbox folders">
           {assignmentGroups.map((ag: AssignmentGroup, index: any) => (
             <ListItem key={index}>
@@ -67,6 +68,8 @@ const GeneralTestGroupViewComponent: React.FC<GeneralTestGroupViewProps> = ({ as
             </ListItem>
           ))}
         </List>
+      ) : (
+        <Loader />
       )}
     </div>
   );

@@ -11,6 +11,7 @@ import { getPercents, getRemainingDays } from '../../../../code/helpers';
 import { AssignmentArray } from '../../../../code/interfaces/assignmentArray';
 import { AuthorAssignment } from '../../../../code/interfaces/authorAssignment';
 import { Enrollment } from '../../../../code/interfaces/enrollment';
+import {Loader} from "../../../shared/Loader";
 
 export interface AssignmentListProps {
   assignments: Assignment[];
@@ -21,7 +22,7 @@ export interface AssignmentListProps {
 const AssignmentListComponent: React.FC<AssignmentListProps> = ({ assignments, authorAssignments, allEnrollments }) => {
   return (
     <div css={content}>
-      {assignments && authorAssignments && (
+      {assignments && authorAssignments ? (
         <List component="nav" aria-label="main mailbox folders">
           {assignments.map((a: Assignment, index: number) => {
             const studentsPassed =
@@ -84,7 +85,7 @@ const AssignmentListComponent: React.FC<AssignmentListProps> = ({ assignments, a
             );
           })}
         </List>
-      )}
+      ) : <Loader/>}
     </div>
   );
 };
