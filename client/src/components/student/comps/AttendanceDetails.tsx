@@ -7,6 +7,7 @@ import { Grid, List, ListItem, ListItemText, Typography } from '@material-ui/cor
 import { getDateString, removeArrayDuplicatesByProp } from '../../../code/helpers';
 import { StudentAttendance } from '../../../code/interfaces/studentAttendance';
 import { fetchAttendanceByStudent } from '../../../store/student/actions';
+import { t } from '../../../code/translations';
 
 interface AttendanceDetailsProps {
   studentAttendance: StudentAttendance[];
@@ -30,7 +31,7 @@ const AttendanceDetailsComponent: React.FC<AttendanceDetailsProps> = ({
           <Grid container direction="row" justify="space-between" alignItems="center" key={seminarIndex}>
             <List>
               <Typography variant="h6" color="primary">
-                Seminar: {s.seminar_name}
+                {t('student.seminar')}: {s.seminar_name}
               </Typography>
               {studentAttendance.map((sa: StudentAttendance, saIndex: number) => {
                 if (sa.seminar_id === s.seminar_id) {

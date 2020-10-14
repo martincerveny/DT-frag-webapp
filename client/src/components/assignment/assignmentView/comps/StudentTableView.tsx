@@ -23,6 +23,7 @@ import { Evaluation } from '../../../../code/interfaces/evaluation';
 import { removeArrayDuplicatesByProp, sumArrayProps } from '../../../../code/helpers';
 import { AssignmentGroup } from '../../../../code/interfaces/assignmentGroup';
 import { colors } from '../../../../styles/colors';
+import { t } from '../../../../code/translations';
 
 interface StudentTableViewProps {
   evaluations: Evaluation[];
@@ -71,14 +72,14 @@ const StudentTableViewComponent: React.FC<StudentTableViewProps> = ({ evaluation
         <Table aria-label="simple table">
           <TableHead>
             <TableRow>
-              <TableCell>Name</TableCell>
-              <TableCell align="left">Date</TableCell>
+              <TableCell>{t('assignmentView.studentTable.name')}</TableCell>
+              <TableCell align="left">{t('assignmentView.studentTable.name')}</TableCell>
               {assignmentGroups.map((ag: AssignmentGroup, index: number) => (
                 <TableCell key={index} align="left">
                   {ag.group}
                 </TableCell>
               ))}
-              <TableCell align="left">Points</TableCell>
+              <TableCell align="left">{t('assignmentView.studentTable.points')}</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>

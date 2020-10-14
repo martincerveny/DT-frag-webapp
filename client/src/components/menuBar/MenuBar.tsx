@@ -8,6 +8,7 @@ import AccountCircleIcon from '@material-ui/icons/AccountCircle';
 import { Link } from 'react-router-dom';
 import { colors } from '../../styles/colors';
 import { Routes } from '../../code/routes';
+import { t } from '../../code/translations';
 
 const MenuBarComponent: React.FC = () => {
   const [anchorElUser, setAnchorElUser] = React.useState(null);
@@ -26,20 +27,20 @@ const MenuBarComponent: React.FC = () => {
         <Toolbar>
           <div>
             <Link to={Routes.Home} css={title}>
-              <Typography variant="h6">Dashboard</Typography>
+              <Typography variant="h6">{t('menuBar.dashboard')}</Typography>
             </Link>
           </div>
           <div css={menuItemWrapper}>
             <Link to={Routes.Home} css={title}>
               <Button color="inherit">
-                <span css={buttonText}>Assignments</span>
+                <span css={buttonText}>{t('menuBar.assignments')}</span>
               </Button>
             </Link>
           </div>
           <div css={lastMenuItemWrapper}>
             <Link to={Routes.Seminars} css={title}>
               <Button color="inherit">
-                <span css={buttonText}>Seminars</span>
+                <span css={buttonText}>{t('menuBar.seminars')}</span>
               </Button>
             </Link>
           </div>
@@ -55,7 +56,7 @@ const MenuBarComponent: React.FC = () => {
             open={Boolean(anchorElUser)}
             onClose={handleCloseUser}
           >
-            <MenuItem onClick={handleCloseUser}>Odhlásit</MenuItem>
+            <MenuItem onClick={handleCloseUser}>{t('menuBar.logout')}</MenuItem>
           </Menu>
         </Toolbar>
       </AppBar>

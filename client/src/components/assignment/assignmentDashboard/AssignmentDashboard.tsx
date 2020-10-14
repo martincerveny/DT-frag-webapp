@@ -16,6 +16,7 @@ import { Enrollment } from '../../../code/interfaces/enrollment';
 import { fetchEnrollments } from '../../../store/seminar/actions';
 import { colors } from '../../../styles/colors';
 import { SubmissionCountPerHour } from '../../../code/interfaces/submissionCountPerHour';
+import { t } from '../../../code/translations';
 
 export interface StateProps {
   assignments: Assignment[];
@@ -88,7 +89,7 @@ const AssignmentDashboardComponent: React.FC<AssignmentDashboardProps> = ({
             <Paper css={paper}>
               <Grid container direction="column">
                 <Typography component="h2" variant="h6" color="primary" gutterBottom css={heading}>
-                  Assignment Dashboard
+                  {t('assignment.dashboard')}
                 </Typography>
                 <AssignmentList
                   assignments={assignments}
@@ -105,7 +106,7 @@ const AssignmentDashboardComponent: React.FC<AssignmentDashboardProps> = ({
             <Paper css={paper}>
               <Grid container direction="column">
                 <Typography component="h2" variant="h6" color="primary" gutterBottom css={heading}>
-                  Statistics 1
+                  {t('assignment.statistics.graph1')}
                 </Typography>
                 <div css={content}>{renderLineChart}</div>
               </Grid>
@@ -116,7 +117,7 @@ const AssignmentDashboardComponent: React.FC<AssignmentDashboardProps> = ({
             <Paper css={paper}>
               <Grid container direction="column">
                 <Typography component="h2" variant="h6" color="primary" gutterBottom css={heading}>
-                  All submissions per hour of the day
+                  {t('assignment.statistics.graph2')}
                 </Typography>
                 <div css={content}>{renderBarChart}</div>
               </Grid>

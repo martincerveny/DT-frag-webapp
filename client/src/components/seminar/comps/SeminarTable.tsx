@@ -17,6 +17,7 @@ import { Assignment } from '../../../code/interfaces/assignment';
 import { colors } from '../../../styles/colors';
 import { Routes } from '../../../code/routes';
 import { Link } from 'react-router-dom';
+import { t } from '../../../code/translations';
 
 interface SeminarTableProps {
   seminarEnrollments: Enrollment[];
@@ -51,10 +52,10 @@ const SeminarTableComponent: React.FC<SeminarTableProps> = ({
           <Table aria-label="simple table">
             <TableHead>
               <TableRow>
-                <TableCell>Name</TableCell>
-                <TableCell align="right">Assignments</TableCell>
-                <TableCell align="right">Attendance</TableCell>
-                <TableCell align="right">Activity</TableCell>
+                <TableCell>{t('seminar.seminarTable.name')}</TableCell>
+                <TableCell align="right">{t('seminar.seminarTable.assignments')}</TableCell>
+                <TableCell align="right">{t('seminar.seminarTable.attendance')}</TableCell>
+                <TableCell align="right">{t('seminar.seminarTable.activity')}</TableCell>
               </TableRow>
             </TableHead>
             <TableBody>

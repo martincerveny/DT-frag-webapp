@@ -20,6 +20,7 @@ import { fetchAssignments, fetchAuthorAssignments } from '../../store/assignment
 import { AssignmentArray } from '../../code/interfaces/assignmentArray';
 import { Assignment } from '../../code/interfaces/assignment';
 import { Loader } from '../shared/Loader';
+import { t } from '../../code/translations';
 
 export interface StateProps {
   seminars: Seminar[];
@@ -75,7 +76,7 @@ const SeminarDashboardComponent: React.FC<SeminarDashboardProps> = ({
             <Paper css={paper}>
               <Grid container direction="column">
                 <Typography component="h2" variant="h6" color="primary" gutterBottom css={heading}>
-                  Seminar Dashboard
+                  {t('seminar.dashboard')}
                 </Typography>
                 {seminars.length > 0 ? (
                   <SeminarContent

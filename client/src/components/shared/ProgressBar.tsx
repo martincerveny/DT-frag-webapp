@@ -1,5 +1,6 @@
 import { Box, LinearProgress, Typography } from '@material-ui/core';
 import React from 'react';
+import { t } from '../../code/translations';
 
 interface ProgressBarProps {
   points: number;
@@ -14,7 +15,9 @@ export const ProgressBar: React.FC<ProgressBarProps> = ({ points, maxPoints }) =
         <LinearProgress variant="determinate" value={progress} />
       </Box>
       <Box minWidth={35}>
-        <Typography variant="body2" color="textSecondary">{`${points} / ${maxPoints} pts`}</Typography>
+        <Typography variant="body2" color="textSecondary">{`${points} / ${maxPoints} ${t(
+          'progressBar.pts',
+        )}`}</Typography>
       </Box>
     </Box>
   );

@@ -25,6 +25,7 @@ import { useParams } from 'react-router';
 import { fetchEvaluationsByStudent } from '../../../store/evaluation/actions';
 import { Evaluation } from '../../../code/interfaces/evaluation';
 import { Loader } from '../../shared/Loader';
+import { t } from '../../../code/translations';
 
 interface AssignmentTableProps {
   assignments: Assignment[];
@@ -71,8 +72,8 @@ const AssignmentTableComponent: React.FC<AssignmentTableProps> = ({
           <Table aria-label="simple table">
             <TableHead>
               <TableRow>
-                <TableCell>Assignment</TableCell>
-                <TableCell>Tests</TableCell>
+                <TableCell>{t('student.assignment')}</TableCell>
+                <TableCell>{t('student.tests')}</TableCell>
               </TableRow>
             </TableHead>
             <TableBody>

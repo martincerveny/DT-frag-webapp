@@ -11,6 +11,7 @@ import { fetchGroupsByAssignment } from '../../../store/assignment/actions';
 import { Evaluation } from '../../../code/interfaces/evaluation';
 import { fetchEvaluations } from '../../../store/evaluation/actions';
 import { AssignmentViewMenu } from '../../../code/assignmentViewMenu';
+import { t } from '../../../code/translations';
 
 export interface StateProps {
   assignmentGroups: AssignmentGroup[];
@@ -52,7 +53,7 @@ const AssignmentViewComponent: React.FC<AssignmentViewProps> = ({
           css={menuButton}
           onClick={() => handleMenuClick(AssignmentViewMenu.Stats)}
         >
-          Stats
+          {t('assignmentView.stats')}
         </Button>
         <Button
           variant="contained"
@@ -61,7 +62,7 @@ const AssignmentViewComponent: React.FC<AssignmentViewProps> = ({
           css={menuButton}
           onClick={() => handleMenuClick(AssignmentViewMenu.Students)}
         >
-          Students
+          {t('assignmentView.students')}
         </Button>
       </Grid>
     );
@@ -83,7 +84,7 @@ const AssignmentViewComponent: React.FC<AssignmentViewProps> = ({
             <Paper css={paper}>
               <Grid container direction="column">
                 <Typography component="h2" variant="h6" color="primary" gutterBottom css={heading}>
-                  Assignment: {assignmentId}
+                  {t('assignmentView.assignment')}: {assignmentId}
                 </Typography>
                 {renderHorizontalMenu()}
                 {renderDataComponent()}

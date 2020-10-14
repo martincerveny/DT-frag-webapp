@@ -11,7 +11,7 @@ import { getPercents, getRemainingDays } from '../../../../code/helpers';
 import { AssignmentArray } from '../../../../code/interfaces/assignmentArray';
 import { AuthorAssignment } from '../../../../code/interfaces/authorAssignment';
 import { Enrollment } from '../../../../code/interfaces/enrollment';
-import {Loader} from "../../../shared/Loader";
+import { Loader } from '../../../shared/Loader';
 
 export interface AssignmentListProps {
   assignments: Assignment[];
@@ -85,7 +85,9 @@ const AssignmentListComponent: React.FC<AssignmentListProps> = ({ assignments, a
             );
           })}
         </List>
-      ) : <Loader/>}
+      ) : (
+        <Loader />
+      )}
     </div>
   );
 };

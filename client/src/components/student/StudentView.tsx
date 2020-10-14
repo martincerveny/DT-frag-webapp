@@ -15,6 +15,7 @@ import { fetchActivityByStudent, fetchAttendanceByStudent } from '../../store/st
 import { ActivityList } from './comps/ActivityList';
 import { StudentAttendance } from '../../code/interfaces/studentAttendance';
 import { AttendanceDetails } from './comps/AttendanceDetails';
+import { t } from '../../code/translations';
 
 export interface StateProps {
   assignments: Assignment[];
@@ -59,7 +60,7 @@ const StudentViewComponent: React.FC<StudentViewProps> = ({
           css={menuButton}
           onClick={() => handleMenuClick(StudentMenu.Assignment)}
         >
-          Assignments
+          {t('student.assignments')}
         </Button>
         <Button
           variant="contained"
@@ -68,7 +69,7 @@ const StudentViewComponent: React.FC<StudentViewProps> = ({
           css={menuButton}
           onClick={() => handleMenuClick(StudentMenu.ActivityList)}
         >
-          Activity list
+          {t('student.activityList')}
         </Button>
         <Button
           variant="contained"
@@ -77,7 +78,7 @@ const StudentViewComponent: React.FC<StudentViewProps> = ({
           css={menuButton}
           onClick={() => handleMenuClick(StudentMenu.Attendance)}
         >
-          Attendance details
+          {t('student.attendanceDetails')}
         </Button>
       </Grid>
     );

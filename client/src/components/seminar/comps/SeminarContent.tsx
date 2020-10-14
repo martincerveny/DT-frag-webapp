@@ -13,6 +13,7 @@ import { LoadingState } from '../../../code/loading';
 import { AssignmentArray } from '../../../code/interfaces/assignmentArray';
 import { Assignment } from '../../../code/interfaces/assignment';
 import { Square, SquareFill, XSquareFill } from 'react-bootstrap-icons';
+import { t } from '../../../code/translations';
 
 export interface SeminarContentProps {
   seminarEnrollments: Enrollment[];
@@ -55,7 +56,7 @@ const SeminarContentComponent: React.FC<SeminarContentProps> = ({
         return (
           <div key={index}>
             <Typography component="h2" variant="h6" color="primary" gutterBottom css={heading}>
-              Seminar {s.name}
+              {t('seminar.seminar')} {s.name}
             </Typography>
             <SeminarTable
               fetchEnrollments={fetchEnrollments}
@@ -81,15 +82,15 @@ const renderIconDescription = () => {
     <Grid container direction="column" spacing={1}>
       <Grid item>
         <SquareFill color="green" size={20} />
-        <span css={descriptionWrapper}>- yes / pass</span>
+        <span css={descriptionWrapper}>{t('seminar.yesPass')}</span>
       </Grid>
       <Grid item>
         <Square size={20} />
-        <span css={descriptionWrapper}>- no / fail</span>
+        <span css={descriptionWrapper}>{t('seminar.noFail')}</span>
       </Grid>
       <Grid item>
         <XSquareFill color="gray" size={20} />
-        <span css={descriptionWrapper}>- no submit</span>
+        <span css={descriptionWrapper}>{t('seminar.noSubmit')}</span>
       </Grid>
     </Grid>
   );

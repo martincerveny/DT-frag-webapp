@@ -6,6 +6,7 @@ import TextField from '@material-ui/core/TextField';
 import Typography from '@material-ui/core/Typography';
 import Container from '@material-ui/core/Container';
 import styled from '@emotion/styled';
+import { t } from '../../code/translations';
 
 interface LoginProps {
   handleIsLoggedIn: (loggedIn: boolean) => void;
@@ -16,7 +17,7 @@ const LoginComponent: React.FC<LoginProps> = ({ handleIsLoggedIn }) => {
     <Container component="main" maxWidth="xs">
       <div css={paper}>
         <Typography component="h1" variant="h5">
-          Sign in
+          {t('loginPage.login')}
         </Typography>
         <form css={form} noValidate>
           <TextField
@@ -49,7 +50,7 @@ const LoginComponent: React.FC<LoginProps> = ({ handleIsLoggedIn }) => {
             css={submitButton}
             onClick={() => handleIsLoggedIn(true)}
           >
-            Sign In
+            {t('loginPage.signin')}
           </Button>
         </form>
       </div>
