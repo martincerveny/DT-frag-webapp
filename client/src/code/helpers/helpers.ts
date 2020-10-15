@@ -10,7 +10,7 @@ export const removeArrayDuplicatesByProp = (arr: Array<any>, keyProps: Array<str
 
 export const removeArrayDuplicates = (actualArr: Array<any>) => {
   return actualArr.filter((item, index) => {
-    if (actualArr.indexOf(item) == index) {
+    if (actualArr.indexOf(item) === index) {
       return item;
     }
   });

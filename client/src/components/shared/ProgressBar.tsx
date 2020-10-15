@@ -1,6 +1,6 @@
 import { Box, LinearProgress, Typography } from '@material-ui/core';
 import React from 'react';
-import { t } from '../../code/translations';
+import { t } from '../../code/helpers/translations';
 
 interface ProgressBarProps {
   points: number;

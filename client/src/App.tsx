@@ -1,29 +1,32 @@
 /** @jsx jsx */
 import { css, Global, jsx } from '@emotion/core';
-import React from 'react';
+import React, { useEffect } from 'react';
 import { DEFAULT_FONT_FAMILY } from './styles/stylingConstants';
-import { Login } from './components/login/Login';
 import { CssBaseline } from '@material-ui/core';
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 import { ThemeProvider } from '@material-ui/core/styles';
 import { MenuBar } from './components/menuBar/MenuBar';
-import { Routes } from './code/routes';
+import { Routes } from './code/enums/routes';
 import { APP_THEME } from './styles/themes';
-import { performUserLogin } from './store/general/actions';
 import { AssignmentDashboardContainer } from './components/assignment/assignmentDashboard/AssignmentDashboardContainer';
 import { AssignmentViewContainer } from './components/assignment/assignmentView/AssignmentViewContainer';
 import { SeminarDashboardContainer } from './components/seminar/SeminarDashboardContainer';
 import { StudentViewContainer } from './components/student/StudentViewContainer';
+import { LoginContainer } from './components/login/LoginContainer';
+import { logUserOut, refreshUserFromCookie } from './store/general/actions';
 
 export interface StateProps {
   loggedUser: undefined | number;
 }
 
 export interface DispatchProps {
-  login: typeof performUserLogin;
+  refreshUserFromCookie: typeof refreshUserFromCookie;
+  logUserOut: typeof logUserOut;
 }
 
 type AppProps = DispatchProps & StateProps;
+
+export const UserContext = React.createContext<number | undefined>(undefined);
 
 const renderGlobalCssSettings = () => (
   <Global
@@ -36,23 +39,27 @@ const renderGlobalCssSettings = () => (
   />
 );
 
-const App: React.FC<AppProps> = ({ loggedUser, login }) => {
-  const [isLoggedIn, setIsLoggedIn] = React.useState<boolean>(true); // true for testing purposes
-
-  const handleIsLoggedIn = (loggedIn: boolean) => {
-    setIsLoggedIn(loggedIn);
-  };
+const App: React.FC<AppProps> = ({ loggedUser, refreshUserFromCookie, logUserOut }) => {
+  useEffect(() => {
+    refreshUserFromCookie();
+  }, [loggedUser]);
 
   const renderRoutes = () => {
-    if (isLoggedIn) {
-      return getLoggedRoutes();
+    let routes = getUnloggedRoutes();
+
+    if (loggedUser) {
+      routes = getLoggedRoutes();
     }
 
-    return getUnloggedRoutes();
+    return <Router>{routes}</Router>;
+  };
+
+  const handleUserLogOut = () => {
+    logUserOut();
   };
 
   const renderMenuBar = () => {
-    return <MenuBar />;
+    return <MenuBar handleUserLogOut={handleUserLogOut} />;
   };
 
   const getLoggedRoutes = () => {
@@ -80,7 +87,7 @@ const App: React.FC<AppProps> = ({ loggedUser, login }) => {
   const getUnloggedRoutes = () => {
     return (
       <Route path="/">
-        <Login handleIsLoggedIn={handleIsLoggedIn} />
+        <LoginContainer />
       </Route>
     );
   };
@@ -90,7 +97,7 @@ const App: React.FC<AppProps> = ({ loggedUser, login }) => {
       <div className="App">
         <CssBaseline />
         {renderGlobalCssSettings()}
-        <Router>{renderRoutes()}</Router>
+        <UserContext.Provider value={loggedUser}>{renderRoutes()}</UserContext.Provider>
       </div>
     </ThemeProvider>
   );

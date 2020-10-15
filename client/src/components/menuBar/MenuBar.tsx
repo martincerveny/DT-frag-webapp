@@ -2,25 +2,20 @@
 import styled from '@emotion/styled';
 import { css, jsx } from '@emotion/core';
 import React from 'react';
-import { AppBar, Button, Menu, MenuItem, Toolbar, Typography } from '@material-ui/core';
+import { AppBar, Button, IconButton, Menu, MenuItem, Toolbar, Tooltip, Typography } from '@material-ui/core';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import AccountCircleIcon from '@material-ui/icons/AccountCircle';
 import { Link } from 'react-router-dom';
 import { colors } from '../../styles/colors';
-import { Routes } from '../../code/routes';
-import { t } from '../../code/translations';
+import { Routes } from '../../code/enums/routes';
+import { t } from '../../code/helpers/translations';
+import { ExitToApp } from '@material-ui/icons';
 
-const MenuBarComponent: React.FC = () => {
-  const [anchorElUser, setAnchorElUser] = React.useState(null);
+interface MenuBarProps {
+  handleUserLogOut: () => void;
+}
 
-  const handleClickUser = (event: any) => {
-    setAnchorElUser(event.currentTarget);
-  };
-
-  const handleCloseUser = () => {
-    setAnchorElUser(null);
-  };
-
+const MenuBarComponent: React.FC<MenuBarProps> = ({ handleUserLogOut }) => {
   return (
     <div css={appBar}>
       <AppBar position="static">
@@ -44,20 +39,13 @@ const MenuBarComponent: React.FC = () => {
               </Button>
             </Link>
           </div>
-          <Button color="inherit" aria-controls="simple-menu" aria-haspopup="true" onClick={handleClickUser}>
+          <Button color="inherit" aria-controls="simple-menu" aria-haspopup="true">
             <AccountCircleIcon />
             <span css={buttonText}>xcerveny@fi.muni.cz</span>
-            <ExpandMoreIcon />
           </Button>
-          <Menu
-            id="simple-menu"
-            anchorEl={anchorElUser}
-            keepMounted
-            open={Boolean(anchorElUser)}
-            onClose={handleCloseUser}
-          >
-            <MenuItem onClick={handleCloseUser}>{t('menuBar.logout')}</MenuItem>
-          </Menu>
+          <IconButton aria-label="circle" size="small" css={logoutButton} onClick={() => handleUserLogOut()}>
+            <ExitToApp />
+          </IconButton>
         </Toolbar>
       </AppBar>
     </div>
@@ -87,4 +75,8 @@ const title = css`
 const buttonText = css`
   margin-left: 5px;
   margin-right: 5px;
+`;
+
+const logoutButton = css`
+  color: ${colors.white};
 `;

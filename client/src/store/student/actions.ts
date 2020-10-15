@@ -2,7 +2,7 @@ import { Action, ActionCreator, Dispatch } from 'redux';
 import { ThunkAction } from 'redux-thunk';
 import { action, payload } from 'ts-action';
 import { State } from './reducers';
-import { http } from '../../code/http';
+import { http } from '../../code/helpers/http';
 import { StudentAttendance } from '../../code/interfaces/studentAttendance';
 import { Activity } from '../../code/interfaces/activity';
 

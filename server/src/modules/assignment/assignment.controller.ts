@@ -3,7 +3,6 @@ import { AssignmentService } from './assignment.service';
 import { Assignment } from './entities/assignment.entity';
 import { AssignmentGroup } from './entities/assignmentGroup.entity';
 import { AssignmentArrayDto } from './dtos/assignmentArrayDto';
-import { Submission } from './entities/submission.entity';
 import { SubmissionPerHourCountDto } from './dtos/submissionPerHourCountDto';
 
 @Controller('api/assignments')

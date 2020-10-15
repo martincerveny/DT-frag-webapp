@@ -12,7 +12,7 @@ import { Seminar } from '../../code/interfaces/seminar';
 import { Enrollment } from '../../code/interfaces/enrollment';
 import { Attendance } from '../../code/interfaces/attendance';
 import { ActivityPts } from '../../code/interfaces/activityPts';
-import { LoadingState } from '../../code/loading';
+import { LoadingState } from '../../code/enums/loading';
 
 export interface State {
   loadingState: LoadingState;

@@ -2,12 +2,12 @@ import { Action, ActionCreator, Dispatch } from 'redux';
 import { ThunkAction } from 'redux-thunk';
 import { action, payload } from 'ts-action';
 import { State } from './reducers';
-import { http } from '../../code/http';
+import { http } from '../../code/helpers/http';
 import { Seminar } from '../../code/interfaces/seminar';
 import { Enrollment } from '../../code/interfaces/enrollment';
 import { Attendance } from '../../code/interfaces/attendance';
 import { ActivityPts } from '../../code/interfaces/activityPts';
-import { LoadingState } from '../../code/loading';
+import { LoadingState } from '../../code/enums/loading';
 
 export enum ActionTypes {
   SET_SEMINARS = '[seminar] SET_SEMINARS',

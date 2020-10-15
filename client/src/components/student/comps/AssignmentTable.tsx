@@ -25,7 +25,7 @@ import { useParams } from 'react-router';
 import { fetchEvaluationsByStudent } from '../../../store/evaluation/actions';
 import { Evaluation } from '../../../code/interfaces/evaluation';
 import { Loader } from '../../shared/Loader';
-import { t } from '../../../code/translations';
+import { t } from '../../../code/helpers/translations';
 
 interface AssignmentTableProps {
   assignments: Assignment[];

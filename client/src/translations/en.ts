@@ -12,6 +12,8 @@ export const translates: {
   'assignmentView.studentTable.points': 'Points',
   'loginPage.login': 'Login',
   'loginPage.signin': 'Sign In',
+  'loginPage.email': 'Email',
+  'loginPage.password': 'Password',
   'menuBar.dashboard': 'Dashboard',
   'menuBar.assignments': 'Assignments',
   'menuBar.seminars': 'Seminars',

@@ -10,8 +10,8 @@ import { AssignmentGroup } from '../../../code/interfaces/assignmentGroup';
 import { fetchGroupsByAssignment } from '../../../store/assignment/actions';
 import { Evaluation } from '../../../code/interfaces/evaluation';
 import { fetchEvaluations } from '../../../store/evaluation/actions';
-import { AssignmentViewMenu } from '../../../code/assignmentViewMenu';
-import { t } from '../../../code/translations';
+import { AssignmentViewMenu } from '../../../code/enums/assignmentViewMenu';
+import { t } from '../../../code/helpers/translations';
 
 export interface StateProps {
   assignmentGroups: AssignmentGroup[];

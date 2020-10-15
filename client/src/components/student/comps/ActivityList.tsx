@@ -6,7 +6,7 @@ import { useParams } from 'react-router';
 import { Activity } from '../../../code/interfaces/activity';
 import { fetchActivityByStudent } from '../../../store/student/actions';
 import { Grid, List, ListItem, ListItemText } from '@material-ui/core';
-import { getDateString } from '../../../code/helpers';
+import { getDateString } from '../../../code/helpers/helpers';
 
 interface ActivityListProps {
   activity: Activity[];

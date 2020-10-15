@@ -1,5 +1,5 @@
 /** @jsx jsx */
-import React, { useEffect } from 'react';
+import React, { useContext, useEffect } from 'react';
 import styled from '@emotion/styled';
 import { css, jsx } from '@emotion/core';
 import { Container, Grid, Paper, Typography } from '@material-ui/core';
@@ -15,12 +15,13 @@ import { Enrollment } from '../../code/interfaces/enrollment';
 import { Attendance } from '../../code/interfaces/attendance';
 import { SeminarContent } from './comps/SeminarContent';
 import { ActivityPts } from '../../code/interfaces/activityPts';
-import { LoadingState } from '../../code/loading';
+import { LoadingState } from '../../code/enums/loading';
 import { fetchAssignments, fetchAuthorAssignments } from '../../store/assignment/actions';
 import { AssignmentArray } from '../../code/interfaces/assignmentArray';
 import { Assignment } from '../../code/interfaces/assignment';
 import { Loader } from '../shared/Loader';
-import { t } from '../../code/translations';
+import { t } from '../../code/helpers/translations';
+import { UserContext } from '../../App';
 
 export interface StateProps {
   seminars: Seminar[];
@@ -28,7 +29,6 @@ export interface StateProps {
   attendance: Attendance[];
   activityPts: ActivityPts[];
   authorAssignments: AssignmentArray | undefined;
-  loggedUser: undefined | number;
   loadingState: LoadingState;
   assignments: Assignment[];
 }
@@ -48,7 +48,6 @@ type SeminarDashboardProps = DispatchProps & StateProps;
 const SeminarDashboardComponent: React.FC<SeminarDashboardProps> = ({
   fetchSeminars,
   seminars,
-  loggedUser,
   seminarEnrollments,
   fetchEnrollments,
   fetchAttendance,
@@ -62,6 +61,8 @@ const SeminarDashboardComponent: React.FC<SeminarDashboardProps> = ({
   assignments,
   fetchAssignments,
 }) => {
+  const loggedUser = useContext(UserContext);
+
   useEffect(() => {
     fetchSeminars(loggedUser);
     fetchAuthorAssignments();

@@ -10,7 +10,7 @@ import {
 import { Assignment } from '../../code/interfaces/assignment';
 import { AssignmentGroup } from '../../code/interfaces/assignmentGroup';
 import { AssignmentArray } from '../../code/interfaces/assignmentArray';
-import { LoadingState } from '../../code/loading';
+import { LoadingState } from '../../code/enums/loading';
 import {SubmissionCountPerHour} from "../../code/interfaces/submissionCountPerHour";
 
 export interface State {

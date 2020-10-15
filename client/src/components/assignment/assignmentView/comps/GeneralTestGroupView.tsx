@@ -6,7 +6,7 @@ import { Button, ButtonGroup, Grid, List, ListItem, Tooltip, Typography } from '
 import { colors } from '../../../../styles/colors';
 import { AssignmentGroup } from '../../../../code/interfaces/assignmentGroup';
 import { Evaluation } from '../../../../code/interfaces/evaluation';
-import { getPercents, removeArrayDuplicatesByProp } from '../../../../code/helpers';
+import { getPercents, removeArrayDuplicatesByProp } from '../../../../code/helpers/helpers';
 import { Loader } from '../../../shared/Loader';
 
 interface GeneralTestGroupViewProps {

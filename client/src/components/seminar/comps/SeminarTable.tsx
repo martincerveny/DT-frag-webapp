@@ -7,17 +7,17 @@ import { Square, SquareFill, XSquareFill } from 'react-bootstrap-icons';
 import { ProgressBar } from '../../shared/ProgressBar';
 import { Enrollment } from '../../../code/interfaces/enrollment';
 import { Attendance } from '../../../code/interfaces/attendance';
-import { getDateString } from '../../../code/helpers';
+import { getDateString } from '../../../code/helpers/helpers';
 import { ActivityPts } from '../../../code/interfaces/activityPts';
 import { setLoadingState } from '../../../store/seminar/actions';
-import { LoadingState } from '../../../code/loading';
+import { LoadingState } from '../../../code/enums/loading';
 import { AssignmentArray } from '../../../code/interfaces/assignmentArray';
 import { AuthorAssignment } from '../../../code/interfaces/authorAssignment';
 import { Assignment } from '../../../code/interfaces/assignment';
 import { colors } from '../../../styles/colors';
-import { Routes } from '../../../code/routes';
+import { Routes } from '../../../code/enums/routes';
 import { Link } from 'react-router-dom';
-import { t } from '../../../code/translations';
+import { t } from '../../../code/helpers/translations';
 
 interface SeminarTableProps {
   seminarEnrollments: Enrollment[];

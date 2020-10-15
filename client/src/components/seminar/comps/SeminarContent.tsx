@@ -9,11 +9,11 @@ import { fetchActivityPts, fetchAttendance, fetchEnrollments, setLoadingState } 
 import { Enrollment } from '../../../code/interfaces/enrollment';
 import { Attendance } from '../../../code/interfaces/attendance';
 import { ActivityPts } from '../../../code/interfaces/activityPts';
-import { LoadingState } from '../../../code/loading';
+import { LoadingState } from '../../../code/enums/loading';
 import { AssignmentArray } from '../../../code/interfaces/assignmentArray';
 import { Assignment } from '../../../code/interfaces/assignment';
 import { Square, SquareFill, XSquareFill } from 'react-bootstrap-icons';
-import { t } from '../../../code/translations';
+import { t } from '../../../code/helpers/translations';
 
 export interface SeminarContentProps {
   seminarEnrollments: Enrollment[];

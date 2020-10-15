@@ -3,11 +3,11 @@ import { ThunkAction } from 'redux-thunk';
 import { action, payload } from 'ts-action';
 import { State } from './reducers';
 import { Assignment } from '../../code/interfaces/assignment';
-import { http } from '../../code/http';
+import { http } from '../../code/helpers/http';
 import { AssignmentGroup } from '../../code/interfaces/assignmentGroup';
 import { AssignmentArray } from '../../code/interfaces/assignmentArray';
 import { SubmissionCountPerHour } from '../../code/interfaces/submissionCountPerHour';
-import { LoadingState } from '../../code/loading';
+import { LoadingState } from '../../code/enums/loading';
 
 export enum ActionTypes {
   SET_ASSIGNMENTS = '[assignment] SET_ASSIGNMENTS',

@@ -6,16 +6,31 @@ import TextField from '@material-ui/core/TextField';
 import Typography from '@material-ui/core/Typography';
 import Container from '@material-ui/core/Container';
 import styled from '@emotion/styled';
-import { t } from '../../code/translations';
+import { t } from '../../code/helpers/translations';
+import { Avatar } from '@material-ui/core';
+import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
+import { colors } from '../../styles/colors';
+import { login } from '../../store/general/actions';
 
-interface LoginProps {
-  handleIsLoggedIn: (loggedIn: boolean) => void;
+export interface StateProps {}
+
+export interface DispatchProps {
+  login: typeof login;
 }
 
-const LoginComponent: React.FC<LoginProps> = ({ handleIsLoggedIn }) => {
+type LoginProps = DispatchProps & StateProps;
+
+const LoginComponent: React.FC<LoginProps> = ({ login }) => {
+  const handleLogin = () => {
+    login(633699);
+  };
+
   return (
     <Container component="main" maxWidth="xs">
       <div css={paper}>
+        <Avatar css={loginIcon}>
+          <LockOutlinedIcon />
+        </Avatar>
         <Typography component="h1" variant="h5">
           {t('loginPage.login')}
         </Typography>
@@ -26,7 +41,7 @@ const LoginComponent: React.FC<LoginProps> = ({ handleIsLoggedIn }) => {
             required
             fullWidth
             id="email"
-            label="Email Address"
+            label={t('loginPage.email')}
             name="email"
             autoComplete="email"
             autoFocus
@@ -37,7 +52,7 @@ const LoginComponent: React.FC<LoginProps> = ({ handleIsLoggedIn }) => {
             required
             fullWidth
             name="password"
-            label="Password"
+            label={t('loginPage.password')}
             type="password"
             id="password"
             autoComplete="current-password"
@@ -48,7 +63,7 @@ const LoginComponent: React.FC<LoginProps> = ({ handleIsLoggedIn }) => {
             variant="contained"
             color="primary"
             css={submitButton}
-            onClick={() => handleIsLoggedIn(true)}
+            onClick={() => handleLogin()}
           >
             {t('loginPage.signin')}
           </Button>
@@ -76,4 +91,9 @@ const form = css`
 
 const submitButton = css`
   margin-top: 30px;
+`;
+
+const loginIcon = css`
+  margin-bottom: 0px;
+  background-color: ${colors.blue};
 `;

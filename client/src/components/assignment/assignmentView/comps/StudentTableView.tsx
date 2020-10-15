@@ -20,10 +20,10 @@ import {
 import RadioButtonUncheckedIcon from '@material-ui/icons/RadioButtonUnchecked';
 import FiberManualRecordIcon from '@material-ui/icons/FiberManualRecord';
 import { Evaluation } from '../../../../code/interfaces/evaluation';
-import { removeArrayDuplicatesByProp, sumArrayProps } from '../../../../code/helpers';
+import { removeArrayDuplicatesByProp, sumArrayProps } from '../../../../code/helpers/helpers';
 import { AssignmentGroup } from '../../../../code/interfaces/assignmentGroup';
 import { colors } from '../../../../styles/colors';
-import { t } from '../../../../code/translations';
+import { t } from '../../../../code/helpers/translations';
 
 interface StudentTableViewProps {
   evaluations: Evaluation[];

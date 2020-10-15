@@ -4,10 +4,10 @@ import styled from '@emotion/styled';
 import { css, jsx } from '@emotion/core';
 import { useParams } from 'react-router';
 import { Grid, List, ListItem, ListItemText, Typography } from '@material-ui/core';
-import { getDateString, removeArrayDuplicatesByProp } from '../../../code/helpers';
+import { getDateString, removeArrayDuplicatesByProp } from '../../../code/helpers/helpers';
 import { StudentAttendance } from '../../../code/interfaces/studentAttendance';
 import { fetchAttendanceByStudent } from '../../../store/student/actions';
-import { t } from '../../../code/translations';
+import { t } from '../../../code/helpers/translations';
 
 interface AttendanceDetailsProps {
   studentAttendance: StudentAttendance[];

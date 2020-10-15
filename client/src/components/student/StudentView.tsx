@@ -4,7 +4,7 @@ import styled from '@emotion/styled';
 import { css, jsx } from '@emotion/core';
 import { Button, Container, Grid, Paper, Typography } from '@material-ui/core';
 import { useParams } from 'react-router-dom';
-import { StudentMenu } from '../../code/studentMenu';
+import { StudentMenu } from '../../code/enums/studentMenu';
 import { Assignment } from '../../code/interfaces/assignment';
 import { fetchAssignments } from '../../store/assignment/actions';
 import { AssignmentTable } from './comps/AssignmentTable';
@@ -15,7 +15,7 @@ import { fetchActivityByStudent, fetchAttendanceByStudent } from '../../store/st
 import { ActivityList } from './comps/ActivityList';
 import { StudentAttendance } from '../../code/interfaces/studentAttendance';
 import { AttendanceDetails } from './comps/AttendanceDetails';
-import { t } from '../../code/translations';
+import { t } from '../../code/helpers/translations';
 
 export interface StateProps {
   assignments: Assignment[];
