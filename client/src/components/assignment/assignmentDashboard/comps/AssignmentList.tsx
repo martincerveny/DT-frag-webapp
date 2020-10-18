@@ -22,7 +22,7 @@ export interface AssignmentListProps {
 const AssignmentListComponent: React.FC<AssignmentListProps> = ({ assignments, authorAssignments, allEnrollments }) => {
   return (
     <div css={content}>
-      {assignments && authorAssignments ? (
+      {assignments && authorAssignments && allEnrollments ? (
         <List component="nav" aria-label="main mailbox folders">
           {assignments.map((a: Assignment, index: number) => {
             const studentsPassed =

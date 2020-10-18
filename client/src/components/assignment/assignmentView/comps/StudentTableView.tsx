@@ -73,7 +73,7 @@ const StudentTableViewComponent: React.FC<StudentTableViewProps> = ({ evaluation
           <TableHead>
             <TableRow>
               <TableCell>{t('assignmentView.studentTable.name')}</TableCell>
-              <TableCell align="left">{t('assignmentView.studentTable.name')}</TableCell>
+              <TableCell align="left">{t('assignmentView.studentTable.date')}</TableCell>
               {assignmentGroups.map((ag: AssignmentGroup, index: number) => (
                 <TableCell key={index} align="left">
                   {ag.group}

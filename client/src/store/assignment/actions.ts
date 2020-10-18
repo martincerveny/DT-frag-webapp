@@ -34,10 +34,8 @@ export const setLoadingState = action(ActionTypes.SET_LOADING_STATE, payload<{ l
 
 export const fetchAssignments: ActionCreator<ThunkAction<Promise<void>, State, any, any>> = () => {
   return async (dispatch: Dispatch<Action>): Promise<void> => {
-    dispatch(setLoadingState({ loadingState: LoadingState.Loading }));
     const response = await http.get('/assignments');
     dispatch(setAssignments({ assignments: response.data }));
-    dispatch(setLoadingState({ loadingState: LoadingState.Success }));
   };
 };
 
@@ -57,10 +55,8 @@ export const fetchAllAssignmentGroups: ActionCreator<ThunkAction<Promise<void>, 
 
 export const fetchAuthorAssignments: ActionCreator<ThunkAction<Promise<void>, State, any, any>> = () => {
   return async (dispatch: Dispatch<Action>): Promise<void> => {
-    dispatch(setLoadingState({ loadingState: LoadingState.Loading }));
     const response = await http.get(`/assignments/author`);
     dispatch(setAuthorAssignments({ authorAssignments: response.data }));
-    dispatch(setLoadingState({ loadingState: LoadingState.Success }));
   };
 };
 

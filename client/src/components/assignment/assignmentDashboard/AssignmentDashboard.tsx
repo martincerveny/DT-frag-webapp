@@ -1,5 +1,5 @@
 /** @jsx jsx */
-import React, { useContext, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import styled from '@emotion/styled';
 import { css, jsx } from '@emotion/core';
 import { Container, Grid, Paper, Typography } from '@material-ui/core';
@@ -17,7 +17,6 @@ import { fetchEnrollments } from '../../../store/seminar/actions';
 import { colors } from '../../../styles/colors';
 import { SubmissionCountPerHour } from '../../../code/interfaces/submissionCountPerHour';
 import { t } from '../../../code/helpers/translations';
-import { UserContext } from '../../../App';
 
 export interface StateProps {
   assignments: Assignment[];
