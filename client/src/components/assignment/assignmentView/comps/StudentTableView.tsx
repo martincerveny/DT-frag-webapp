@@ -86,15 +86,8 @@ const StudentTableViewComponent: React.FC<StudentTableViewProps> = ({ evaluation
             {uniqueStudentEvals
               .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
               .map((e: Evaluation, rowIndex: number) => {
-                const studentEvals = evaluations.filter((se: Evaluation) => se.author === e.author);
-                const maxEvalId = Math.max.apply(
-                  Math,
-                  studentEvals.map(function(o) {
-                    return o.eval_id;
-                  }),
-                );
-                const currentStudentEval = studentEvals.filter((mse: Evaluation) => mse.eval_id === maxEvalId);
-                const points = sumArrayProps(currentStudentEval, 'points');
+                const studentEval = evaluations.filter((se: Evaluation) => se.author === e.author);
+                const points = sumArrayProps(studentEval, 'points');
 
                 return (
                   <React.Fragment key={rowIndex}>
@@ -102,9 +95,9 @@ const StudentTableViewComponent: React.FC<StudentTableViewProps> = ({ evaluation
                       <TableCell component="th" scope="row">
                         {e.author_name}
                       </TableCell>
-                      <TableCell align="left">{new Date(currentStudentEval[0].stamp).toLocaleDateString()}</TableCell>
+                      <TableCell align="left">{new Date(studentEval[0].stamp).toLocaleDateString()}</TableCell>
                       {assignmentGroups.map((ag: AssignmentGroup, groupIndex: number) => {
-                        const studentTests = currentStudentEval.filter((mse: Evaluation) => ag.group === mse.group);
+                        const studentTests = studentEval.filter((mse: Evaluation) => ag.group === mse.group);
                         return (
                           <TableCell key={groupIndex} align="left">
                             {studentTests.map((test: Evaluation, testIndex: number) => {
