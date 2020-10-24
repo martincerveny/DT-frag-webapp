@@ -61,6 +61,7 @@ export class AssignmentService {
         'assignment',
         'assignment.id = assignmentPassed.assignment_id',
       )
+      .where('author IN (SELECT student FROM enrollment)')
       .getRawMany();
 
     const assignmentNotPassed = await this.assignmentPassedRepository
@@ -77,7 +78,9 @@ export class AssignmentService {
       JOIN frag.assignment ON assignment_pts.assignment_id = assignment.id
       JOIN frag.eval_pass ON eval_pass.assignment_id = assignment.id
       WHERE assignment_pts.points < eval_pass.points
-      ) as subm`);
+      ) as subm
+      WHERE author IN (SELECT student FROM enrollment)
+      `);
 
     return {
       assignmentsPassed: assignmentsPassed,
@@ -95,6 +98,7 @@ export class AssignmentService {
       .where(
         'submission.assignment_id IN (SELECT assignment_id FROM assignment_now)',
       )
+      .andWhere('author IN (SELECT student FROM enrollment)')
       .groupBy("DATE_PART('hour',stamp)")
       .orderBy('hour', 'ASC')
       .getRawMany();

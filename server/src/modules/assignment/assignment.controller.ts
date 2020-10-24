@@ -33,9 +33,4 @@ export class AssignmentController {
   findAuthorAssignments(): Promise<AssignmentArrayDto> {
     return this.assignmentService.findAuthorAssignments();
   }
-
-  @Get('/author')
-  find(): Promise<AssignmentArrayDto> {
-    return this.assignmentService.findAuthorAssignments();
-  }
 }
