@@ -50,7 +50,7 @@ const SeminarContentComponent: React.FC<SeminarContentProps> = ({
   }, [seminars]);
 
   return (
-    <div css={content}>
+    <div>
       {renderIconDescription()}
       {seminars.map((s: Seminar, index: number) => {
         return (
@@ -79,7 +79,7 @@ const SeminarContentComponent: React.FC<SeminarContentProps> = ({
 
 const renderIconDescription = () => {
   return (
-    <Grid container direction="column" spacing={1}>
+    <Grid container direction="column" css={iconDescriptionWrapper}>
       <Grid item>
         <SquareFill color="green" size={20} />
         <span css={descriptionWrapper}>{t('seminar.yesPass')}</span>
@@ -104,10 +104,10 @@ const heading = css`
   margin: 20px;
 `;
 
-const content = css`
-  margin: 20px;
-`;
-
 const descriptionWrapper = css`
   margin-left: 10px;
+`;
+
+const iconDescriptionWrapper = css`
+  padding: 20px;
 `;

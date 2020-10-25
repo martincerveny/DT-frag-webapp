@@ -26,6 +26,7 @@ import { fetchEvaluationsByStudent } from '../../../store/evaluation/actions';
 import { Evaluation } from '../../../code/interfaces/evaluation';
 import { Loader } from '../../shared/Loader';
 import { t } from '../../../code/helpers/translations';
+import { TestDescription } from '../../shared/TestDescription';
 
 interface AssignmentTableProps {
   assignments: Assignment[];
@@ -67,8 +68,9 @@ const AssignmentTableComponent: React.FC<AssignmentTableProps> = ({
 
   return (
     <div css={content}>
+      <TestDescription />
       {assignments && evaluations ? (
-        <TableContainer component={Paper}>
+        <TableContainer css={tableWrapper} component={Paper}>
           <Table aria-label="simple table">
             <TableHead>
               <TableRow>
@@ -78,15 +80,9 @@ const AssignmentTableComponent: React.FC<AssignmentTableProps> = ({
             </TableHead>
             <TableBody>
               {assignments.map((a: Assignment, rowIndex: number) => {
-                const assignmentEvals = evaluations.filter((ae: Evaluation) => ae.assignment_id === a.id);
-                const maxEvalId = Math.max.apply(
-                  Math,
-                  assignmentEvals.map(function(o) {
-                    return o.eval_id;
-                  }),
-                );
-                const currentAssignmentEval = assignmentEvals.filter((cae: Evaluation) => cae.eval_id === maxEvalId);
-
+                const assignmentEvals = evaluations
+                  .filter((ae: Evaluation) => ae.assignment_id === a.id)
+                  .sort((s1: Evaluation, s2: Evaluation) => Number(s1.sequence) - Number(s2.sequence));
                 return (
                   <React.Fragment key={rowIndex}>
                     <TableRow>
@@ -94,10 +90,10 @@ const AssignmentTableComponent: React.FC<AssignmentTableProps> = ({
                         {a.name}
                       </TableCell>
                       <TableCell align="left">
-                        {currentAssignmentEval.length > 0 ? (
-                          currentAssignmentEval.map((test: Evaluation, testIndex: number) => {
+                        {assignmentEvals.length > 0 ? (
+                          assignmentEvals.map((test: Evaluation, testIndex: number) => {
                             return (
-                              <Tooltip title={test.name} placement="top" key={testIndex}>
+                              <Tooltip title={test.sequence} placement="top" key={testIndex}>
                                 <IconButton
                                   aria-label="circle"
                                   size="small"
@@ -160,6 +156,10 @@ const dataWrapper = css`
   margin-top: 20px;
 `;
 
+const tableWrapper = css`
+  margin-top: 20px;
+`;
+
 const contentCellWrapper = css`
   padding-top: 0px;
   padding-bottom: 0px;
@@ -168,5 +168,5 @@ const contentCellWrapper = css`
 
 const contentBoxWrapper = css`
   padding: 10px;
-  border: dashed 1px ${colors.gray};
+  border: dashed 1px ${colors.blue};
 `;

@@ -24,6 +24,7 @@ import { removeArrayDuplicatesByProp, sumArrayProps } from '../../../../code/hel
 import { AssignmentGroup } from '../../../../code/interfaces/assignmentGroup';
 import { colors } from '../../../../styles/colors';
 import { t } from '../../../../code/helpers/translations';
+import { TestDescription } from '../../../shared/TestDescription';
 
 interface StudentTableViewProps {
   evaluations: Evaluation[];
@@ -68,7 +69,8 @@ const StudentTableViewComponent: React.FC<StudentTableViewProps> = ({ evaluation
 
   return (
     <div css={content}>
-      <TableContainer component={Paper}>
+      <TestDescription />
+      <TableContainer component={Paper} css={tableWrapper}>
         <Table aria-label="simple table">
           <TableHead>
             <TableRow>
@@ -97,7 +99,10 @@ const StudentTableViewComponent: React.FC<StudentTableViewProps> = ({ evaluation
                       </TableCell>
                       <TableCell align="left">{new Date(studentEval[0].stamp).toLocaleDateString()}</TableCell>
                       {assignmentGroups.map((ag: AssignmentGroup, groupIndex: number) => {
-                        const studentTests = studentEval.filter((mse: Evaluation) => ag.group === mse.group);
+                        let studentTests = studentEval
+                          .filter((mse: Evaluation) => ag.group === mse.group)
+                          .sort((s1: Evaluation, s2: Evaluation) => Number(s1.sequence) - Number(s2.sequence));
+
                         return (
                           <TableCell key={groupIndex} align="left">
                             {studentTests.map((test: Evaluation, testIndex: number) => {
@@ -172,6 +177,10 @@ const collapseWrapper = css`
 
 const content = css`
   margin: 50px 20px;
+`;
+
+const tableWrapper = css`
+  margin-top: 20px;
 `;
 
 const dataWrapper = css`
