@@ -93,7 +93,7 @@ const AssignmentTableComponent: React.FC<AssignmentTableProps> = ({
                         {assignmentEvals.length > 0 ? (
                           assignmentEvals.map((test: Evaluation, testIndex: number) => {
                             return (
-                              <Tooltip title={test.sequence} placement="top" key={testIndex}>
+                              <Tooltip title={test.name} placement="top" key={testIndex}>
                                 <IconButton
                                   aria-label="circle"
                                   size="small"
