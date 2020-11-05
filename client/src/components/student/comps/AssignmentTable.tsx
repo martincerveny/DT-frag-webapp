@@ -109,7 +109,7 @@ const AssignmentTableComponent: React.FC<AssignmentTableProps> = ({
                             );
                           })
                         ) : (
-                          <div>N/A</div>
+                          <div>{t('student.notSubmitted')}</div>
                         )}
                       </TableCell>
                     </TableRow>
@@ -121,7 +121,9 @@ const AssignmentTableComponent: React.FC<AssignmentTableProps> = ({
                             <Typography variant="h6" color="primary">
                               {testName}
                             </Typography>
-                            <div css={dataWrapper}>{data}</div>
+                            <div css={dataWrapper}>
+                              <pre>{data}</pre>
+                            </div>
                           </Box>
                         </Collapse>
                       </TableCell>

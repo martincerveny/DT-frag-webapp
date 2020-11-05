@@ -27,7 +27,7 @@ const ActivityListComponent: React.FC<ActivityListProps> = ({ activity, fetchAct
           {activity.map((a: Activity, index: number) => {
             return (
               <ListItem key={index}>
-                <ListItemText primary={a.points + ' points'} secondary={getDateString(a.stamp)} />
+                <ListItemText primary={a.points / 100 + ' point(s)'} secondary={getDateString(a.stamp)} />
                 <ListItemText css={note} primary={a.note} />
               </ListItem>
             );

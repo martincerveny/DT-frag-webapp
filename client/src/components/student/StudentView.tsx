@@ -16,6 +16,7 @@ import { ActivityList } from './comps/ActivityList';
 import { StudentAttendance } from '../../code/interfaces/studentAttendance';
 import { AttendanceDetails } from './comps/AttendanceDetails';
 import { t } from '../../code/helpers/translations';
+import { Notepads } from './comps/Notepads';
 
 export interface StateProps {
   assignments: Assignment[];
@@ -80,6 +81,15 @@ const StudentViewComponent: React.FC<StudentViewProps> = ({
         >
           {t('student.attendanceDetails')}
         </Button>
+        <Button
+          variant="contained"
+          color={selectedMenuItem === StudentMenu.Notepads ? 'primary' : 'default'}
+          disableElevation
+          css={menuButton}
+          onClick={() => handleMenuClick(StudentMenu.Notepads)}
+        >
+          {t('student.notepads')}
+        </Button>
       </Grid>
     );
   };
@@ -100,6 +110,8 @@ const StudentViewComponent: React.FC<StudentViewProps> = ({
       return (
         <AttendanceDetails studentAttendance={studentAttendance} fetchAttendanceByStudent={fetchAttendanceByStudent} />
       );
+    } else if (selectedMenuItem === StudentMenu.Notepads) {
+      return <Notepads />;
     }
   };
 

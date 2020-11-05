@@ -38,7 +38,7 @@ const StudentTableViewComponent: React.FC<StudentTableViewProps> = ({ evaluation
   const [testName, setTestName] = React.useState<string>('');
   const [data, setData] = React.useState<string>('');
   const [page, setPage] = React.useState<number>(0);
-  const [rowsPerPage, setRowsPerPage] = React.useState<number>(10);
+  const [rowsPerPage, setRowsPerPage] = React.useState<number>(15);
 
   const handleChangePage = (event: any, newPage: number) => {
     setPage(newPage);
@@ -107,7 +107,7 @@ const StudentTableViewComponent: React.FC<StudentTableViewProps> = ({ evaluation
                           <TableCell key={groupIndex} align="left">
                             {studentTests.map((test: Evaluation, testIndex: number) => {
                               return (
-                                <Tooltip title={test.name} placement="top" key={testIndex}>
+                                <Tooltip title={test.sequence} placement="top" key={testIndex}>
                                   <IconButton
                                     aria-label="circle"
                                     size="small"
@@ -132,7 +132,7 @@ const StudentTableViewComponent: React.FC<StudentTableViewProps> = ({ evaluation
                           </TableCell>
                         );
                       })}
-                      <TableCell align="left">{points}</TableCell>
+                      <TableCell align="left">{points / 100}</TableCell>
                     </TableRow>
 
                     <TableRow>
@@ -142,7 +142,9 @@ const StudentTableViewComponent: React.FC<StudentTableViewProps> = ({ evaluation
                             <Typography variant="h6" color="primary">
                               {testName}
                             </Typography>
-                            <div css={dataWrapper}>{data}</div>
+                            <div css={dataWrapper}>
+                              <pre>{data}</pre>
+                            </div>
                           </Box>
                         </Collapse>
                       </TableCell>

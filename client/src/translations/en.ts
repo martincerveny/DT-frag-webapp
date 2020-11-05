@@ -34,6 +34,8 @@ export const translates: {
   'student.seminar': 'Seminar',
   'student.assignment': 'Assignment',
   'student.tests': 'Tests',
+  'student.notSubmitted': 'not submitted',
+  'student.notepads': 'Notepads',
   'test.pass': 'pass',
   'test.fail': 'fail',
 };

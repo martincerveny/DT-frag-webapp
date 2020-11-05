@@ -43,7 +43,7 @@ const SeminarTableComponent: React.FC<SeminarTableProps> = ({
   let studentActivity: ActivityPts[] | null = null;
   let studentAssignmentsPassed: AuthorAssignment[] | null = null;
   let studentAssignmentsNotPassed: AuthorAssignment[] | null = null;
-  let notSubmittedAssignments: string[] | null = null;
+  let notSubmittedAssignments: Assignment[] | null = null;
 
   return (
     <div css={content}>
@@ -88,12 +88,11 @@ const SeminarTableComponent: React.FC<SeminarTableProps> = ({
                   }
 
                   if (studentAssignmentsPassed && studentAssignmentsNotPassed) {
-                    const assignmentNames = assignments.map(({ name }) => name);
                     const studentAssignments = studentAssignmentsPassed
                       .concat(studentAssignmentsNotPassed)
                       .map(({ assignment_name }) => assignment_name);
 
-                    notSubmittedAssignments = assignmentNames.filter(n => !studentAssignments.includes(n));
+                    notSubmittedAssignments = assignments.filter(a => !studentAssignments.includes(a.name));
                   }
 
                   return (
@@ -107,32 +106,38 @@ const SeminarTableComponent: React.FC<SeminarTableProps> = ({
                         {studentAssignmentsPassed &&
                           studentAssignmentsPassed.map((sap: AuthorAssignment, index: number) => {
                             return (
-                              <Tooltip key={index} title={sap.assignment_name} placement="top">
-                                <SquareFill color="green" size={20} css={iconMargin} />
-                              </Tooltip>
+                              <Link key={index} to={`${Routes.Assignments}/${sap.assignment_id}`}>
+                                <Tooltip title={sap.assignment_name} placement="top">
+                                  <SquareFill size={20} css={passedButton} />
+                                </Tooltip>
+                              </Link>
                             );
                           })}
                         {studentAssignmentsNotPassed &&
                           studentAssignmentsNotPassed.map((sanp: AuthorAssignment, index: number) => {
                             return (
-                              <Tooltip key={index} title={sanp.assignment_name} placement="top">
-                                <Square size={20} css={iconMargin} />
-                              </Tooltip>
+                              <Link key={index} to={`${Routes.Assignments}/${sanp.assignment_id}`}>
+                                <Tooltip title={sanp.assignment_name} placement="top">
+                                  <Square size={20} css={notPassedButton} />
+                                </Tooltip>
+                              </Link>
                             );
                           })}
                         {notSubmittedAssignments &&
-                          notSubmittedAssignments.map((nsa: string, index: number) => {
+                          notSubmittedAssignments.map((nsa: Assignment, index: number) => {
                             return (
-                              <Tooltip key={index} title={nsa} placement="top">
-                                <XSquareFill color="gray" size={20} css={iconMargin} />
-                              </Tooltip>
+                              <Link key={index} to={`${Routes.Assignments}/${nsa.id}`}>
+                                <Tooltip title={nsa.name} placement="top">
+                                  <XSquareFill size={20} css={notSubmittedButton} />
+                                </Tooltip>
+                              </Link>
                             );
                           })}
                       </TableCell>
                       <TableCell align="right">
                         {studentAttendance.map((sa: Attendance, index: number) => (
                           <Tooltip key={index} title={getDateString(sa.date)} placement="top">
-                            <SquareFill color="green" size={20} css={iconMargin} />
+                            <SquareFill color="green" size={20} css={attendanceButton} />
                           </Tooltip>
                         ))}
                       </TableCell>
@@ -157,8 +162,33 @@ const StyledSeminarTable = styled(SeminarTableComponent)``;
 
 export const SeminarTable = (props: any) => <StyledSeminarTable {...props} />;
 
-const iconMargin = css`
+const attendanceButton = css`
   margin-left: 1px;
+`;
+
+const passedButton = css`
+  margin-left: 1px;
+  color: green;
+  &:hover {
+    color: ${colors.blue} !important;
+    background-color: ${colors.blue} !important;
+  }
+`;
+
+const notPassedButton = css`
+  margin-left: 1px;
+  &:hover {
+    color: ${colors.blue} !important;
+    background-color: ${colors.blue} !important;
+  }
+`;
+
+const notSubmittedButton = css`
+  margin-left: 1px;
+  color: ${colors.gray};
+  &:hover {
+    color: ${colors.blue} !important;
+  }
 `;
 
 const content = css`
