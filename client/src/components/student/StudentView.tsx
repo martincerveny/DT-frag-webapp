@@ -11,18 +11,20 @@ import { AssignmentTable } from './comps/AssignmentTable';
 import { Evaluation } from '../../code/interfaces/evaluation';
 import { fetchEvaluationsByStudent } from '../../store/evaluation/actions';
 import { Activity } from '../../code/interfaces/activity';
-import { fetchActivityByStudent, fetchAttendanceByStudent } from '../../store/student/actions';
+import { fetchActivityByStudent, fetchAttendanceByStudent, fetchNotepadsByStudent } from '../../store/student/actions';
 import { ActivityList } from './comps/ActivityList';
 import { StudentAttendance } from '../../code/interfaces/studentAttendance';
 import { AttendanceDetails } from './comps/AttendanceDetails';
 import { t } from '../../code/helpers/translations';
-import { Notepads } from './comps/Notepads';
+import { Notepads } from '../../code/interfaces/notepads';
+import { NotepadsContent } from './comps/NotepadsContent';
 
 export interface StateProps {
   assignments: Assignment[];
   evaluations: Evaluation[];
   activity: Activity[];
   studentAttendance: StudentAttendance[];
+  notepads: Notepads | undefined;
 }
 
 export interface DispatchProps {
@@ -30,6 +32,7 @@ export interface DispatchProps {
   fetchEvaluationsByStudent: typeof fetchEvaluationsByStudent;
   fetchActivityByStudent: typeof fetchActivityByStudent;
   fetchAttendanceByStudent: typeof fetchAttendanceByStudent;
+  fetchNotepadsByStudent: typeof fetchNotepadsByStudent;
 }
 
 type StudentViewProps = DispatchProps & StateProps;
@@ -43,6 +46,8 @@ const StudentViewComponent: React.FC<StudentViewProps> = ({
   fetchActivityByStudent,
   studentAttendance,
   fetchAttendanceByStudent,
+  fetchNotepadsByStudent,
+  notepads,
 }) => {
   const { studentId } = useParams();
   const [selectedMenuItem, setSelectedMenuItem] = React.useState<StudentMenu>(StudentMenu.Assignment);
@@ -111,7 +116,7 @@ const StudentViewComponent: React.FC<StudentViewProps> = ({
         <AttendanceDetails studentAttendance={studentAttendance} fetchAttendanceByStudent={fetchAttendanceByStudent} />
       );
     } else if (selectedMenuItem === StudentMenu.Notepads) {
-      return <Notepads />;
+      return <NotepadsContent fetchNotepadsByStudent={fetchNotepadsByStudent} notepads={notepads} />;
     }
   };
 

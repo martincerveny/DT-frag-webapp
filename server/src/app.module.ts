@@ -17,6 +17,9 @@ import { AssignmentPassed } from './modules/assignment/entities/assignmentPassed
 import { Activity } from './modules/seminar/entities/activity.entity';
 import { Submission } from './modules/assignment/entities/submission.entity';
 import { EvalLatest } from './modules/evaluation/entities/evalLatest.entity';
+import { PadAssignment } from './modules/student/entities/padAssignment.entity';
+import { PadMisc } from './modules/student/entities/padMisc.entity';
+import { StudentModule } from './modules/student/student.module';
 
 const dbOptions: PostgresConnectionOptions = {
   type: 'postgres',
@@ -39,6 +42,8 @@ const dbOptions: PostgresConnectionOptions = {
     Activity,
     Submission,
     EvalLatest,
+    PadAssignment,
+    PadMisc,
   ],
 };
 
@@ -48,6 +53,7 @@ const dbOptions: PostgresConnectionOptions = {
     AssignmentModule,
     EvaluationModule,
     SeminarModule,
+    StudentModule,
   ],
   controllers: [AppController],
   providers: [],

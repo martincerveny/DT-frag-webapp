@@ -5,10 +5,12 @@ import { State } from './reducers';
 import { http } from '../../code/helpers/http';
 import { StudentAttendance } from '../../code/interfaces/studentAttendance';
 import { Activity } from '../../code/interfaces/activity';
+import {Notepads} from "../../code/interfaces/notepads";
 
 export enum ActionTypes {
   SET_STUDENT_ATTENDANCE = '[student] SET_STUDENT_ATTENDANCE',
   SET_ACTIVITY = '[student] SET_ACTIVITY',
+  SET_NOTEPADS = '[student] SET_NOTEPADS',
 }
 
 export const setStudentAttendance = action(
@@ -16,6 +18,7 @@ export const setStudentAttendance = action(
   payload<{ studentAttendance: StudentAttendance[] }>(),
 );
 export const setActivity = action(ActionTypes.SET_ACTIVITY, payload<{ activity: Activity[] }>());
+export const setNotepads = action(ActionTypes.SET_NOTEPADS, payload<{ notepads: Notepads }>());
 
 export const fetchAttendanceByStudent: ActionCreator<ThunkAction<Promise<void>, State, any, any>> = (id: number) => {
   return async (dispatch: Dispatch<Action>): Promise<void> => {
@@ -28,5 +31,12 @@ export const fetchActivityByStudent: ActionCreator<ThunkAction<Promise<void>, St
   return async (dispatch: Dispatch<Action>): Promise<void> => {
     const response = await http.get(`/seminars/activity/${id}/student`);
     dispatch(setActivity({ activity: response.data }));
+  };
+};
+
+export const fetchNotepadsByStudent: ActionCreator<ThunkAction<Promise<void>, State, any, any>> = (id: number) => {
+  return async (dispatch: Dispatch<Action>): Promise<void> => {
+    const response = await http.get(`/student/notepads/${id}`);
+    dispatch(setNotepads({ notepads: response.data }));
   };
 };

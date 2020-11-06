@@ -4,13 +4,14 @@ import { State } from '../../store/combinedReducers';
 import { DispatchProps, StateProps, StudentView } from './StudentView';
 import { fetchAssignments } from '../../store/assignment/actions';
 import { fetchEvaluationsByStudent } from '../../store/evaluation/actions';
-import { fetchActivityByStudent, fetchAttendanceByStudent } from '../../store/student/actions';
+import { fetchActivityByStudent, fetchAttendanceByStudent, fetchNotepadsByStudent } from '../../store/student/actions';
 
 const mapStateToProps = (state: State): StateProps => ({
   assignments: state.assignment.assignments,
   evaluations: state.evaluation.evaluations,
   activity: state.student.activity,
   studentAttendance: state.student.studentAttendance,
+  notepads: state.student.notepads,
 });
 
 const mapDispatchToProps = (dispatch: Dispatch): DispatchProps => ({
@@ -20,6 +21,7 @@ const mapDispatchToProps = (dispatch: Dispatch): DispatchProps => ({
       fetchEvaluationsByStudent,
       fetchActivityByStudent,
       fetchAttendanceByStudent,
+      fetchNotepadsByStudent,
     },
     dispatch,
   ),
