@@ -4,7 +4,7 @@ export const translates: {
   'assignment.dashboard': 'Assignment Dashboard',
   'assignment.statistics.graph1': 'Statistics 1',
   'assignment.statistics.graph2': 'All submissions per hour of the day',
-  'assignmentView.stats': 'Stats',
+  'assignmentView.stats': 'Statistics',
   'assignmentView.students': 'Students',
   'assignmentView.assignment': 'Assignment',
   'assignmentView.studentTable.name': 'Name',

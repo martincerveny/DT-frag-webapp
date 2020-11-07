@@ -14,6 +14,8 @@ import { AssignmentViewMenu } from '../../../code/enums/assignmentViewMenu';
 import { t } from '../../../code/helpers/translations';
 import { Assignment } from '../../../code/interfaces/assignment';
 import { Loader } from '../../shared/Loader';
+import AssessmentIcon from '@material-ui/icons/Assessment';
+import PeopleIcon from '@material-ui/icons/People';
 
 export interface StateProps {
   assignmentGroups: AssignmentGroup[];
@@ -60,6 +62,7 @@ const AssignmentViewComponent: React.FC<AssignmentViewProps> = ({
           css={menuButton}
           onClick={() => handleMenuClick(AssignmentViewMenu.Stats)}
         >
+          <AssessmentIcon css={icon} />
           {t('assignmentView.stats')}
         </Button>
         <Button
@@ -69,6 +72,7 @@ const AssignmentViewComponent: React.FC<AssignmentViewProps> = ({
           css={menuButton}
           onClick={() => handleMenuClick(AssignmentViewMenu.Students)}
         >
+          <PeopleIcon css={icon} />
           {t('assignmentView.students')}
         </Button>
       </Grid>
@@ -135,4 +139,8 @@ const heading = css`
 
 const menuButton = css`
   margin-left: 20px;
+`;
+
+const icon = css`
+  margin-right: 10px;
 `;

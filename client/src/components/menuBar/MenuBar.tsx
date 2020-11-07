@@ -2,14 +2,15 @@
 import styled from '@emotion/styled';
 import { css, jsx } from '@emotion/core';
 import React from 'react';
-import { AppBar, Button, IconButton, Menu, MenuItem, Toolbar, Tooltip, Typography } from '@material-ui/core';
-import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
+import { AppBar, Button, IconButton, Toolbar, Typography } from '@material-ui/core';
 import AccountCircleIcon from '@material-ui/icons/AccountCircle';
 import { Link } from 'react-router-dom';
 import { colors } from '../../styles/colors';
 import { Routes } from '../../code/enums/routes';
 import { t } from '../../code/helpers/translations';
 import { ExitToApp } from '@material-ui/icons';
+import AssignmentIcon from '@material-ui/icons/Assignment';
+import GroupIcon from '@material-ui/icons/Group';
 
 interface MenuBarProps {
   handleUserLogOut: () => void;
@@ -20,7 +21,7 @@ const MenuBarComponent: React.FC<MenuBarProps> = ({ handleUserLogOut }) => {
     <div css={appBar}>
       <AppBar position="static">
         <Toolbar>
-          <div>
+          <div css={dashboardTitleWrapper}>
             <Link to={Routes.Home} css={title}>
               <Typography variant="h6">{t('menuBar.dashboard')}</Typography>
             </Link>
@@ -28,6 +29,7 @@ const MenuBarComponent: React.FC<MenuBarProps> = ({ handleUserLogOut }) => {
           <div css={menuItemWrapper}>
             <Link to={Routes.Home} css={title}>
               <Button color="inherit">
+                <AssignmentIcon />
                 <span css={buttonText}>{t('menuBar.assignments')}</span>
               </Button>
             </Link>
@@ -35,6 +37,7 @@ const MenuBarComponent: React.FC<MenuBarProps> = ({ handleUserLogOut }) => {
           <div css={lastMenuItemWrapper}>
             <Link to={Routes.Seminars} css={title}>
               <Button color="inherit">
+                <GroupIcon />
                 <span css={buttonText}>{t('menuBar.seminars')}</span>
               </Button>
             </Link>
@@ -75,6 +78,10 @@ const title = css`
 const buttonText = css`
   margin-left: 5px;
   margin-right: 5px;
+`;
+
+const dashboardTitleWrapper = css`
+  margin-right: 30px;
 `;
 
 const logoutButton = css`

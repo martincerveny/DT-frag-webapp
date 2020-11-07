@@ -25,6 +25,10 @@ import { Notepads } from '../../code/interfaces/notepads';
 import { NotepadsContent } from './comps/NotepadsContent';
 import { Person } from '../../code/interfaces/person';
 import { Loader } from '../shared/Loader';
+import AssignmentIcon from '@material-ui/icons/Assignment';
+import GradeIcon from '@material-ui/icons/Grade';
+import EventAvailableIcon from '@material-ui/icons/EventAvailable';
+import NoteIcon from '@material-ui/icons/Note';
 
 export interface StateProps {
   assignments: Assignment[];
@@ -81,6 +85,7 @@ const StudentViewComponent: React.FC<StudentViewProps> = ({
           css={menuButton}
           onClick={() => handleMenuClick(StudentMenu.Assignment)}
         >
+          <AssignmentIcon css={icon} />
           {t('student.assignments')}
         </Button>
         <Button
@@ -90,6 +95,7 @@ const StudentViewComponent: React.FC<StudentViewProps> = ({
           css={menuButton}
           onClick={() => handleMenuClick(StudentMenu.ActivityList)}
         >
+          <GradeIcon css={icon} />
           {t('student.activityList')}
         </Button>
         <Button
@@ -99,6 +105,7 @@ const StudentViewComponent: React.FC<StudentViewProps> = ({
           css={menuButton}
           onClick={() => handleMenuClick(StudentMenu.Attendance)}
         >
+          <EventAvailableIcon css={icon} />
           {t('student.attendanceDetails')}
         </Button>
         <Button
@@ -108,6 +115,7 @@ const StudentViewComponent: React.FC<StudentViewProps> = ({
           css={menuButton}
           onClick={() => handleMenuClick(StudentMenu.Notepads)}
         >
+          <NoteIcon css={icon} />
           {t('student.notepads')}
         </Button>
       </Grid>
@@ -187,4 +195,8 @@ const heading = css`
 
 const menuButton = css`
   margin-left: 20px;
+`;
+
+const icon = css`
+  margin-right: 10px;
 `;
