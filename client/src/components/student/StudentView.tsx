@@ -1,5 +1,5 @@
 /** @jsx jsx */
-import React from 'react';
+import React, { useEffect } from 'react';
 import styled from '@emotion/styled';
 import { css, jsx } from '@emotion/core';
 import { Button, Container, Grid, Paper, Typography } from '@material-ui/core';
@@ -11,13 +11,20 @@ import { AssignmentTable } from './comps/AssignmentTable';
 import { Evaluation } from '../../code/interfaces/evaluation';
 import { fetchEvaluationsByStudent } from '../../store/evaluation/actions';
 import { Activity } from '../../code/interfaces/activity';
-import { fetchActivityByStudent, fetchAttendanceByStudent, fetchNotepadsByStudent } from '../../store/student/actions';
+import {
+  fetchActivityByStudent,
+  fetchAttendanceByStudent,
+  fetchNotepadsByStudent,
+  fetchStudent,
+} from '../../store/student/actions';
 import { ActivityList } from './comps/ActivityList';
 import { StudentAttendance } from '../../code/interfaces/studentAttendance';
 import { AttendanceDetails } from './comps/AttendanceDetails';
 import { t } from '../../code/helpers/translations';
 import { Notepads } from '../../code/interfaces/notepads';
 import { NotepadsContent } from './comps/NotepadsContent';
+import { Person } from '../../code/interfaces/person';
+import { Loader } from '../shared/Loader';
 
 export interface StateProps {
   assignments: Assignment[];
@@ -25,6 +32,7 @@ export interface StateProps {
   activity: Activity[];
   studentAttendance: StudentAttendance[];
   notepads: Notepads | undefined;
+  student: Person | undefined;
 }
 
 export interface DispatchProps {
@@ -33,6 +41,7 @@ export interface DispatchProps {
   fetchActivityByStudent: typeof fetchActivityByStudent;
   fetchAttendanceByStudent: typeof fetchAttendanceByStudent;
   fetchNotepadsByStudent: typeof fetchNotepadsByStudent;
+  fetchStudent: typeof fetchStudent;
 }
 
 type StudentViewProps = DispatchProps & StateProps;
@@ -48,9 +57,15 @@ const StudentViewComponent: React.FC<StudentViewProps> = ({
   fetchAttendanceByStudent,
   fetchNotepadsByStudent,
   notepads,
+  student,
+  fetchStudent,
 }) => {
   const { studentId } = useParams();
   const [selectedMenuItem, setSelectedMenuItem] = React.useState<StudentMenu>(StudentMenu.Assignment);
+
+  useEffect(() => {
+    fetchStudent(studentId);
+  }, []);
 
   const handleMenuClick = (menuItem: StudentMenu) => {
     setSelectedMenuItem(menuItem);
@@ -122,21 +137,25 @@ const StudentViewComponent: React.FC<StudentViewProps> = ({
 
   return (
     <div css={root}>
-      <Container maxWidth="lg" css={container}>
-        <Grid container spacing={3}>
-          <Grid item xs={12} md={12} lg={12}>
-            <Paper css={paper}>
-              <Grid container direction="column">
-                <Typography component="h2" variant="h6" color="primary" gutterBottom css={heading}>
-                  Student: {studentId}
-                </Typography>
-                {renderHorizontalMenu()}
-                {renderDataComponent()}
-              </Grid>
-            </Paper>
+      {student ? (
+        <Container maxWidth="lg" css={container}>
+          <Grid container spacing={3}>
+            <Grid item xs={12} md={12} lg={12}>
+              <Paper css={paper}>
+                <Grid container direction="column">
+                  <Typography component="h2" variant="h6" color="primary" gutterBottom css={heading}>
+                    {t('student.student')}: {student.name} ({student.login})
+                  </Typography>
+                  {renderHorizontalMenu()}
+                  {renderDataComponent()}
+                </Grid>
+              </Paper>
+            </Grid>
           </Grid>
-        </Grid>
-      </Container>
+        </Container>
+      ) : (
+        <Loader />
+      )}
     </div>
   );
 };

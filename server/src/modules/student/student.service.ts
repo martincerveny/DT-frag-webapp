@@ -4,6 +4,7 @@ import { Repository } from 'typeorm';
 import { PadAssignment } from './entities/padAssignment.entity';
 import { PadMisc } from './entities/padMisc.entity';
 import { NotepadsDto } from './dtos/notepadsDto';
+import { Person } from './entities/person.entity';
 
 @Injectable()
 export class StudentService {
@@ -12,6 +13,8 @@ export class StudentService {
     private padAssignmentRepository: Repository<PadAssignment>,
     @InjectRepository(PadMisc)
     private padMiscRepository: Repository<PadMisc>,
+    @InjectRepository(Person)
+    private personRepository: Repository<Person>,
   ) {}
 
   async findNotepadsByStudent(id: number): Promise<NotepadsDto> {
@@ -55,5 +58,9 @@ export class StudentService {
       padAssignments: padAssignments,
       padMisc: padMisc,
     };
+  }
+
+  findStudent(id: number): Promise<Person> {
+    return this.personRepository.findOne(id);
   }
 }

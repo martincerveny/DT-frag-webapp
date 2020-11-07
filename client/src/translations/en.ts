@@ -32,6 +32,7 @@ export const translates: {
   'student.activityList': 'Activity List',
   'student.attendanceDetails': 'Attendance Details',
   'student.seminar': 'Seminar',
+  'student.student': 'Student',
   'student.assignment': 'Assignment',
   'student.tests': 'Tests',
   'student.notSubmitted': 'not submitted',

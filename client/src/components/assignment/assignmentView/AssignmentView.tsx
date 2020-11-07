@@ -7,20 +7,24 @@ import { useParams } from 'react-router-dom';
 import { GeneralTestGroupView } from './comps/GeneralTestGroupView';
 import { StudentTableView } from './comps/StudentTableView';
 import { AssignmentGroup } from '../../../code/interfaces/assignmentGroup';
-import { fetchGroupsByAssignment } from '../../../store/assignment/actions';
+import { fetchAssignment, fetchGroupsByAssignment } from '../../../store/assignment/actions';
 import { Evaluation } from '../../../code/interfaces/evaluation';
 import { fetchEvaluations } from '../../../store/evaluation/actions';
 import { AssignmentViewMenu } from '../../../code/enums/assignmentViewMenu';
 import { t } from '../../../code/helpers/translations';
+import { Assignment } from '../../../code/interfaces/assignment';
+import { Loader } from '../../shared/Loader';
 
 export interface StateProps {
   assignmentGroups: AssignmentGroup[];
   evaluations: Evaluation[];
+  assignment: Assignment | undefined;
 }
 
 export interface DispatchProps {
   fetchGroupsByAssignment: typeof fetchGroupsByAssignment;
   fetchEvaluations: typeof fetchEvaluations;
+  fetchAssignment: typeof fetchAssignment;
 }
 
 type AssignmentViewProps = DispatchProps & StateProps;
@@ -30,6 +34,8 @@ const AssignmentViewComponent: React.FC<AssignmentViewProps> = ({
   fetchGroupsByAssignment,
   fetchEvaluations,
   evaluations,
+  assignment,
+  fetchAssignment,
 }) => {
   const { assignmentId } = useParams();
   const [selectedMenuItem, setSelectedMenuItem] = React.useState<AssignmentViewMenu>(AssignmentViewMenu.Stats);
@@ -39,6 +45,7 @@ const AssignmentViewComponent: React.FC<AssignmentViewProps> = ({
   };
 
   useEffect(() => {
+    fetchAssignment(assignmentId);
     fetchGroupsByAssignment(assignmentId);
     fetchEvaluations(assignmentId);
   }, []);
@@ -78,21 +85,25 @@ const AssignmentViewComponent: React.FC<AssignmentViewProps> = ({
 
   return (
     <div css={root}>
-      <Container maxWidth="lg" css={container}>
-        <Grid container spacing={3}>
-          <Grid item xs={12} md={12} lg={12}>
-            <Paper css={paper}>
-              <Grid container direction="column">
-                <Typography component="h2" variant="h6" color="primary" gutterBottom css={heading}>
-                  {t('assignmentView.assignment')}: {assignmentId}
-                </Typography>
-                {renderHorizontalMenu()}
-                {renderDataComponent()}
-              </Grid>
-            </Paper>
+      {assignment ? (
+        <Container maxWidth="lg" css={container}>
+          <Grid container spacing={3}>
+            <Grid item xs={12} md={12} lg={12}>
+              <Paper css={paper}>
+                <Grid container direction="column">
+                  <Typography component="h2" variant="h6" color="primary" gutterBottom css={heading}>
+                    {t('assignmentView.assignment')}: {assignment.name}
+                  </Typography>
+                  {renderHorizontalMenu()}
+                  {renderDataComponent()}
+                </Grid>
+              </Paper>
+            </Grid>
           </Grid>
-        </Grid>
-      </Container>
+        </Container>
+      ) : (
+        <Loader />
+      )}
     </div>
   );
 };

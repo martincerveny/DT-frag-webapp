@@ -15,6 +15,7 @@ export enum ActionTypes {
   SET_AUTHOR_ASSIGNMENTS = '[assignment] SET_AUTHOR_ASSIGNMENTS',
   SET_SUBMISSION_COUNT_PER_HOUR = '[assignment] SET_SUBMISSION_COUNT_PER_HOUR',
   SET_LOADING_STATE = '[assignment] SET_LOADING_STATE',
+  SET_ASSIGNMENT = '[assignment] SET_ASSIGNMENT',
 }
 
 export const setAssignments = action(ActionTypes.SET_ASSIGNMENTS, payload<{ assignments: Assignment[] }>());
@@ -31,11 +32,19 @@ export const setSubmissionCountPerHour = action(
   payload<{ submissionCountPerHour: SubmissionCountPerHour[] }>(),
 );
 export const setLoadingState = action(ActionTypes.SET_LOADING_STATE, payload<{ loadingState: LoadingState }>());
+export const setAssignment = action(ActionTypes.SET_ASSIGNMENT, payload<{ assignment: Assignment }>());
 
 export const fetchAssignments: ActionCreator<ThunkAction<Promise<void>, State, any, any>> = () => {
   return async (dispatch: Dispatch<Action>): Promise<void> => {
     const response = await http.get('/assignments');
     dispatch(setAssignments({ assignments: response.data }));
+  };
+};
+
+export const fetchAssignment: ActionCreator<ThunkAction<Promise<void>, State, any, any>> = (id: number) => {
+  return async (dispatch: Dispatch<Action>): Promise<void> => {
+    const response = await http.get(`/assignments/detail/${id}`);
+    dispatch(setAssignment({ assignment: response.data }));
   };
 };
 

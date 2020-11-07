@@ -14,6 +14,11 @@ export class AssignmentController {
     return this.assignmentService.findAll();
   }
 
+  @Get('/detail/:id')
+  findAssignment(@Param('id') id): Promise<Assignment> {
+    return this.assignmentService.findAssignment(id);
+  }
+
   @Get('/submissions/countperhour')
   findSubmissionCountPerHour(): Promise<SubmissionPerHourCountDto[]> {
     return this.assignmentService.findSubmissionCountPerHour();

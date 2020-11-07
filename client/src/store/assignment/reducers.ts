@@ -1,6 +1,7 @@
 import { on } from 'ts-action-immer';
 import { reducer } from 'ts-action';
 import {
+  setAssignment,
   setAssignmentGroups,
   setAssignments,
   setAuthorAssignments,
@@ -11,7 +12,7 @@ import { Assignment } from '../../code/interfaces/assignment';
 import { AssignmentGroup } from '../../code/interfaces/assignmentGroup';
 import { AssignmentArray } from '../../code/interfaces/assignmentArray';
 import { LoadingState } from '../../code/enums/loading';
-import {SubmissionCountPerHour} from "../../code/interfaces/submissionCountPerHour";
+import { SubmissionCountPerHour } from '../../code/interfaces/submissionCountPerHour';
 
 export interface State {
   assignments: Assignment[];
@@ -19,6 +20,7 @@ export interface State {
   authorAssignments: AssignmentArray | undefined;
   submissionCountPerHour: SubmissionCountPerHour[];
   loadingState: LoadingState;
+  assignment: Assignment | undefined;
 }
 
 export const initialState: State = {
@@ -27,6 +29,7 @@ export const initialState: State = {
   authorAssignments: undefined,
   submissionCountPerHour: [],
   loadingState: LoadingState.Initial,
+  assignment: undefined,
 };
 
 export const assignmentReducer = reducer<State>(
@@ -45,5 +48,8 @@ export const assignmentReducer = reducer<State>(
   }),
   on(setLoadingState, (state: State, { payload }) => {
     state.loadingState = payload.loadingState;
+  }),
+  on(setAssignment, (state: State, { payload }) => {
+    state.assignment = payload.assignment;
   }),
 );

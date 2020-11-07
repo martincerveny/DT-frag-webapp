@@ -79,7 +79,7 @@ const AssignmentListComponent: React.FC<AssignmentListProps> = ({ assignments, a
                       <Button css={buttonWrapper(studentsNotSubmittedPercent)}>{studentsNotSubmittedPercent} %</Button>
                     </Tooltip>
                   </ButtonGroup>
-                  <Typography>{getRemainingDays(a.end)}</Typography>
+                  <Typography>{getRemainingDays(a.end!)}</Typography>
                 </Grid>
               </ListItem>
             );

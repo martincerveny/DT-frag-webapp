@@ -20,6 +20,7 @@ import { EvalLatest } from './modules/evaluation/entities/evalLatest.entity';
 import { PadAssignment } from './modules/student/entities/padAssignment.entity';
 import { PadMisc } from './modules/student/entities/padMisc.entity';
 import { StudentModule } from './modules/student/student.module';
+import { Person } from './modules/student/entities/person.entity';
 
 const dbOptions: PostgresConnectionOptions = {
   type: 'postgres',
@@ -44,6 +45,7 @@ const dbOptions: PostgresConnectionOptions = {
     EvalLatest,
     PadAssignment,
     PadMisc,
+    Person,
   ],
 };
 

@@ -44,6 +44,10 @@ export class AssignmentService {
     return this.assignmentGroupRepository.find({ assignment_id: id });
   }
 
+  findAssignment(id: number): Promise<Assignment> {
+    return this.assignmentRepository.findOne(id);
+  }
+
   findAllAssignmentGroups(): Promise<AssignmentGroup[]> {
     return this.assignmentGroupRepository.find();
   }
