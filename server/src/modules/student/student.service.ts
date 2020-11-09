@@ -5,6 +5,8 @@ import { PadAssignment } from './entities/padAssignment.entity';
 import { PadMisc } from './entities/padMisc.entity';
 import { NotepadsDto } from './dtos/notepadsDto';
 import { Person } from './entities/person.entity';
+import { SubmissionLatest } from './entities/submissionLatest.entity';
+import { SubmissionFileDto } from './dtos/submissionFileDto';
 
 @Injectable()
 export class StudentService {
@@ -15,6 +17,8 @@ export class StudentService {
     private padMiscRepository: Repository<PadMisc>,
     @InjectRepository(Person)
     private personRepository: Repository<Person>,
+    @InjectRepository(SubmissionLatest)
+    private submissionLatestRepository: Repository<SubmissionLatest>,
   ) {}
 
   async findNotepadsByStudent(id: number): Promise<NotepadsDto> {
@@ -62,5 +66,27 @@ export class StudentService {
 
   findStudent(id: number): Promise<Person> {
     return this.personRepository.findOne(id);
+  }
+
+  findSubmissionFiles(id: number): Promise<SubmissionFileDto[]> {
+    return this.submissionLatestRepository
+      .createQueryBuilder('submission_latest')
+      .select([
+        'submission_latest.id as submission_id',
+        'submission_latest.author as author',
+        'submission_latest.assignment_id as assignment_id',
+        'submission_latest.stamp as stamp',
+        'submission_in.name as name',
+        'encode("content_sha"::bytea, \'escape\') as content_sha',
+        'encode("data"::bytea, \'escape\') as data',
+      ])
+      .leftJoin(
+        'submission_in',
+        'submission_in',
+        'submission_in.submission_id = submission_latest.id',
+      )
+      .leftJoin('content', 'content', 'content.sha = submission_in.content_sha')
+      .where('submission_latest.author = :id', { id })
+      .getRawMany();
   }
 }

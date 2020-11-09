@@ -9,6 +9,7 @@ import {
   fetchAttendanceByStudent,
   fetchNotepadsByStudent,
   fetchStudent,
+  fetchSubmissionFilesByStudent,
 } from '../../store/student/actions';
 
 const mapStateToProps = (state: State): StateProps => ({
@@ -18,6 +19,7 @@ const mapStateToProps = (state: State): StateProps => ({
   studentAttendance: state.student.studentAttendance,
   notepads: state.student.notepads,
   student: state.student.student,
+  studentFiles: state.student.studentFiles,
 });
 
 const mapDispatchToProps = (dispatch: Dispatch): DispatchProps => ({
@@ -29,6 +31,7 @@ const mapDispatchToProps = (dispatch: Dispatch): DispatchProps => ({
       fetchAttendanceByStudent,
       fetchNotepadsByStudent,
       fetchStudent,
+      fetchSubmissionFilesByStudent,
     },
     dispatch,
   ),

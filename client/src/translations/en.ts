@@ -42,6 +42,7 @@ export const translates: {
   'student.notepads.date': 'Date',
   'student.notepads.data': 'Data',
   'student.notepads.name': 'Name',
+  'student.sourceCode': 'Source code',
   'student.notepads.assignmentPads': 'Assignment notepad',
   'student.notepads.miscPads': 'Miscellaneous notepad',
   'test.pass': 'pass',

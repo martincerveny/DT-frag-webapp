@@ -16,6 +16,7 @@ import {
   fetchAttendanceByStudent,
   fetchNotepadsByStudent,
   fetchStudent,
+  fetchSubmissionFilesByStudent,
 } from '../../store/student/actions';
 import { ActivityList } from './comps/ActivityList';
 import { StudentAttendance } from '../../code/interfaces/studentAttendance';
@@ -29,6 +30,9 @@ import AssignmentIcon from '@material-ui/icons/Assignment';
 import GradeIcon from '@material-ui/icons/Grade';
 import EventAvailableIcon from '@material-ui/icons/EventAvailable';
 import NoteIcon from '@material-ui/icons/Note';
+import CodeIcon from '@material-ui/icons/Code';
+import { SourceCode } from './comps/SourceCode';
+import { StudentFile } from '../../code/interfaces/studentFile';
 
 export interface StateProps {
   assignments: Assignment[];
@@ -37,6 +41,7 @@ export interface StateProps {
   studentAttendance: StudentAttendance[];
   notepads: Notepads | undefined;
   student: Person | undefined;
+  studentFiles: StudentFile[];
 }
 
 export interface DispatchProps {
@@ -46,6 +51,7 @@ export interface DispatchProps {
   fetchAttendanceByStudent: typeof fetchAttendanceByStudent;
   fetchNotepadsByStudent: typeof fetchNotepadsByStudent;
   fetchStudent: typeof fetchStudent;
+  fetchSubmissionFilesByStudent: typeof fetchSubmissionFilesByStudent;
 }
 
 type StudentViewProps = DispatchProps & StateProps;
@@ -63,6 +69,8 @@ const StudentViewComponent: React.FC<StudentViewProps> = ({
   notepads,
   student,
   fetchStudent,
+  studentFiles,
+  fetchSubmissionFilesByStudent,
 }) => {
   const { studentId } = useParams();
   const [selectedMenuItem, setSelectedMenuItem] = React.useState<StudentMenu>(StudentMenu.Assignment);
@@ -118,6 +126,16 @@ const StudentViewComponent: React.FC<StudentViewProps> = ({
           <NoteIcon css={icon} />
           {t('student.notepads')}
         </Button>
+        <Button
+          variant="contained"
+          color={selectedMenuItem === StudentMenu.SourceCode ? 'primary' : 'default'}
+          disableElevation
+          css={menuButton}
+          onClick={() => handleMenuClick(StudentMenu.SourceCode)}
+        >
+          <CodeIcon css={icon} />
+          {t('student.sourceCode')}
+        </Button>
       </Grid>
     );
   };
@@ -140,6 +158,8 @@ const StudentViewComponent: React.FC<StudentViewProps> = ({
       );
     } else if (selectedMenuItem === StudentMenu.Notepads) {
       return <NotepadsContent fetchNotepadsByStudent={fetchNotepadsByStudent} notepads={notepads} />;
+    } else if (selectedMenuItem === StudentMenu.SourceCode) {
+      return <SourceCode studentFiles={studentFiles} fetchSubmissionFilesByStudent={fetchSubmissionFilesByStudent} />;
     }
   };
 

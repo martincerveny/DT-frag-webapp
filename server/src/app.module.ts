@@ -21,6 +21,7 @@ import { PadAssignment } from './modules/student/entities/padAssignment.entity';
 import { PadMisc } from './modules/student/entities/padMisc.entity';
 import { StudentModule } from './modules/student/student.module';
 import { Person } from './modules/student/entities/person.entity';
+import { SubmissionLatest } from './modules/student/entities/submissionLatest.entity';
 
 const dbOptions: PostgresConnectionOptions = {
   type: 'postgres',
@@ -46,6 +47,7 @@ const dbOptions: PostgresConnectionOptions = {
     PadAssignment,
     PadMisc,
     Person,
+    SubmissionLatest,
   ],
 };
 

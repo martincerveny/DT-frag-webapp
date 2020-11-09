@@ -1,16 +1,18 @@
 import { on } from 'ts-action-immer';
 import { reducer } from 'ts-action';
-import { setActivity, setNotepads, setStudent, setStudentAttendance } from './actions';
+import { setActivity, setNotepads, setStudent, setStudentAttendance, setStudentFiles } from './actions';
 import { StudentAttendance } from '../../code/interfaces/studentAttendance';
 import { Activity } from '../../code/interfaces/activity';
 import { Notepads } from '../../code/interfaces/notepads';
 import { Person } from '../../code/interfaces/person';
+import { StudentFile } from '../../code/interfaces/studentFile';
 
 export interface State {
   studentAttendance: StudentAttendance[];
   activity: Activity[];
   notepads: Notepads | undefined;
   student: Person | undefined;
+  studentFiles: StudentFile[];
 }
 
 export const initialState: State = {
@@ -18,6 +20,7 @@ export const initialState: State = {
   activity: [],
   notepads: undefined,
   student: undefined,
+  studentFiles: [],
 };
 
 export const studentReducer = reducer<State>(
@@ -33,5 +36,8 @@ export const studentReducer = reducer<State>(
   }),
   on(setStudent, (state: State, { payload }) => {
     state.student = payload.student;
+  }),
+  on(setStudentFiles, (state: State, { payload }) => {
+    state.studentFiles = payload.studentFiles;
   }),
 );
