@@ -45,3 +45,8 @@ export const getPercents = (value: number, count: number) => {
 export const sumArrayProps = (array: Array<any>, key: string) => {
   return array.reduce((a, b) => a + (b[key] || 0), 0);
 };
+
+export const getFileExtension = (file: string): string => {
+  const dotIndex = file.lastIndexOf('.');
+  return file.substring(dotIndex + 1, file.length);
+};

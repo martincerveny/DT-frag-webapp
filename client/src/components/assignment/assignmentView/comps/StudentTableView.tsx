@@ -187,6 +187,7 @@ const tableWrapper = css`
 
 const dataWrapper = css`
   margin-top: 20px;
+  font-size: 13px;
 `;
 
 const contentCellWrapper = css`

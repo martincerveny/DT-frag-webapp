@@ -156,6 +156,7 @@ const content = css`
 
 const dataWrapper = css`
   margin-top: 20px;
+  font-size: 13px;
 `;
 
 const tableWrapper = css`

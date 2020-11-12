@@ -75,6 +75,7 @@ export class StudentService {
         'submission_latest.id as submission_id',
         'submission_latest.author as author',
         'submission_latest.assignment_id as assignment_id',
+        'assignment.name as assignment_name',
         'submission_latest.stamp as stamp',
         'submission_in.name as name',
         'encode("content_sha"::bytea, \'escape\') as content_sha',
@@ -86,6 +87,11 @@ export class StudentService {
         'submission_in.submission_id = submission_latest.id',
       )
       .leftJoin('content', 'content', 'content.sha = submission_in.content_sha')
+      .leftJoin(
+        'assignment',
+        'assignment',
+        'assignment.id = submission_latest.assignment_id',
+      )
       .where('submission_latest.author = :id', { id })
       .getRawMany();
   }
