@@ -10,7 +10,8 @@ import { t } from '../../code/helpers/translations';
 import { Avatar } from '@material-ui/core';
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import { colors } from '../../styles/colors';
-import { login } from '../../store/general/actions';
+import { login } from '../../store/auth/actions';
+import { AssignmentViewMenu } from '../../code/enums/assignmentViewMenu';
 
 export interface StateProps {}
 
@@ -21,8 +22,20 @@ export interface DispatchProps {
 type LoginProps = DispatchProps & StateProps;
 
 const LoginComponent: React.FC<LoginProps> = ({ login }) => {
-  const handleLogin = () => {
-    login(633699);
+  const [username, setUsername] = React.useState<string>('');
+  const [password, setPassword] = React.useState<string>('');
+
+  const onSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    login(username, password);
+  };
+
+  const handleChangeUsername = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setUsername(event.target.value);
+  };
+
+  const handleChangePassword = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setPassword(event.target.value);
   };
 
   return (
@@ -34,17 +47,17 @@ const LoginComponent: React.FC<LoginProps> = ({ login }) => {
         <Typography component="h1" variant="h5">
           {t('loginPage.login')}
         </Typography>
-        <form css={form} noValidate>
+        <form css={form} method="post" onSubmit={onSubmit}>
           <TextField
             variant="outlined"
             margin="normal"
             required
             fullWidth
-            id="email"
-            label={t('loginPage.email')}
-            name="email"
-            autoComplete="email"
+            label={t('loginPage.username')}
+            name="username"
+            autoComplete="username"
             autoFocus
+            onChange={handleChangeUsername}
           />
           <TextField
             variant="outlined"
@@ -56,15 +69,9 @@ const LoginComponent: React.FC<LoginProps> = ({ login }) => {
             type="password"
             id="password"
             autoComplete="current-password"
+            onChange={handleChangePassword}
           />
-          <Button
-            type="submit"
-            fullWidth
-            variant="contained"
-            color="primary"
-            css={submitButton}
-            onClick={() => handleLogin()}
-          >
+          <Button type="submit" fullWidth variant="contained" color="primary" css={submitButton}>
             {t('loginPage.signin')}
           </Button>
         </form>

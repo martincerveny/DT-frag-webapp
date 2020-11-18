@@ -12,7 +12,7 @@ export const translates: {
   'assignmentView.studentTable.points': 'Points',
   'loginPage.login': 'Login',
   'loginPage.signin': 'Sign In',
-  'loginPage.email': 'Email',
+  'loginPage.username': 'Username',
   'loginPage.password': 'Password',
   'menuBar.dashboard': 'Frag dashboard',
   'menuBar.assignments': 'Assignments',

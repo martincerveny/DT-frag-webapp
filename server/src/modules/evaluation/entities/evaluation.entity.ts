@@ -1,5 +1,5 @@
 import { Column, ViewEntity } from 'typeorm';
-import { bufferToStringTransformer } from '../../../code/transformers';
+import { bufferToStringTransformer } from '../../../code/constants/transformers';
 
 @ViewEntity({ name: 'eval_out_pts', synchronize: false })
 export class Evaluation {

@@ -1,5 +1,5 @@
 import { Column, PrimaryColumn, ViewEntity } from 'typeorm';
-import { bufferToStringTransformer } from '../../../code/transformers';
+import { bufferToStringTransformer } from '../../../code/constants/transformers';
 
 @ViewEntity({ name: 'eval_groups' })
 export class AssignmentGroup {

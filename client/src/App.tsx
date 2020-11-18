@@ -13,7 +13,8 @@ import { AssignmentViewContainer } from './components/assignment/assignmentView/
 import { SeminarDashboardContainer } from './components/seminar/SeminarDashboardContainer';
 import { StudentViewContainer } from './components/student/StudentViewContainer';
 import { LoginContainer } from './components/login/LoginContainer';
-import { logUserOut, refreshUserFromCookie } from './store/general/actions';
+import { logUserOut, refreshUserFromCookie } from './store/auth/actions';
+import {LoggedUser} from "./code/interfaces/loggedUser";
 
 export interface StateProps {
   loggedUser: undefined | number;

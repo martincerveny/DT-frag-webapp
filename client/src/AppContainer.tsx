@@ -2,10 +2,10 @@ import { State } from './store/combinedReducers';
 import { bindActionCreators, Dispatch } from 'redux';
 import { connect } from 'react-redux';
 import App, { DispatchProps, StateProps } from './App';
-import { logUserOut, refreshUserFromCookie } from './store/general/actions';
+import { logUserOut, refreshUserFromCookie } from './store/auth/actions';
 
 const mapStateToProps = (state: State): StateProps => ({
-  loggedUser: state.general.loggedUser,
+  loggedUser: state.auth.loggedUser,
 });
 
 const mapDispatchToProps = (dispatch: Dispatch): DispatchProps => ({

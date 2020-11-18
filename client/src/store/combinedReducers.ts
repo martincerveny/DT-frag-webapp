@@ -1,12 +1,12 @@
 import { combineReducers } from 'redux';
-import * as general from './general/reducers';
+import * as auth from './auth/reducers';
 import * as assignment from './assignment/reducers';
 import * as evaluation from './evaluation/reducers';
 import * as seminar from './seminar/reducers';
 import * as student from './student/reducers';
 
 export interface State {
-  general: general.State;
+  auth: auth.State;
   assignment: assignment.State;
   evaluation: evaluation.State;
   seminar: seminar.State;
@@ -14,7 +14,7 @@ export interface State {
 }
 
 export const initialState: State = {
-  general: general.initialState,
+  auth: auth.initialState,
   assignment: assignment.initialState,
   evaluation: evaluation.initialState,
   seminar: seminar.initialState,
@@ -22,7 +22,7 @@ export const initialState: State = {
 };
 
 export const reducer = combineReducers<State>({
-  general: general.generalReducer,
+  auth: auth.authReducer,
   assignment: assignment.assignmentReducer,
   evaluation: evaluation.evaluationReducer,
   seminar: seminar.seminarReducer,

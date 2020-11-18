@@ -1,5 +1,5 @@
 import { Entity, Column, PrimaryColumn } from 'typeorm';
-import { bufferToStringTransformer } from '../../../code/transformers';
+import { bufferToStringTransformer } from '../../../code/constants/transformers';
 
 @Entity()
 export class PadAssignment {
