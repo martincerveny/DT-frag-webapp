@@ -7,20 +7,25 @@ import { AxiosResponse } from 'axios';
 import { Person } from '../../code/interfaces/person';
 import { snackbarService } from 'uno-material-ui/dist';
 import { t } from '../../code/helpers/translations';
+import { LoadingState } from '../../code/enums/loading';
 
 export enum ActionTypes {
   SET_LOGGED_USER = '[auth] SET_LOGGED_USER',
   LOG_OUT = '[auth] LOG_OUT',
+  SET_LOADING_STATE = '[auth] SET_LOADING_STATE',
 }
 
 export const setLoggedUser = action(ActionTypes.SET_LOGGED_USER, payload<{ user: Person | undefined }>());
 export const logOut = action(ActionTypes.LOG_OUT, payload<undefined>());
+export const setLoadingState = action(ActionTypes.SET_LOADING_STATE, payload<{ loadingState: LoadingState }>());
 
 export const login: ActionCreator<ThunkAction<Promise<void>, State, any, any>> = (
   username: string,
   password: string,
 ) => {
   return async (dispatch: Dispatch<Action>): Promise<void> => {
+    dispatch(setLoadingState({ loadingState: LoadingState.Loading }));
+
     await api
       .post(`/auth/login`, {
         username,
@@ -30,8 +35,10 @@ export const login: ActionCreator<ThunkAction<Promise<void>, State, any, any>> =
         if (response.data.status === 200) {
           saveUserToCookie(response.data.token, response.data.data.id);
           dispatch(setLoggedUser({ user: response.data.data }));
+          dispatch(setLoadingState({ loadingState: LoadingState.Success }));
           snackbarService.showSnackbar(t('auth.login'), 'success', 7000);
         } else {
+          dispatch(setLoadingState({ loadingState: LoadingState.Failure }));
           snackbarService.showSnackbar(response.data.data.message, 'error', 7000);
         }
       });

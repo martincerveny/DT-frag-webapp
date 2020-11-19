@@ -4,7 +4,9 @@ import { connect } from 'react-redux';
 import { DispatchProps, Login, StateProps } from './Login';
 import { login } from '../../store/auth/actions';
 
-const mapStateToProps = (state: State): StateProps => ({});
+const mapStateToProps = (state: State): StateProps => ({
+  loadingState: state.auth.loadingState,
+});
 
 const mapDispatchToProps = (dispatch: Dispatch): DispatchProps => ({
   ...bindActionCreators(

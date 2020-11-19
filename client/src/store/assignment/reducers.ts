@@ -5,13 +5,11 @@ import {
   setAssignmentGroups,
   setAssignments,
   setAuthorAssignments,
-  setLoadingState,
   setSubmissionCountPerHour,
 } from './actions';
 import { Assignment } from '../../code/interfaces/assignment';
 import { AssignmentGroup } from '../../code/interfaces/assignmentGroup';
 import { AssignmentArray } from '../../code/interfaces/assignmentArray';
-import { LoadingState } from '../../code/enums/loading';
 import { SubmissionCountPerHour } from '../../code/interfaces/submissionCountPerHour';
 
 export interface State {
@@ -19,7 +17,6 @@ export interface State {
   assignmentGroups: AssignmentGroup[];
   authorAssignments: AssignmentArray | undefined;
   submissionCountPerHour: SubmissionCountPerHour[];
-  loadingState: LoadingState;
   assignment: Assignment | undefined;
 }
 
@@ -28,7 +25,6 @@ export const initialState: State = {
   assignmentGroups: [],
   authorAssignments: undefined,
   submissionCountPerHour: [],
-  loadingState: LoadingState.Initial,
   assignment: undefined,
 };
 
@@ -45,9 +41,6 @@ export const assignmentReducer = reducer<State>(
   }),
   on(setSubmissionCountPerHour, (state: State, { payload }) => {
     state.submissionCountPerHour = payload.submissionCountPerHour;
-  }),
-  on(setLoadingState, (state: State, { payload }) => {
-    state.loadingState = payload.loadingState;
   }),
   on(setAssignment, (state: State, { payload }) => {
     state.assignment = payload.assignment;

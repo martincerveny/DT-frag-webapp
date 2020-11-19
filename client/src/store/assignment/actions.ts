@@ -7,14 +7,12 @@ import { api } from '../../code/helpers/api';
 import { AssignmentGroup } from '../../code/interfaces/assignmentGroup';
 import { AssignmentArray } from '../../code/interfaces/assignmentArray';
 import { SubmissionCountPerHour } from '../../code/interfaces/submissionCountPerHour';
-import { LoadingState } from '../../code/enums/loading';
 
 export enum ActionTypes {
   SET_ASSIGNMENTS = '[assignment] SET_ASSIGNMENTS',
   SET_ASSIGNMENT_GROUPS = '[assignment] SET_ASSIGNMENT_GROUPS',
   SET_AUTHOR_ASSIGNMENTS = '[assignment] SET_AUTHOR_ASSIGNMENTS',
   SET_SUBMISSION_COUNT_PER_HOUR = '[assignment] SET_SUBMISSION_COUNT_PER_HOUR',
-  SET_LOADING_STATE = '[assignment] SET_LOADING_STATE',
   SET_ASSIGNMENT = '[assignment] SET_ASSIGNMENT',
 }
 
@@ -31,7 +29,6 @@ export const setSubmissionCountPerHour = action(
   ActionTypes.SET_SUBMISSION_COUNT_PER_HOUR,
   payload<{ submissionCountPerHour: SubmissionCountPerHour[] }>(),
 );
-export const setLoadingState = action(ActionTypes.SET_LOADING_STATE, payload<{ loadingState: LoadingState }>());
 export const setAssignment = action(ActionTypes.SET_ASSIGNMENT, payload<{ assignment: Assignment }>());
 
 export const fetchAssignments: ActionCreator<ThunkAction<Promise<void>, State, any, any>> = () => {

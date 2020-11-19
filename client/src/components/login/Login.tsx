@@ -7,12 +7,15 @@ import Typography from '@material-ui/core/Typography';
 import Container from '@material-ui/core/Container';
 import styled from '@emotion/styled';
 import { t } from '../../code/helpers/translations';
-import { Avatar } from '@material-ui/core';
+import { Avatar, CircularProgress } from '@material-ui/core';
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import { colors } from '../../styles/colors';
 import { login } from '../../store/auth/actions';
+import { LoadingState } from '../../code/enums/loading';
 
-export interface StateProps {}
+export interface StateProps {
+  loadingState: LoadingState;
+}
 
 export interface DispatchProps {
   login: typeof login;
@@ -20,9 +23,10 @@ export interface DispatchProps {
 
 type LoginProps = DispatchProps & StateProps;
 
-const LoginComponent: React.FC<LoginProps> = ({ login }) => {
+const LoginComponent: React.FC<LoginProps> = ({ login, loadingState }) => {
   const [username, setUsername] = React.useState<string>('');
   const [password, setPassword] = React.useState<string>('');
+  const isSubmitting = loadingState === LoadingState.Loading;
 
   const onSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -70,8 +74,15 @@ const LoginComponent: React.FC<LoginProps> = ({ login }) => {
             autoComplete="current-password"
             onChange={handleChangePassword}
           />
-          <Button type="submit" fullWidth variant="contained" color="primary" css={submitButton}>
-            {t('loginPage.signin')}
+          <Button
+            type="submit"
+            fullWidth
+            variant="contained"
+            color="primary"
+            css={submitButton}
+            disabled={isSubmitting}
+          >
+            {!isSubmitting ? t('loginPage.signin') : <CircularProgress size={20} />}
           </Button>
         </form>
       </div>
@@ -97,6 +108,7 @@ const form = css`
 
 const submitButton = css`
   margin-top: 30px;
+  height: 40px;
 `;
 
 const loginIcon = css`
