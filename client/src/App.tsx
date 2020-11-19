@@ -15,6 +15,7 @@ import { StudentViewContainer } from './components/student/StudentViewContainer'
 import { LoginContainer } from './components/login/LoginContainer';
 import { logUserOut, refreshUserFromCookie } from './store/auth/actions';
 import { Person } from './code/interfaces/person';
+import {SnackbarContainer} from "uno-material-ui/dist";
 
 export interface StateProps {
   loggedUser: undefined | Person;
@@ -95,6 +96,7 @@ const App: React.FC<AppProps> = ({ loggedUser, refreshUserFromCookie, logUserOut
 
   return (
     <ThemeProvider theme={APP_THEME}>
+      <SnackbarContainer />
       <div className="App">
         <CssBaseline />
         {renderGlobalCssSettings()}

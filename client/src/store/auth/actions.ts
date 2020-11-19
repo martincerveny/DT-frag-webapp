@@ -5,6 +5,8 @@ import { State } from './reducers';
 import { api, receiveUserFromCookie, removeUserFromCookie, saveUserToCookie } from '../../code/helpers/api';
 import { AxiosResponse } from 'axios';
 import { Person } from '../../code/interfaces/person';
+import { snackbarService } from 'uno-material-ui/dist';
+import { t } from '../../code/helpers/translations';
 
 export enum ActionTypes {
   SET_LOGGED_USER = '[auth] SET_LOGGED_USER',
@@ -26,11 +28,11 @@ export const login: ActionCreator<ThunkAction<Promise<void>, State, any, any>> =
       })
       .then((response: AxiosResponse<any>) => {
         if (response.data.status === 200) {
-          console.log('login response');
           saveUserToCookie(response.data.token, response.data.data.id);
           dispatch(setLoggedUser({ user: response.data.data }));
+          snackbarService.showSnackbar(t('auth.login'), 'success', 7000);
         } else {
-          console.log('error', response.data.data.message);
+          snackbarService.showSnackbar(response.data.data.message, 'error', 7000);
         }
       });
   };
@@ -46,11 +48,10 @@ export const refreshUserFromCookie: ActionCreator<ThunkAction<Promise<void>, Sta
     await api
       .get(`/auth/tutor/${user.id}`)
       .then(response => {
-        console.log('refresh');
         dispatch(setLoggedUser({ user: response.data }));
       })
       .catch(error => {
-        console.log(error);
+        snackbarService.showSnackbar(error.message, 'error', 7000);
         removeUserFromCookie();
       });
   };
@@ -59,5 +60,6 @@ export const refreshUserFromCookie: ActionCreator<ThunkAction<Promise<void>, Sta
 export const logUserOut: ActionCreator<ThunkAction<Promise<void>, State, any, any>> = (id: number) => {
   return async (dispatch: Dispatch<Action>): Promise<void> => {
     dispatch(logOut(undefined));
+    snackbarService.showSnackbar(t('auth.logout'), 'success', 7000);
   };
 };

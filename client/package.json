@@ -35,7 +35,8 @@
     "redux-thunk": "^2.3.0",
     "ts-action": "^11.0.0",
     "ts-action-immer": "^3.0.3",
-    "typescript": "~3.7.2"
+    "typescript": "~3.7.2",
+    "uno-material-ui": "^2.0.10"
   },
   "scripts": {
     "start": "react-scripts start",

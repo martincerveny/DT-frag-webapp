@@ -48,4 +48,6 @@ export const translates: {
   'student.notepads.miscPads': 'Miscellaneous notepad',
   'test.pass': 'pass',
   'test.fail': 'fail',
+  'auth.logout': 'You have been successfully logged out',
+  'auth.login': 'You have been successfully logged in'
 };

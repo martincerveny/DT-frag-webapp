@@ -11,7 +11,6 @@ import { Avatar } from '@material-ui/core';
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import { colors } from '../../styles/colors';
 import { login } from '../../store/auth/actions';
-import { AssignmentViewMenu } from '../../code/enums/assignmentViewMenu';
 
 export interface StateProps {}
 
