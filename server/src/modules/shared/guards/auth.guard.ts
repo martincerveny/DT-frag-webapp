@@ -1,9 +1,14 @@
 import { Injectable, CanActivate, ExecutionContext } from '@nestjs/common';
 import { Observable } from 'rxjs';
 import * as jwt from 'jsonwebtoken';
+import { AuthService } from '../../auth/auth.service';
 
 @Injectable()
 export class AuthGuard implements CanActivate {
+  constructor(private readonly authService: AuthService) {
+    this.authService = authService;
+  }
+
   canActivate(
     context: ExecutionContext,
   ): boolean | Promise<boolean> | Observable<boolean> {
@@ -19,9 +24,15 @@ export class AuthGuard implements CanActivate {
     const token: string = request
       .header('Authorization')
       .replace('Bearer ', '');
-    const data: any = jwt.verify(token, process.env.JWT_KEY);
 
-    const user = 'await this.userService.findById(data.id);'
+    let data;
+    try {
+      data = jwt.verify(token, process.env.JWT_KEY);
+    } catch (ex) {
+      return false;
+    }
+
+    const user = await this.authService.findTutorById(data.id);
 
     if (!user) {
       return false;

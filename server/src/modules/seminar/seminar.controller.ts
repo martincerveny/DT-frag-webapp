@@ -1,4 +1,4 @@
-import { Controller, Get, Param, Query } from '@nestjs/common';
+import { Controller, Get, Param, Query, UseGuards } from '@nestjs/common';
 import { SeminarService } from './seminar.service';
 import { Seminar } from './entities/seminar.entity';
 import { Enrollment } from './entities/enrollment.entity';
@@ -6,7 +6,9 @@ import { Attendance } from './entities/attendance.entity';
 import { ActivityViewDto } from './dtos/activityViewDto';
 import { Activity } from './entities/activity.entity';
 import { StudentAttendanceDto } from './dtos/studentAttendanceDto';
+import { AuthGuard } from '../shared/guards/auth.guard';
 
+@UseGuards(AuthGuard)
 @Controller('api/seminars')
 export class SeminarController {
   constructor(private readonly seminarService: SeminarService) {}

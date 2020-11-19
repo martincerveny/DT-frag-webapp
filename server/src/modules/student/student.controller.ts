@@ -1,9 +1,11 @@
-import { Controller, Get, Param } from '@nestjs/common';
+import { Controller, Get, Param, UseGuards } from '@nestjs/common';
 import { StudentService } from './student.service';
 import { NotepadsDto } from './dtos/notepadsDto';
 import { Person } from './entities/person.entity';
 import { SubmissionFileDto } from './dtos/submissionFileDto';
+import { AuthGuard } from '../shared/guards/auth.guard';
 
+@UseGuards(AuthGuard)
 @Controller('api/student')
 export class StudentController {
   constructor(private readonly studentService: StudentService) {}

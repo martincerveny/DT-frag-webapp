@@ -2,7 +2,7 @@ import { Action, ActionCreator, Dispatch } from 'redux';
 import { ThunkAction } from 'redux-thunk';
 import { action, payload } from 'ts-action';
 import { State } from './reducers';
-import { http } from '../../code/helpers/http';
+import { api } from '../../code/helpers/api';
 import { StudentAttendance } from '../../code/interfaces/studentAttendance';
 import { Activity } from '../../code/interfaces/activity';
 import { Notepads } from '../../code/interfaces/notepads';
@@ -28,28 +28,28 @@ export const setStudentFiles = action(ActionTypes.SET_STUDENT_FILES, payload<{ s
 
 export const fetchStudent: ActionCreator<ThunkAction<Promise<void>, State, any, any>> = (id: number) => {
   return async (dispatch: Dispatch<Action>): Promise<void> => {
-    const response = await http.get(`/student/detail/${id}`);
+    const response = await api.get(`/student/detail/${id}`);
     dispatch(setStudent({ student: response.data }));
   };
 };
 
 export const fetchAttendanceByStudent: ActionCreator<ThunkAction<Promise<void>, State, any, any>> = (id: number) => {
   return async (dispatch: Dispatch<Action>): Promise<void> => {
-    const response = await http.get(`/seminars/attendance/${id}/student`);
+    const response = await api.get(`/seminars/attendance/${id}/student`);
     dispatch(setStudentAttendance({ studentAttendance: response.data }));
   };
 };
 
 export const fetchActivityByStudent: ActionCreator<ThunkAction<Promise<void>, State, any, any>> = (id: number) => {
   return async (dispatch: Dispatch<Action>): Promise<void> => {
-    const response = await http.get(`/seminars/activity/${id}/student`);
+    const response = await api.get(`/seminars/activity/${id}/student`);
     dispatch(setActivity({ activity: response.data }));
   };
 };
 
 export const fetchNotepadsByStudent: ActionCreator<ThunkAction<Promise<void>, State, any, any>> = (id: number) => {
   return async (dispatch: Dispatch<Action>): Promise<void> => {
-    const response = await http.get(`/student/notepads/${id}`);
+    const response = await api.get(`/student/notepads/${id}`);
     dispatch(setNotepads({ notepads: response.data }));
   };
 };
@@ -58,7 +58,7 @@ export const fetchSubmissionFilesByStudent: ActionCreator<ThunkAction<Promise<vo
   id: number,
 ) => {
   return async (dispatch: Dispatch<Action>): Promise<void> => {
-    const response = await http.get(`/student/files/${id}`);
+    const response = await api.get(`/student/files/${id}`);
     dispatch(setStudentFiles({ studentFiles: response.data }));
   };
 };

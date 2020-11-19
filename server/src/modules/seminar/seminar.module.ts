@@ -8,6 +8,7 @@ import { Attendance } from './entities/attendance.entity';
 import { ActivityView } from './entities/activityView.entity';
 import { ActivityMax } from './entities/activityMax.entity';
 import { Activity } from './entities/activity.entity';
+import { AuthModule } from '../auth/auth.module';
 
 @Module({
   imports: [
@@ -19,6 +20,7 @@ import { Activity } from './entities/activity.entity';
       ActivityMax,
       Activity,
     ]),
+    AuthModule,
   ],
   controllers: [SeminarController],
   providers: [SeminarService],

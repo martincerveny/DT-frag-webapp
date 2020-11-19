@@ -64,7 +64,7 @@ const SeminarDashboardComponent: React.FC<SeminarDashboardProps> = ({
   const loggedUser = useContext(UserContext);
 
   useEffect(() => {
-    fetchSeminars(loggedUser);
+    fetchSeminars(loggedUser!.id);
     fetchAuthorAssignments();
     fetchAssignments();
   }, []);

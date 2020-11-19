@@ -14,10 +14,10 @@ import { SeminarDashboardContainer } from './components/seminar/SeminarDashboard
 import { StudentViewContainer } from './components/student/StudentViewContainer';
 import { LoginContainer } from './components/login/LoginContainer';
 import { logUserOut, refreshUserFromCookie } from './store/auth/actions';
-import {LoggedUser} from "./code/interfaces/loggedUser";
+import { Person } from './code/interfaces/person';
 
 export interface StateProps {
-  loggedUser: undefined | number;
+  loggedUser: undefined | Person;
 }
 
 export interface DispatchProps {
@@ -27,7 +27,7 @@ export interface DispatchProps {
 
 type AppProps = DispatchProps & StateProps;
 
-export const UserContext = React.createContext<number | undefined>(undefined);
+export const UserContext = React.createContext<Person | undefined>(undefined);
 
 const renderGlobalCssSettings = () => (
   <Global
@@ -43,7 +43,7 @@ const renderGlobalCssSettings = () => (
 const App: React.FC<AppProps> = ({ loggedUser, refreshUserFromCookie, logUserOut }) => {
   useEffect(() => {
     refreshUserFromCookie();
-  }, [loggedUser]);
+  }, []);
 
   const renderRoutes = () => {
     let routes = getUnloggedRoutes();

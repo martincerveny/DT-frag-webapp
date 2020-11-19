@@ -2,7 +2,7 @@ import { Action, ActionCreator, Dispatch } from 'redux';
 import { ThunkAction } from 'redux-thunk';
 import { action, payload } from 'ts-action';
 import { State } from './reducers';
-import { http } from '../../code/helpers/http';
+import { api } from '../../code/helpers/api';
 import { Seminar } from '../../code/interfaces/seminar';
 import { Enrollment } from '../../code/interfaces/enrollment';
 import { Attendance } from '../../code/interfaces/attendance';
@@ -30,7 +30,7 @@ export const setLoadingState = action(ActionTypes.SET_LOADING_STATE, payload<{ l
 
 export const fetchSeminars: ActionCreator<ThunkAction<Promise<void>, State, any, any>> = (id: number) => {
   return async (dispatch: Dispatch<Action>): Promise<void> => {
-    const response = await http.get(`/seminars/${id}/teacher`);
+    const response = await api.get(`/seminars/${id}/teacher`);
     dispatch(setSeminars({ seminars: response.data }));
   };
 };
@@ -39,10 +39,10 @@ export const fetchEnrollments: ActionCreator<ThunkAction<Promise<void>, State, a
   return async (dispatch: Dispatch<Action>): Promise<void> => {
     let response;
     if (ids) {
-      response = await http.get(`/seminars/enrollment?seminar=${ids}`);
+      response = await api.get(`/seminars/enrollment?seminar=${ids}`);
       dispatch(setSeminarEnrollments({ seminarEnrollments: response.data }));
     } else {
-      response = await http.get(`/seminars/enrollment`);
+      response = await api.get(`/seminars/enrollment`);
       dispatch(setAllEnrollments({ allEnrollments: response.data }));
     }
   };
@@ -50,14 +50,14 @@ export const fetchEnrollments: ActionCreator<ThunkAction<Promise<void>, State, a
 
 export const fetchAttendance: ActionCreator<ThunkAction<Promise<void>, State, any, any>> = (ids: string) => {
   return async (dispatch: Dispatch<Action>): Promise<void> => {
-    const response = await http.get(`/seminars/attendance?seminar=${ids}`);
+    const response = await api.get(`/seminars/attendance?seminar=${ids}`);
     dispatch(setAttendance({ attendance: response.data }));
   };
 };
 
 export const fetchActivityPts: ActionCreator<ThunkAction<Promise<void>, State, any, any>> = () => {
   return async (dispatch: Dispatch<Action>): Promise<void> => {
-    const response = await http.get(`/seminars/activity`);
+    const response = await api.get(`/seminars/activity`);
     dispatch(setActivityPts({ activityPts: response.data }));
   };
 };

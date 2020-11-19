@@ -1,7 +1,7 @@
 /** @jsx jsx */
 import styled from '@emotion/styled';
 import { css, jsx } from '@emotion/core';
-import React from 'react';
+import React, { useContext } from 'react';
 import { AppBar, Button, IconButton, Toolbar, Typography } from '@material-ui/core';
 import AccountCircleIcon from '@material-ui/icons/AccountCircle';
 import { Link } from 'react-router-dom';
@@ -11,12 +11,15 @@ import { t } from '../../code/helpers/translations';
 import { ExitToApp } from '@material-ui/icons';
 import AssignmentIcon from '@material-ui/icons/Assignment';
 import GroupIcon from '@material-ui/icons/Group';
+import { UserContext } from '../../App';
 
 interface MenuBarProps {
   handleUserLogOut: () => void;
 }
 
 const MenuBarComponent: React.FC<MenuBarProps> = ({ handleUserLogOut }) => {
+  const loggedUser = useContext(UserContext);
+
   return (
     <div css={appBar}>
       <AppBar position="static">
@@ -44,7 +47,7 @@ const MenuBarComponent: React.FC<MenuBarProps> = ({ handleUserLogOut }) => {
           </div>
           <Button color="inherit" aria-controls="simple-menu" aria-haspopup="true">
             <AccountCircleIcon />
-            <span css={buttonText}>xcerveny@fi.muni.cz</span>
+            <span css={buttonText}>{loggedUser!.name}</span>
           </Button>
           <IconButton aria-label="circle" size="small" css={logoutButton} onClick={() => handleUserLogOut()}>
             <ExitToApp />

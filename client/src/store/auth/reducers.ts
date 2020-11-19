@@ -1,12 +1,11 @@
 import { on } from 'ts-action-immer';
 import { reducer } from 'ts-action';
 import { logOut, setLoggedUser } from './actions';
-import { cookieName } from '../../code/constants/api';
-import { remove } from 'js-cookie';
-import {LoggedUser} from "../../code/interfaces/loggedUser";
+import {removeUserFromCookie} from "../../code/helpers/api";
+import {Person} from "../../code/interfaces/person";
 
 export interface State {
-  loggedUser: undefined | number;
+  loggedUser: undefined | Person;
 }
 
 export const initialState: State = {
@@ -20,6 +19,6 @@ export const authReducer = reducer<State>(
   }),
   on(logOut, (state: State, { payload }) => {
     state.loggedUser = payload;
-    remove(cookieName);
+    removeUserFromCookie();
   }),
 );

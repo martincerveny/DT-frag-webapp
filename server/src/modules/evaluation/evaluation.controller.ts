@@ -1,7 +1,9 @@
-import { Controller, Get, Param } from '@nestjs/common';
+import { Controller, Get, Param, UseGuards } from '@nestjs/common';
 import { EvaluationService } from './evaluation.service';
 import { EvaluationDto } from './dtos/evaluationDto';
+import { AuthGuard } from '../shared/guards/auth.guard';
 
+@UseGuards(AuthGuard)
 @Controller('api/evals')
 export class EvaluationController {
   constructor(private readonly evaluationService: EvaluationService) {}

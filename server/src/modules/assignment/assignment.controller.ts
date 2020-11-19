@@ -1,10 +1,12 @@
-import { Controller, Get, Param } from '@nestjs/common';
+import { Controller, Get, Param, UseGuards } from '@nestjs/common';
 import { AssignmentService } from './assignment.service';
 import { Assignment } from './entities/assignment.entity';
 import { AssignmentGroup } from './entities/assignmentGroup.entity';
 import { AssignmentArrayDto } from './dtos/assignmentArrayDto';
 import { SubmissionPerHourCountDto } from './dtos/submissionPerHourCountDto';
+import { AuthGuard } from '../shared/guards/auth.guard';
 
+@UseGuards(AuthGuard)
 @Controller('api/assignments')
 export class AssignmentController {
   constructor(private readonly assignmentService: AssignmentService) {}
