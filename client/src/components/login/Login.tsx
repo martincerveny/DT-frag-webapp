@@ -43,11 +43,14 @@ const LoginComponent: React.FC<LoginProps> = ({ login, loadingState }) => {
 
   return (
     <Container component="main" maxWidth="xs">
+      <Typography css={heading} component="h1" variant="h2">
+        Frag
+      </Typography>
       <div css={paper}>
         <Avatar css={loginIcon}>
           <LockOutlinedIcon />
         </Avatar>
-        <Typography component="h1" variant="h5">
+        <Typography component="h2" variant="h5">
           {t('loginPage.login')}
         </Typography>
         <form css={form} method="post" onSubmit={onSubmit}>
@@ -95,7 +98,14 @@ const StyledLogin = styled(LoginComponent)``;
 export const Login = (props: LoginProps) => <StyledLogin {...props} />;
 
 const paper = css`
-  margin-top: 100px;
+  margin-top: 70px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+`;
+
+const heading = css`
+  margin-top: 30px;
   display: flex;
   flex-direction: column;
   align-items: center;

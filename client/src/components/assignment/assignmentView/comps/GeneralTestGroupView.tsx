@@ -17,56 +17,79 @@ interface GeneralTestGroupViewProps {
 const GeneralTestGroupViewComponent: React.FC<GeneralTestGroupViewProps> = ({ assignmentGroups, evaluations }) => {
   const tests: Evaluation[] = removeArrayDuplicatesByProp(evaluations, ['group', 'name']);
 
+  const renderStatsButtonGroup = (passedPercents: number, failedPercents: number) => {
+    return (
+      <ButtonGroup
+        disableRipple
+        disableFocusRipple
+        variant="contained"
+        aria-label="outlined primary button group"
+        css={buttonGroupWrapper}
+      >
+        <Tooltip title="Pass" placement="top">
+          <Button css={buttonWrapperPass(passedPercents)}>{passedPercents} %</Button>
+        </Tooltip>
+        <Tooltip title="Fail" placement="top">
+          <Button color="secondary" css={buttonWrapper(failedPercents)}>
+            {failedPercents} %
+          </Button>
+        </Tooltip>
+      </ButtonGroup>
+    );
+  };
+
+  const getStatPercents = (test: string, group: string) => {
+    const passedTestEvaluations = evaluations.filter((e: Evaluation) => {
+      return e.group === group && e.name === test && e.passed;
+    });
+
+    const failedTestEvaluations = evaluations.filter((e: Evaluation) => {
+      return e.group === group && e.name === test && !e.passed;
+    });
+
+    const allEvaluations = passedTestEvaluations.length + failedTestEvaluations.length;
+    const passedPercents = getPercents(passedTestEvaluations.length, allEvaluations);
+    const failedPercents = getPercents(failedTestEvaluations.length, allEvaluations);
+
+    return { passedPercents, failedPercents };
+  };
+
   return (
     <div css={content}>
       {tests.length > 0 ? (
         <List component="nav" aria-label="main mailbox folders">
-          {assignmentGroups.map((ag: AssignmentGroup, index: any) => (
-            <ListItem key={index}>
-              <Grid container direction="column">
-                <Typography variant="h6">{ag.group}</Typography>
-                {tests.map((t: Evaluation, index) => {
-                  if (t.group === ag.group) {
-                    const passedTestEvaluations = evaluations.filter((e: Evaluation) => {
-                      return e.group === ag.group && e.name === t.name && e.passed;
-                    });
+          {assignmentGroups.map((ag: AssignmentGroup, index: any) => {
+            const groupPercents = getStatPercents('group', ag.group);
 
-                    const failedTestEvaluations = evaluations.filter((e: Evaluation) => {
-                      return e.group === ag.group && e.name === t.name && !e.passed;
-                    });
+            return (
+              <ListItem key={index} css={groupWrapper}>
+                <Grid container direction="column">
+                  <Grid container direction="row" justify="flex-start" alignItems="center">
+                    <Typography css={groupHeading} variant="h6">
+                      {ag.group}
+                    </Typography>
+                    {!isNaN(groupPercents.passedPercents) &&
+                      !isNaN(groupPercents.failedPercents) &&
+                      renderStatsButtonGroup(groupPercents.passedPercents, groupPercents.failedPercents)}
+                  </Grid>
+                  {tests.map((t: Evaluation, index) => {
+                    const percents = getStatPercents(t.name, ag.group);
 
-                    const allEvaluations = passedTestEvaluations.length + failedTestEvaluations.length;
-                    const passedPercents = getPercents(passedTestEvaluations.length, allEvaluations);
-                    const failedPercents = getPercents(failedTestEvaluations.length, allEvaluations);
-
-                    return (
-                      <Grid key={index} container direction="row" justify="flex-start" alignItems="center">
-                        <Button css={testNameButtonWrapper} variant="text">
-                          <p>{t.name}</p>
-                        </Button>
-                        <ButtonGroup
-                          disableRipple
-                          disableFocusRipple
-                          variant="contained"
-                          aria-label="outlined primary button group"
-                          css={buttonGroupWrapper}
-                        >
-                          <Tooltip title="Pass" placement="top">
-                            <Button css={buttonWrapperPass(passedPercents)}>{passedPercents} %</Button>
-                          </Tooltip>
-                          <Tooltip title="Fail" placement="top">
-                            <Button color="secondary" css={buttonWrapper(failedPercents)}>
-                              {failedPercents} %
-                            </Button>
-                          </Tooltip>
-                        </ButtonGroup>
-                      </Grid>
-                    );
-                  }
-                })}
-              </Grid>
-            </ListItem>
-          ))}
+                    if (t.group === ag.group && t.name !== 'group') {
+                      return (
+                        <Grid key={index} container direction="row" justify="flex-start" alignItems="center">
+                          <Button css={testNameButtonWrapper} variant="text">
+                            <p>{t.name}</p>
+                          </Button>
+                          {renderStatsButtonGroup(percents.passedPercents, percents.failedPercents)}
+                        </Grid>
+                      );
+                    }
+                  })}
+                </Grid>
+              </ListItem>
+            );
+          })}
         </List>
       ) : (
         <Loader />
@@ -80,7 +103,7 @@ const StyledGeneralTestGroupViewComponent = styled(GeneralTestGroupViewComponent
 export const GeneralTestGroupView = (props: any) => <StyledGeneralTestGroupViewComponent {...props} />;
 
 const content = css`
-  margin: 50px 10px;
+  margin: 20px 10px;
 `;
 
 const buttonGroupWrapper = css`
@@ -88,9 +111,17 @@ const buttonGroupWrapper = css`
   margin-left: 150px;
 `;
 
+const groupWrapper = css`
+  margin-top: 30px;
+`;
+
 const testNameButtonWrapper = css`
   width: 100px;
   height: 50px;
+`;
+
+const groupHeading = css`
+  width: 100px;
 `;
 
 const buttonWrapper = (size: number) => {
