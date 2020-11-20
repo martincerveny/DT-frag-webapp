@@ -27,6 +27,7 @@ export const translates: {
   'seminar.seminarTable.name': 'Name',
   'seminar.seminarTable.assignments': 'Assignments',
   'seminar.seminarTable.attendance': 'Attendance',
+  'seminar.seminarTable.absence': 'Absence',
   'seminar.seminarTable.activity': 'Activity',
   'progressBar.pts': 'pts',
   'student.assignments': 'Assignments',

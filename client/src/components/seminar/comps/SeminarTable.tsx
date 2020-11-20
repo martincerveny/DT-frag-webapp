@@ -19,7 +19,7 @@ import { Routes } from '../../../code/enums/routes';
 import { Link } from 'react-router-dom';
 import { t } from '../../../code/helpers/translations';
 import { AttendanceDeadline } from '../../../code/interfaces/attendanceDeadline';
-import * as differenceInDays from 'date-fns/differenceInDays';
+import moment from 'moment';
 
 interface SeminarTableProps {
   seminarEnrollments: Enrollment[];
@@ -48,6 +48,32 @@ const SeminarTableComponent: React.FC<SeminarTableProps> = ({
   let studentAssignmentsPassed: AuthorAssignment[] | null = null;
   let studentAssignmentsNotPassed: AuthorAssignment[] | null = null;
   let notSubmittedAssignments: Assignment[] | null = null;
+
+  const renderAttendance = (studentAttendance: Attendance[]) => {
+    if (attendanceDeadline) {
+      const lastSemesterWeek = moment(attendanceDeadline.stamp).isoWeek();
+      const firstSemesterWeek = lastSemesterWeek - 11;
+      const attendanceItems = [];
+
+      for (let i = firstSemesterWeek; i <= lastSemesterWeek; i++) {
+        const weekAttendance = studentAttendance.find((sa: Attendance) => moment(sa.date).isoWeek() === i);
+        attendanceItems.push(
+          <Tooltip
+            key={i}
+            title={weekAttendance ? getDateString(weekAttendance.date) : t('seminar.seminarTable.absence')}
+            placement="top"
+          >
+            {weekAttendance ? (
+              <SquareFill color="green" size={20} css={attendanceButton} />
+            ) : (
+              <Square size={20} css={attendanceButton} />
+            )}
+          </Tooltip>,
+        );
+      }
+      return attendanceItems;
+    }
+  };
 
   return (
     <div css={content}>
@@ -142,13 +168,7 @@ const SeminarTableComponent: React.FC<SeminarTableProps> = ({
                             );
                           })}
                       </TableCell>
-                      <TableCell align="right">
-                        {studentAttendance.map((sa: Attendance, index: number) => (
-                          <Tooltip key={index} title={getDateString(sa.date)} placement="top">
-                            <SquareFill color="green" size={20} css={attendanceButton} />
-                          </Tooltip>
-                        ))}
-                      </TableCell>
+                      <TableCell align="right">{renderAttendance(studentAttendance)}</TableCell>
                       <TableCell align="right">
                         {studentActivity && activityPts.length > 0 && (
                           <ProgressBar points={studentActivity[0].points} maxPoints={studentActivity[0].maxPoints} />

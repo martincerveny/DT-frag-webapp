@@ -9,7 +9,7 @@ import { StudentAttendanceDto } from './dtos/studentAttendanceDto';
 import { AuthGuard } from '../shared/guards/auth.guard';
 import { AttendanceDeadline } from './entities/attendanceDeadline';
 
-@UseGuards(AuthGuard)
+// @UseGuards(AuthGuard)
 @Controller('api/seminars')
 export class SeminarController {
   constructor(private readonly seminarService: SeminarService) {}
