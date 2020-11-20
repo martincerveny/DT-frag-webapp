@@ -9,6 +9,7 @@ import { ActivityView } from './entities/activityView.entity';
 import { ActivityMax } from './entities/activityMax.entity';
 import { Activity } from './entities/activity.entity';
 import { AuthModule } from '../auth/auth.module';
+import { AttendanceDeadline } from './entities/attendanceDeadline';
 
 @Module({
   imports: [
@@ -19,6 +20,7 @@ import { AuthModule } from '../auth/auth.module';
       ActivityView,
       ActivityMax,
       Activity,
+      AttendanceDeadline,
     ]),
     AuthModule,
   ],

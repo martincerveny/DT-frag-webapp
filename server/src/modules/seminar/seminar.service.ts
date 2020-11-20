@@ -9,6 +9,7 @@ import { ActivityMax } from './entities/activityMax.entity';
 import { ActivityViewDto } from './dtos/activityViewDto';
 import { Activity } from './entities/activity.entity';
 import { StudentAttendanceDto } from './dtos/studentAttendanceDto';
+import { AttendanceDeadline } from './entities/attendanceDeadline';
 
 @Injectable()
 export class SeminarService {
@@ -25,6 +26,8 @@ export class SeminarService {
     private activityRepository: Repository<Activity>,
     @InjectRepository(ActivityMax)
     private activityMaxRepository: Repository<ActivityMax>,
+    @InjectRepository(AttendanceDeadline)
+    private attendanceDeadlineRepository: Repository<AttendanceDeadline>,
   ) {}
 
   findSeminarsByTeacher(id: number): Promise<Seminar[]> {
@@ -82,6 +85,10 @@ export class SeminarService {
       ])
       .where('attendance.seminar_id IN (:...ids)', { ids: idsArray })
       .getRawMany();
+  }
+
+  findAttendanceDeadline(): Promise<AttendanceDeadline> {
+    return this.attendanceDeadlineRepository.findOne();
   }
 
   findAttendanceByStudent(id: number): Promise<StudentAttendanceDto[]> {

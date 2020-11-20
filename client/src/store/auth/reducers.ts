@@ -1,6 +1,6 @@
 import { on } from 'ts-action-immer';
 import { reducer } from 'ts-action';
-import { logOut, setLoadingState, setLoggedUser } from './actions';
+import { logOut, setLoadingState, setLoggedUser, setRefreshCookieState } from './actions';
 import { removeUserFromCookie } from '../../code/helpers/api';
 import { Person } from '../../code/interfaces/person';
 import { LoadingState } from '../../code/enums/loading';
@@ -8,11 +8,13 @@ import { LoadingState } from '../../code/enums/loading';
 export interface State {
   loggedUser: undefined | Person;
   loadingState: LoadingState;
+  refreshCookieState: LoadingState;
 }
 
 export const initialState: State = {
   loggedUser: undefined,
   loadingState: LoadingState.Initial,
+  refreshCookieState: LoadingState.Initial,
 };
 
 export const authReducer = reducer<State>(
@@ -22,6 +24,9 @@ export const authReducer = reducer<State>(
   }),
   on(setLoadingState, (state: State, { payload }) => {
     state.loadingState = payload.loadingState;
+  }),
+  on(setRefreshCookieState, (state: State, { payload }) => {
+    state.refreshCookieState = payload.refreshCookieState;
   }),
   on(logOut, (state: State, { payload }) => {
     state.loggedUser = payload;

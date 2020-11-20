@@ -6,6 +6,7 @@ import { logUserOut, refreshUserFromCookie } from './store/auth/actions';
 
 const mapStateToProps = (state: State): StateProps => ({
   loggedUser: state.auth.loggedUser,
+  refreshCookieState: state.auth.refreshCookieState,
 });
 
 const mapDispatchToProps = (dispatch: Dispatch): DispatchProps => ({

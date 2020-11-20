@@ -7,6 +7,7 @@ import { ActivityViewDto } from './dtos/activityViewDto';
 import { Activity } from './entities/activity.entity';
 import { StudentAttendanceDto } from './dtos/studentAttendanceDto';
 import { AuthGuard } from '../shared/guards/auth.guard';
+import { AttendanceDeadline } from './entities/attendanceDeadline';
 
 @UseGuards(AuthGuard)
 @Controller('api/seminars')
@@ -35,6 +36,11 @@ export class SeminarController {
   @Get('/attendance/:id/student')
   findAttendanceByStudent(@Param('id') id): Promise<StudentAttendanceDto[]> {
     return this.seminarService.findAttendanceByStudent(id);
+  }
+
+  @Get('/attendanceDeadline')
+  findAttendanceDeadline(): Promise<AttendanceDeadline> {
+    return this.seminarService.findAttendanceDeadline();
   }
 
   @Get('/activity')

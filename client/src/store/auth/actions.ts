@@ -13,11 +13,16 @@ export enum ActionTypes {
   SET_LOGGED_USER = '[auth] SET_LOGGED_USER',
   LOG_OUT = '[auth] LOG_OUT',
   SET_LOADING_STATE = '[auth] SET_LOADING_STATE',
+  SET_REFRESH_COOKIE_STATE = '[auth] SET_REFRESH_COOKIE_STATE',
 }
 
 export const setLoggedUser = action(ActionTypes.SET_LOGGED_USER, payload<{ user: Person | undefined }>());
 export const logOut = action(ActionTypes.LOG_OUT, payload<undefined>());
 export const setLoadingState = action(ActionTypes.SET_LOADING_STATE, payload<{ loadingState: LoadingState }>());
+export const setRefreshCookieState = action(
+  ActionTypes.SET_REFRESH_COOKIE_STATE,
+  payload<{ refreshCookieState: LoadingState }>(),
+);
 
 export const login: ActionCreator<ThunkAction<Promise<void>, State, any, any>> = (
   username: string,
@@ -47,8 +52,10 @@ export const login: ActionCreator<ThunkAction<Promise<void>, State, any, any>> =
 
 export const refreshUserFromCookie: ActionCreator<ThunkAction<Promise<void>, State, any, any>> = () => {
   return async (dispatch: Dispatch<Action>): Promise<void> => {
+    dispatch(setRefreshCookieState({ refreshCookieState: LoadingState.Loading }));
     const user = receiveUserFromCookie();
     if (!user) {
+      dispatch(setRefreshCookieState({ refreshCookieState: LoadingState.Failure }));
       return;
     }
 
@@ -56,10 +63,12 @@ export const refreshUserFromCookie: ActionCreator<ThunkAction<Promise<void>, Sta
       .get(`/auth/tutor/${user.id}`)
       .then(response => {
         dispatch(setLoggedUser({ user: response.data }));
+        dispatch(setRefreshCookieState({ refreshCookieState: LoadingState.Success }));
       })
       .catch(error => {
         snackbarService.showSnackbar(error.message, 'error', 7000);
         removeUserFromCookie();
+        dispatch(setRefreshCookieState({ refreshCookieState: LoadingState.Failure }));
       });
   };
 };

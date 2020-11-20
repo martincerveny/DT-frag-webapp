@@ -19,7 +19,7 @@ import { Routes } from '../../../code/enums/routes';
 import { Link } from 'react-router-dom';
 import { t } from '../../../code/helpers/translations';
 import { AttendanceDeadline } from '../../../code/interfaces/attendanceDeadline';
-import * as differenceInDays from 'date-fns/differenceInDays'
+import * as differenceInDays from 'date-fns/differenceInDays';
 
 interface SeminarTableProps {
   seminarEnrollments: Enrollment[];

@@ -1,6 +1,7 @@
 export const translates: {
   [key: string]: string;
 } = {
+  'app.loading': 'App is loading',
   'assignment.dashboard': 'Assignment Dashboard',
   'assignment.statistics.graph1': 'Statistics 1',
   'assignment.statistics.graph2': 'All submissions per hour of the day',
@@ -49,5 +50,5 @@ export const translates: {
   'test.pass': 'pass',
   'test.fail': 'fail',
   'auth.logout': 'You have been successfully logged out',
-  'auth.login': 'You have been successfully logged in'
+  'auth.login': 'You have been successfully logged in',
 };

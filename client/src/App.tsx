@@ -2,8 +2,8 @@
 import { css, Global, jsx } from '@emotion/core';
 import React, { useEffect } from 'react';
 import { DEFAULT_FONT_FAMILY } from './styles/stylingConstants';
-import { CssBaseline } from '@material-ui/core';
-import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
+import { CssBaseline, Typography } from '@material-ui/core';
+import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import { ThemeProvider } from '@material-ui/core/styles';
 import { MenuBar } from './components/menuBar/MenuBar';
 import { Routes } from './code/enums/routes';
@@ -15,10 +15,14 @@ import { StudentViewContainer } from './components/student/StudentViewContainer'
 import { LoginContainer } from './components/login/LoginContainer';
 import { logUserOut, refreshUserFromCookie } from './store/auth/actions';
 import { Person } from './code/interfaces/person';
-import {SnackbarContainer} from "uno-material-ui/dist";
+import { SnackbarContainer } from 'uno-material-ui/dist';
+import { LoadingState } from './code/enums/loading';
+import { Loader } from './components/shared/Loader';
+import { t } from './code/helpers/translations';
 
 export interface StateProps {
   loggedUser: undefined | Person;
+  refreshCookieState: LoadingState;
 }
 
 export interface DispatchProps {
@@ -41,18 +45,20 @@ const renderGlobalCssSettings = () => (
   />
 );
 
-const App: React.FC<AppProps> = ({ loggedUser, refreshUserFromCookie, logUserOut }) => {
+const App: React.FC<AppProps> = ({ loggedUser, refreshUserFromCookie, logUserOut, refreshCookieState }) => {
   useEffect(() => {
     refreshUserFromCookie();
   }, []);
 
   const renderRoutes = () => {
-    let routes = getUnloggedRoutes();
+    if (refreshCookieState === LoadingState.Loading) {
+      return renderLoading(t('app.loading'));
+    }
 
+    let routes = getUnloggedRoutes();
     if (loggedUser) {
       routes = getLoggedRoutes();
     }
-
     return <Router>{routes}</Router>;
   };
 
@@ -94,6 +100,15 @@ const App: React.FC<AppProps> = ({ loggedUser, refreshUserFromCookie, logUserOut
     );
   };
 
+  const renderLoading = (text: string) => {
+    return (
+      <div css={loadingApp}>
+        <Loader />
+        <Typography>{text}</Typography>
+      </div>
+    );
+  };
+
   return (
     <ThemeProvider theme={APP_THEME}>
       <SnackbarContainer />
@@ -110,4 +125,13 @@ export default App;
 
 const root = css`
   flex-grow: 1;
+`;
+
+const loadingApp = css`
+  text-align: center;
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  -webkit-transform: translate(-50%, -50%);
+  transform: translate(-50%, -50%);
 `;
