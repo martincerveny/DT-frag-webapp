@@ -5,6 +5,7 @@ import { SeminarDashboard } from './SeminarDashboard';
 import {
   fetchActivityPts,
   fetchAttendance,
+  fetchAttendanceDeadline,
   fetchEnrollments,
   fetchSeminars,
   setLoadingState,
@@ -20,6 +21,7 @@ const mapStateToProps = (state: State): StateProps => ({
   authorAssignments: state.assignment.authorAssignments,
   loadingState: state.seminar.loadingState,
   assignments: state.assignment.assignments,
+  attendanceDeadline: state.seminar.attendanceDeadline,
 });
 
 const mapDispatchToProps = (dispatch: Dispatch): DispatchProps => ({
@@ -32,6 +34,7 @@ const mapDispatchToProps = (dispatch: Dispatch): DispatchProps => ({
       fetchAuthorAssignments,
       setLoadingState,
       fetchAssignments,
+      fetchAttendanceDeadline,
     },
     dispatch,
   ),

@@ -8,12 +8,14 @@ import { Enrollment } from '../../code/interfaces/enrollment';
 import { Attendance } from '../../code/interfaces/attendance';
 import { ActivityPts } from '../../code/interfaces/activityPts';
 import { LoadingState } from '../../code/enums/loading';
+import { AttendanceDeadline } from '../../code/interfaces/attendanceDeadline';
 
 export enum ActionTypes {
   SET_SEMINARS = '[seminar] SET_SEMINARS',
   SET_SEMINAR_ENROLLMENTS = '[seminar] SET_SEMINAR_ENROLLMENTS',
   SET_ALL_ENROLLMENTS = '[seminar] SET_ALL_ENROLLMENTS',
   SET_ATTENDANCE = '[seminar] SET_ATTENDANCE',
+  SET_ATTENDANCE_DEADLINE = '[seminar] SET_ATTENDANCE_DEADLINE',
   SET_ACTIVITY_PTS = '[seminar] SET_ACTIVITY_PTS',
   SET_LOADING_STATE = '[seminar] SET_LOADING_STATE',
 }
@@ -25,6 +27,10 @@ export const setSeminarEnrollments = action(
 );
 export const setAllEnrollments = action(ActionTypes.SET_ALL_ENROLLMENTS, payload<{ allEnrollments: Enrollment[] }>());
 export const setAttendance = action(ActionTypes.SET_ATTENDANCE, payload<{ attendance: Attendance[] }>());
+export const setAttendanceDeadline = action(
+  ActionTypes.SET_ATTENDANCE_DEADLINE,
+  payload<{ attendanceDeadline: AttendanceDeadline }>(),
+);
 export const setActivityPts = action(ActionTypes.SET_ACTIVITY_PTS, payload<{ activityPts: ActivityPts[] }>());
 export const setLoadingState = action(ActionTypes.SET_LOADING_STATE, payload<{ loadingState: LoadingState }>());
 
@@ -52,6 +58,13 @@ export const fetchAttendance: ActionCreator<ThunkAction<Promise<void>, State, an
   return async (dispatch: Dispatch<Action>): Promise<void> => {
     const response = await api.get(`/seminars/attendance?seminar=${ids}`);
     dispatch(setAttendance({ attendance: response.data }));
+  };
+};
+
+export const fetchAttendanceDeadline: ActionCreator<ThunkAction<Promise<void>, State, any, any>> = () => {
+  return async (dispatch: Dispatch<Action>): Promise<void> => {
+    const response = await api.get(`/seminars/attendanceDeadline`);
+    dispatch(setAttendanceDeadline({ attendanceDeadline: response.data }));
   };
 };
 

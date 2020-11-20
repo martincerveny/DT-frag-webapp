@@ -4,6 +4,7 @@ import {
   setActivityPts,
   setAllEnrollments,
   setAttendance,
+  setAttendanceDeadline,
   setLoadingState,
   setSeminarEnrollments,
   setSeminars,
@@ -13,6 +14,7 @@ import { Enrollment } from '../../code/interfaces/enrollment';
 import { Attendance } from '../../code/interfaces/attendance';
 import { ActivityPts } from '../../code/interfaces/activityPts';
 import { LoadingState } from '../../code/enums/loading';
+import { AttendanceDeadline } from '../../code/interfaces/attendanceDeadline';
 
 export interface State {
   loadingState: LoadingState;
@@ -20,6 +22,7 @@ export interface State {
   seminarEnrollments: Enrollment[];
   allEnrollments: Enrollment[];
   attendance: Attendance[];
+  attendanceDeadline: AttendanceDeadline | undefined;
   activityPts: ActivityPts[];
 }
 
@@ -29,6 +32,7 @@ export const initialState: State = {
   seminarEnrollments: [],
   allEnrollments: [],
   attendance: [],
+  attendanceDeadline: undefined,
   activityPts: [],
 };
 
@@ -45,6 +49,9 @@ export const seminarReducer = reducer<State>(
   }),
   on(setAttendance, (state: State, { payload }) => {
     state.attendance = payload.attendance;
+  }),
+  on(setAttendanceDeadline, (state: State, { payload }) => {
+    state.attendanceDeadline = payload.attendanceDeadline;
   }),
   on(setActivityPts, (state: State, { payload }) => {
     state.activityPts = payload.activityPts;

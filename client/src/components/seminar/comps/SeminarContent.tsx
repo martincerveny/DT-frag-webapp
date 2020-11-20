@@ -5,7 +5,13 @@ import { css, jsx } from '@emotion/core';
 import { Grid, Typography } from '@material-ui/core';
 import { SeminarTable } from './SeminarTable';
 import { Seminar } from '../../../code/interfaces/seminar';
-import { fetchActivityPts, fetchAttendance, fetchEnrollments, setLoadingState } from '../../../store/seminar/actions';
+import {
+  fetchActivityPts,
+  fetchAttendance,
+  fetchAttendanceDeadline,
+  fetchEnrollments,
+  setLoadingState,
+} from '../../../store/seminar/actions';
 import { Enrollment } from '../../../code/interfaces/enrollment';
 import { Attendance } from '../../../code/interfaces/attendance';
 import { ActivityPts } from '../../../code/interfaces/activityPts';
@@ -14,6 +20,7 @@ import { AssignmentArray } from '../../../code/interfaces/assignmentArray';
 import { Assignment } from '../../../code/interfaces/assignment';
 import { Square, SquareFill, XSquareFill } from 'react-bootstrap-icons';
 import { t } from '../../../code/helpers/translations';
+import { AttendanceDeadline } from '../../../code/interfaces/attendanceDeadline';
 
 export interface SeminarContentProps {
   seminarEnrollments: Enrollment[];
@@ -22,11 +29,13 @@ export interface SeminarContentProps {
   activityPts: ActivityPts[];
   authorAssignments: AssignmentArray | undefined;
   fetchAttendance: typeof fetchAttendance;
+  fetchAttendanceDeadline: typeof fetchAttendanceDeadline;
   fetchActivityPts: typeof fetchActivityPts;
   fetchEnrollments: typeof fetchEnrollments;
   loadingState: LoadingState;
   setLoadingState: typeof setLoadingState;
   assignments: Assignment[];
+  attendanceDeadline: AttendanceDeadline | undefined;
 }
 
 const SeminarContentComponent: React.FC<SeminarContentProps> = ({
@@ -41,12 +50,15 @@ const SeminarContentComponent: React.FC<SeminarContentProps> = ({
   loadingState,
   setLoadingState,
   assignments,
+  fetchAttendanceDeadline,
+  attendanceDeadline,
 }) => {
   useEffect(() => {
     const seminarIds = Array.prototype.map.call(seminars, s => s.id).toString();
     fetchEnrollments(seminarIds);
     fetchAttendance(seminarIds);
     fetchActivityPts();
+    fetchAttendanceDeadline();
   }, [seminars]);
 
   return (
@@ -59,7 +71,6 @@ const SeminarContentComponent: React.FC<SeminarContentProps> = ({
               {t('seminar.seminar')} {s.name}
             </Typography>
             <SeminarTable
-              fetchEnrollments={fetchEnrollments}
               seminarEnrollments={seminarEnrollments}
               seminars={seminars}
               attendance={attendance}
@@ -69,6 +80,7 @@ const SeminarContentComponent: React.FC<SeminarContentProps> = ({
               setLoadingState={setLoadingState}
               loadingState={loadingState}
               assignments={assignments}
+              attendanceDeadline={attendanceDeadline}
             />
           </div>
         );

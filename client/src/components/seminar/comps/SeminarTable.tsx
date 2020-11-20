@@ -18,6 +18,8 @@ import { colors } from '../../../styles/colors';
 import { Routes } from '../../../code/enums/routes';
 import { Link } from 'react-router-dom';
 import { t } from '../../../code/helpers/translations';
+import { AttendanceDeadline } from '../../../code/interfaces/attendanceDeadline';
+import * as differenceInDays from 'date-fns/differenceInDays'
 
 interface SeminarTableProps {
   seminarEnrollments: Enrollment[];
@@ -28,6 +30,7 @@ interface SeminarTableProps {
   setLoadingState: typeof setLoadingState;
   loadingState: LoadingState;
   assignments: Assignment[];
+  attendanceDeadline: AttendanceDeadline | undefined;
 }
 
 const SeminarTableComponent: React.FC<SeminarTableProps> = ({
@@ -39,6 +42,7 @@ const SeminarTableComponent: React.FC<SeminarTableProps> = ({
   setLoadingState,
   loadingState,
   assignments,
+  attendanceDeadline,
 }) => {
   let studentActivity: ActivityPts[] | null = null;
   let studentAssignmentsPassed: AuthorAssignment[] | null = null;
@@ -61,9 +65,13 @@ const SeminarTableComponent: React.FC<SeminarTableProps> = ({
             <TableBody>
               {seminarEnrollments.map((e: Enrollment, index: number) => {
                 if (currentSeminar === e.seminar_id) {
-                  const studentAttendance = attendance.filter((a: Attendance) => {
-                    return a['student'] === e.student && a['seminar_id'] === e.seminar_id;
-                  });
+                  const studentAttendance = attendance
+                    .filter((a: Attendance) => {
+                      return a['student'] === e.student && a['seminar_id'] === e.seminar_id;
+                    })
+                    .sort(
+                      (a: Attendance, b: Attendance) => new Date(a['date']).getTime() - new Date(b['date']).getTime(),
+                    );
 
                   if (activityPts.length > 0) {
                     studentActivity = activityPts.filter((activityPts: ActivityPts) => {

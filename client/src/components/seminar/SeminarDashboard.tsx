@@ -7,6 +7,7 @@ import { Seminar } from '../../code/interfaces/seminar';
 import {
   fetchActivityPts,
   fetchAttendance,
+  fetchAttendanceDeadline,
   fetchEnrollments,
   fetchSeminars,
   setLoadingState,
@@ -22,6 +23,7 @@ import { Assignment } from '../../code/interfaces/assignment';
 import { Loader } from '../shared/Loader';
 import { t } from '../../code/helpers/translations';
 import { UserContext } from '../../App';
+import { AttendanceDeadline } from '../../code/interfaces/attendanceDeadline';
 
 export interface StateProps {
   seminars: Seminar[];
@@ -31,6 +33,7 @@ export interface StateProps {
   authorAssignments: AssignmentArray | undefined;
   loadingState: LoadingState;
   assignments: Assignment[];
+  attendanceDeadline: AttendanceDeadline | undefined;
 }
 
 export interface DispatchProps {
@@ -41,6 +44,7 @@ export interface DispatchProps {
   fetchAuthorAssignments: typeof fetchAuthorAssignments;
   setLoadingState: typeof setLoadingState;
   fetchAssignments: typeof fetchAssignments;
+  fetchAttendanceDeadline: typeof fetchAttendanceDeadline;
 }
 
 type SeminarDashboardProps = DispatchProps & StateProps;
@@ -60,6 +64,8 @@ const SeminarDashboardComponent: React.FC<SeminarDashboardProps> = ({
   setLoadingState,
   assignments,
   fetchAssignments,
+  fetchAttendanceDeadline,
+  attendanceDeadline,
 }) => {
   const loggedUser = useContext(UserContext);
 
@@ -92,6 +98,8 @@ const SeminarDashboardComponent: React.FC<SeminarDashboardProps> = ({
                     loadingState={loadingState}
                     setLoadingState={setLoadingState}
                     assignments={assignments}
+                    fetchAttendanceDeadline={fetchAttendanceDeadline}
+                    attendanceDeadline={attendanceDeadline}
                   />
                 ) : (
                   <Loader />
