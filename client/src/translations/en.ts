@@ -32,7 +32,7 @@ export const translates: {
   'progressBar.pts': 'pts',
   'student.assignments': 'Assignments',
   'student.activityList': 'Activity List',
-  'student.attendanceDetails': 'Attendance Details',
+  'student.attendance': 'Attendance',
   'student.seminar': 'Seminar',
   'student.student': 'Student',
   'student.assignment': 'Assignment',

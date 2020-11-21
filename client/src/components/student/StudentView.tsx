@@ -85,57 +85,67 @@ const StudentViewComponent: React.FC<StudentViewProps> = ({
 
   const renderHorizontalMenu = () => {
     return (
-      <Grid container direction="row">
-        <Button
-          variant="contained"
-          color={selectedMenuItem === StudentMenu.Assignment ? 'primary' : 'default'}
-          disableElevation
-          css={menuButton}
-          onClick={() => handleMenuClick(StudentMenu.Assignment)}
-        >
-          <AssignmentIcon css={icon} />
-          {t('student.assignments')}
-        </Button>
-        <Button
-          variant="contained"
-          color={selectedMenuItem === StudentMenu.ActivityList ? 'primary' : 'default'}
-          disableElevation
-          css={menuButton}
-          onClick={() => handleMenuClick(StudentMenu.ActivityList)}
-        >
-          <GradeIcon css={icon} />
-          {t('student.activityList')}
-        </Button>
-        <Button
-          variant="contained"
-          color={selectedMenuItem === StudentMenu.Attendance ? 'primary' : 'default'}
-          disableElevation
-          css={menuButton}
-          onClick={() => handleMenuClick(StudentMenu.Attendance)}
-        >
-          <EventAvailableIcon css={icon} />
-          {t('student.attendanceDetails')}
-        </Button>
-        <Button
-          variant="contained"
-          color={selectedMenuItem === StudentMenu.Notepads ? 'primary' : 'default'}
-          disableElevation
-          css={menuButton}
-          onClick={() => handleMenuClick(StudentMenu.Notepads)}
-        >
-          <NoteIcon css={icon} />
-          {t('student.notepads')}
-        </Button>
-        <Button
-          variant="contained"
-          color={selectedMenuItem === StudentMenu.SourceCode ? 'primary' : 'default'}
-          disableElevation
-          css={menuButton}
-          onClick={() => handleMenuClick(StudentMenu.SourceCode)}
-        >
-          <CodeIcon css={icon} />
-          {t('student.sourceCode')}
-        </Button>
+      <Grid container direction="row" justify="flex-start">
+        <Grid item css={gridItemWrapper} xl={2} lg={2} md={3} sm={5}>
+          <Button
+            variant="contained"
+            color={selectedMenuItem === StudentMenu.Assignment ? 'primary' : 'default'}
+            disableElevation
+            css={menuButton}
+            onClick={() => handleMenuClick(StudentMenu.Assignment)}
+          >
+            <AssignmentIcon css={icon} />
+            {t('student.assignments')}
+          </Button>
+        </Grid>
+        <Grid item css={gridItemWrapper} xl={2} lg={2} md={3} sm={5}>
+          <Button
+            variant="contained"
+            color={selectedMenuItem === StudentMenu.ActivityList ? 'primary' : 'default'}
+            disableElevation
+            css={menuButton}
+            onClick={() => handleMenuClick(StudentMenu.ActivityList)}
+          >
+            <GradeIcon css={icon} />
+            {t('student.activityList')}
+          </Button>
+        </Grid>
+        <Grid item css={gridItemWrapper} xl={2} lg={2} md={3} sm={5}>
+          <Button
+            variant="contained"
+            color={selectedMenuItem === StudentMenu.Attendance ? 'primary' : 'default'}
+            disableElevation
+            css={menuButton}
+            onClick={() => handleMenuClick(StudentMenu.Attendance)}
+          >
+            <EventAvailableIcon css={icon} />
+            {t('student.attendance')}
+          </Button>
+        </Grid>
+        <Grid item css={gridItemWrapper} xl={2} lg={2} md={3} sm={5}>
+          <Button
+            variant="contained"
+            color={selectedMenuItem === StudentMenu.Notepads ? 'primary' : 'default'}
+            disableElevation
+            css={menuButton}
+            onClick={() => handleMenuClick(StudentMenu.Notepads)}
+          >
+            <NoteIcon css={icon} />
+            {t('student.notepads')}
+          </Button>
+        </Grid>
+        <Grid item css={gridItemWrapper} xl={2} lg={2} md={3} sm={5}>
+          <Button
+            variant="contained"
+            color={selectedMenuItem === StudentMenu.SourceCode ? 'primary' : 'default'}
+            disableElevation
+            css={menuButton}
+            onClick={() => handleMenuClick(StudentMenu.SourceCode)}
+          >
+            <CodeIcon css={icon} />
+            {t('student.sourceCode')}
+          </Button>
+        </Grid>
       </Grid>
     );
   };
@@ -201,6 +211,10 @@ const container = css`
   padding-bottom: 40px;
 `;
 
+const gridItemWrapper = css`
+  margin: 2px;
+`;
+
 const paper = css`
   padding: 2px;
   display: flex;
@@ -215,6 +229,7 @@ const heading = css`
 
 const menuButton = css`
   margin-left: 20px;
+  width: 190px;
 `;
 
 const icon = css`
