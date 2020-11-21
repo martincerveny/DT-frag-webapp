@@ -107,7 +107,7 @@ const StudentTableViewComponent: React.FC<StudentTableViewProps> = ({ evaluation
                           <TableCell key={groupIndex} align="left">
                             {studentTests.map((test: Evaluation, testIndex: number) => {
                               return (
-                                <Tooltip title={test.sequence} placement="top" key={testIndex}>
+                                <Tooltip title={test.name} placement="top" key={testIndex}>
                                   <IconButton
                                     aria-label="circle"
                                     size="small"

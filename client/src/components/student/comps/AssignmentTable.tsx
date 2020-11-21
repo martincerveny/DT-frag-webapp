@@ -5,6 +5,7 @@ import { css, jsx } from '@emotion/core';
 import {
   Box,
   Collapse,
+  Grid,
   IconButton,
   Paper,
   Table,
@@ -27,6 +28,7 @@ import { Evaluation } from '../../../code/interfaces/evaluation';
 import { Loader } from '../../shared/Loader';
 import { t } from '../../../code/helpers/translations';
 import { TestDescription } from '../../shared/TestDescription';
+import _ from 'underscore';
 
 interface AssignmentTableProps {
   assignments: Assignment[];
@@ -80,9 +82,10 @@ const AssignmentTableComponent: React.FC<AssignmentTableProps> = ({
             </TableHead>
             <TableBody>
               {assignments.map((a: Assignment, rowIndex: number) => {
-                const assignmentEvals = evaluations
-                  .filter((ae: Evaluation) => ae.assignment_id === a.id)
-                  .sort((s1: Evaluation, s2: Evaluation) => Number(s1.sequence) - Number(s2.sequence));
+                const assignmentEvals = evaluations.filter((ae: Evaluation) => ae.assignment_id === a.id);
+
+                const groupByAssignmentEvals = Object.values(_.groupBy(assignmentEvals, 'group'));
+
                 return (
                   <React.Fragment key={rowIndex}>
                     <TableRow>
@@ -91,23 +94,32 @@ const AssignmentTableComponent: React.FC<AssignmentTableProps> = ({
                       </TableCell>
                       <TableCell align="left">
                         {assignmentEvals.length > 0 ? (
-                          assignmentEvals.map((test: Evaluation, testIndex: number) => {
-                            return (
-                              <Tooltip title={test.name} placement="top" key={testIndex}>
-                                <IconButton
-                                  aria-label="circle"
-                                  size="small"
-                                  onClick={() => handleClick(rowIndex, testIndex, test.data, test.name)}
-                                >
-                                  {test.passed ? (
-                                    <FiberManualRecordIcon fontSize="small" />
-                                  ) : (
-                                    <RadioButtonUncheckedIcon fontSize="small" />
-                                  )}
-                                </IconButton>
-                              </Tooltip>
-                            );
-                          })
+                          <Grid container direction="row" justify="flex-start" alignItems="center">
+                            {groupByAssignmentEvals.map((group: Evaluation[], groupIndex: number) => {
+                              return (
+                                <div css={groupWrapper} key={groupIndex}>
+                                  {group.map((test: Evaluation, testIndex: number) => {
+                                    return (
+                                      <Tooltip title={test.group} placement="top" key={testIndex}>
+                                        <IconButton
+                                          aria-label="circle"
+                                          size="small"
+                                          onClick={() => handleClick(rowIndex, testIndex, test.data, test.name)}
+                                        >
+                                          {test.passed ? (
+                                            <FiberManualRecordIcon fontSize="small" />
+                                          ) : (
+                                            <RadioButtonUncheckedIcon fontSize="small" />
+                                          )}
+                                        </IconButton>
+                                      </Tooltip>
+                                    );
+                                  })}
+                                  {groupIndex < groupByAssignmentEvals.length - 1 ? <span css={verticalLine} /> : ''}
+                                </div>
+                              );
+                            })}
+                          </Grid>
                         ) : (
                           <div>{t('student.notSubmitted')}</div>
                         )}
@@ -154,6 +166,10 @@ const content = css`
   margin: 50px 20px;
 `;
 
+const groupWrapper = css`
+  display: inline-block;
+`;
+
 const dataWrapper = css`
   margin-top: 20px;
   font-size: 13px;
@@ -172,4 +188,10 @@ const contentCellWrapper = css`
 const contentBoxWrapper = css`
   padding: 10px;
   border: dashed 1px ${colors.blue};
+`;
+
+const verticalLine = css`
+  border-left: 2px solid ${colors.gray};
+  margin-left: 12px;
+  margin-right: 12px;
 `;
