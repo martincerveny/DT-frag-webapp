@@ -4,18 +4,18 @@ import styled from '@emotion/styled';
 import { css, jsx } from '@emotion/core';
 import { Button, ButtonGroup, Grid, List, ListItem, Tooltip, Typography } from '@material-ui/core';
 import { colors } from '../../../../styles/colors';
-import { AssignmentGroup } from '../../../../code/interfaces/assignmentGroup';
 import { Evaluation } from '../../../../code/interfaces/evaluation';
-import { getPercents, removeArrayDuplicatesByProp } from '../../../../code/helpers/helpers';
+import { getGroupByGroups, getPercents, removeArrayDuplicatesByProp } from '../../../../code/helpers/helpers';
 import { Loader } from '../../../shared/Loader';
 
 interface GeneralTestGroupViewProps {
-  assignmentGroups: AssignmentGroup[];
   evaluations: Evaluation[];
 }
 
-const GeneralTestGroupViewComponent: React.FC<GeneralTestGroupViewProps> = ({ assignmentGroups, evaluations }) => {
-  const tests: Evaluation[] = removeArrayDuplicatesByProp(evaluations, ['group', 'name']);
+const GeneralTestGroupViewComponent: React.FC<GeneralTestGroupViewProps> = ({ evaluations }) => {
+  const tests: Evaluation[] = removeArrayDuplicatesByProp(evaluations, ['group', 'name']).sort(
+    (s1: Evaluation, s2: Evaluation) => Number(s1.sequence) - Number(s2.sequence),
+  );
 
   const renderStatsButtonGroup = (passedPercents: number, failedPercents: number) => {
     return (
@@ -58,24 +58,24 @@ const GeneralTestGroupViewComponent: React.FC<GeneralTestGroupViewProps> = ({ as
     <div css={content}>
       {tests.length > 0 ? (
         <List component="nav" aria-label="main mailbox folders">
-          {assignmentGroups.map((ag: AssignmentGroup, index: any) => {
-            const groupPercents = getStatPercents('group', ag.group);
+          {getGroupByGroups(tests).map((ag: string, index: any) => {
+            const groupPercents = getStatPercents('group', ag);
 
             return (
               <ListItem key={index} css={groupWrapper}>
                 <Grid container direction="column">
                   <Grid container direction="row" justify="flex-start" alignItems="center">
                     <Typography css={groupHeading} variant="h6">
-                      {ag.group}
+                      {ag}
                     </Typography>
                     {!isNaN(groupPercents.passedPercents) &&
                       !isNaN(groupPercents.failedPercents) &&
                       renderStatsButtonGroup(groupPercents.passedPercents, groupPercents.failedPercents)}
                   </Grid>
                   {tests.map((t: Evaluation, index) => {
-                    const percents = getStatPercents(t.name, ag.group);
+                    const percents = getStatPercents(t.name, ag);
 
-                    if (t.group === ag.group && t.name !== 'group') {
+                    if (t.group === ag && t.name !== 'group') {
                       return (
                         <Grid key={index} container direction="row" justify="flex-start" alignItems="center">
                           <Button css={testNameButtonWrapper} variant="text">

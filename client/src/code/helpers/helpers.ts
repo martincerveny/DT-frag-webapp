@@ -1,3 +1,6 @@
+import _ from "underscore";
+import {Evaluation} from "../interfaces/evaluation";
+
 export const removeArrayDuplicatesByProp = (arr: Array<any>, keyProps: Array<string>): any => {
   return Object.values(
     arr.reduce((uniqueMap, entry) => {
@@ -8,12 +11,8 @@ export const removeArrayDuplicatesByProp = (arr: Array<any>, keyProps: Array<str
   );
 };
 
-export const removeArrayDuplicates = (actualArr: Array<any>) => {
-  return actualArr.filter((item, index) => {
-    if (actualArr.indexOf(item) === index) {
-      return item;
-    }
-  });
+export const getGroupByGroups = (tests: Evaluation[]): Array<string> => {
+  return Object.keys(_.groupBy(tests, 'group'));
 };
 
 export const getDateString = (date: string) => {

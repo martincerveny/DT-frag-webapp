@@ -1,5 +1,5 @@
 /** @jsx jsx */
-import React from 'react';
+import React, { useEffect } from 'react';
 import styled from '@emotion/styled';
 import { css, jsx } from '@emotion/core';
 import {
@@ -20,7 +20,7 @@ import {
 import RadioButtonUncheckedIcon from '@material-ui/icons/RadioButtonUnchecked';
 import FiberManualRecordIcon from '@material-ui/icons/FiberManualRecord';
 import { Evaluation } from '../../../../code/interfaces/evaluation';
-import { removeArrayDuplicatesByProp, sumArrayProps } from '../../../../code/helpers/helpers';
+import { getGroupByGroups, removeArrayDuplicatesByProp, sumArrayProps } from '../../../../code/helpers/helpers';
 import { AssignmentGroup } from '../../../../code/interfaces/assignmentGroup';
 import { colors } from '../../../../styles/colors';
 import { t } from '../../../../code/helpers/translations';
@@ -28,11 +28,13 @@ import { TestDescription } from '../../../shared/TestDescription';
 
 interface StudentTableViewProps {
   evaluations: Evaluation[];
-  assignmentGroups: AssignmentGroup[];
 }
 
-const StudentTableViewComponent: React.FC<StudentTableViewProps> = ({ evaluations, assignmentGroups }) => {
+const StudentTableViewComponent: React.FC<StudentTableViewProps> = ({ evaluations }) => {
   const uniqueStudentEvals = removeArrayDuplicatesByProp(evaluations, ['author_name']);
+  const uniqueTestGroups: Evaluation[] = removeArrayDuplicatesByProp(evaluations, ['group', 'name']).sort(
+    (s1: Evaluation, s2: Evaluation) => Number(s1.sequence) - Number(s2.sequence),
+  );
   const [selectedRowIndex, setSelectedRowIndex] = React.useState<number | null>(null);
   const [selectedTestIndex, setSelectedTestIndex] = React.useState<string | null>(null);
   const [testName, setTestName] = React.useState<string>('');
@@ -76,9 +78,9 @@ const StudentTableViewComponent: React.FC<StudentTableViewProps> = ({ evaluation
             <TableRow>
               <TableCell>{t('assignmentView.studentTable.name')}</TableCell>
               <TableCell align="left">{t('assignmentView.studentTable.date')}</TableCell>
-              {assignmentGroups.map((ag: AssignmentGroup, index: number) => (
+              {getGroupByGroups(uniqueTestGroups).map((group: string, index: number) => (
                 <TableCell key={index} align="left">
-                  {ag.group}
+                  {group}
                 </TableCell>
               ))}
               <TableCell align="left">{t('assignmentView.studentTable.points')}</TableCell>
@@ -98,16 +100,16 @@ const StudentTableViewComponent: React.FC<StudentTableViewProps> = ({ evaluation
                         {e.author_name}
                       </TableCell>
                       <TableCell align="left">{new Date(studentEval[0].stamp).toLocaleDateString()}</TableCell>
-                      {assignmentGroups.map((ag: AssignmentGroup, groupIndex: number) => {
+                      {getGroupByGroups(uniqueTestGroups).map((group: string, groupIndex: number) => {
                         let studentTests = studentEval
-                          .filter((mse: Evaluation) => ag.group === mse.group)
+                          .filter((mse: Evaluation) => group === mse.group)
                           .sort((s1: Evaluation, s2: Evaluation) => Number(s1.sequence) - Number(s2.sequence));
 
                         return (
                           <TableCell key={groupIndex} align="left">
                             {studentTests.map((test: Evaluation, testIndex: number) => {
                               return (
-                                <Tooltip title={test.sequence} placement="top" key={testIndex}>
+                                <Tooltip title={test.name} placement="top" key={testIndex}>
                                   <IconButton
                                     aria-label="circle"
                                     size="small"
@@ -136,7 +138,7 @@ const StudentTableViewComponent: React.FC<StudentTableViewProps> = ({ evaluation
                     </TableRow>
 
                     <TableRow>
-                      <TableCell css={contentCellWrapper} colSpan={3 + assignmentGroups.length}>
+                      <TableCell css={contentCellWrapper} colSpan={3 + uniqueTestGroups.length}>
                         <Collapse in={rowIndex === selectedRowIndex} timeout="auto" unmountOnExit css={collapseWrapper}>
                           <Box css={contentBoxWrapper}>
                             <Typography variant="h6" color="primary">

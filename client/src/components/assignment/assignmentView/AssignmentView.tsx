@@ -32,7 +32,6 @@ export interface DispatchProps {
 type AssignmentViewProps = DispatchProps & StateProps;
 
 const AssignmentViewComponent: React.FC<AssignmentViewProps> = ({
-  assignmentGroups,
   fetchGroupsByAssignment,
   fetchEvaluations,
   evaluations,
@@ -81,9 +80,9 @@ const AssignmentViewComponent: React.FC<AssignmentViewProps> = ({
 
   const renderDataComponent = () => {
     if (selectedMenuItem === AssignmentViewMenu.Stats) {
-      return <GeneralTestGroupView assignmentGroups={assignmentGroups} evaluations={evaluations} />;
+      return <GeneralTestGroupView evaluations={evaluations} />;
     } else if (selectedMenuItem === AssignmentViewMenu.Students) {
-      return <StudentTableView evaluations={evaluations} assignmentGroups={assignmentGroups} />;
+      return <StudentTableView evaluations={evaluations} />;
     }
   };
 
