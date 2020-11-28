@@ -7,7 +7,6 @@ import { Enrollment } from './entities/enrollment.entity';
 import { Attendance } from './entities/attendance.entity';
 import { ActivityView } from './entities/activityView.entity';
 import { ActivityMax } from './entities/activityMax.entity';
-import { Activity } from './entities/activity.entity';
 import { AuthModule } from '../auth/auth.module';
 import { AttendanceDeadline } from './entities/attendanceDeadline';
 
@@ -19,7 +18,6 @@ import { AttendanceDeadline } from './entities/attendanceDeadline';
       Attendance,
       ActivityView,
       ActivityMax,
-      Activity,
       AttendanceDeadline,
     ]),
     AuthModule,

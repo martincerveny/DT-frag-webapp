@@ -1,2 +1,2 @@
 export const cookieName = 'frag-token';
-export const cookieExpiresInDays = 7;
+export const cookieExpiresInDays = 2;

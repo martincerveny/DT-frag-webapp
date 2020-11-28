@@ -6,7 +6,7 @@ export const getLdapConfig = () => {
     server: {
       url: 'ldaps://ldap.fi.muni.cz',
       searchBase: 'ou=People,dc=fi,dc=muni,dc=cz',
-      searchFilter: '(cn={{username}})',
+      searchFilter: '(uid={{username}})',
       searchAttributes: ['uid', 'displayName', 'mail', 'description'],
       tlsOptions: {
         ca: [fs.readFileSync('./FI_CA.pem')],

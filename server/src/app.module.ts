@@ -14,7 +14,7 @@ import { Attendance } from './modules/seminar/entities/attendance.entity';
 import { ActivityView } from './modules/seminar/entities/activityView.entity';
 import { ActivityMax } from './modules/seminar/entities/activityMax.entity';
 import { AssignmentPassed } from './modules/assignment/entities/assignmentPassed.entity';
-import { Activity } from './modules/seminar/entities/activity.entity';
+import { Activity } from './modules/student/entities/activity.entity';
 import { Submission } from './modules/assignment/entities/submission.entity';
 import { EvalLatest } from './modules/evaluation/entities/evalLatest.entity';
 import { PadAssignment } from './modules/student/entities/padAssignment.entity';

@@ -4,6 +4,8 @@ import { NotepadsDto } from './dtos/notepadsDto';
 import { Person } from './entities/person.entity';
 import { SubmissionFileDto } from './dtos/submissionFileDto';
 import { AuthGuard } from '../shared/guards/auth.guard';
+import { StudentAttendanceDto } from './dtos/studentAttendanceDto';
+import { Activity } from './entities/activity.entity';
 
 @UseGuards(AuthGuard)
 @Controller('api/student')
@@ -23,5 +25,15 @@ export class StudentController {
   @Get('/files/:id')
   findSubmissionFiles(@Param('id') id): Promise<SubmissionFileDto[]> {
     return this.studentService.findSubmissionFiles(id);
+  }
+
+  @Get('/attendance/:id/student')
+  findAttendanceByStudent(@Param('id') id): Promise<StudentAttendanceDto[]> {
+    return this.studentService.findAttendanceByStudent(id);
+  }
+
+  @Get('/activity/:id/student')
+  findActivityByStudent(@Param('id') id): Promise<Activity[]> {
+    return this.studentService.findActivityByStudent(id);
   }
 }

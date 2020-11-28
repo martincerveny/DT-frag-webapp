@@ -4,12 +4,10 @@ import { Seminar } from './entities/seminar.entity';
 import { Enrollment } from './entities/enrollment.entity';
 import { Attendance } from './entities/attendance.entity';
 import { ActivityViewDto } from './dtos/activityViewDto';
-import { Activity } from './entities/activity.entity';
-import { StudentAttendanceDto } from './dtos/studentAttendanceDto';
 import { AuthGuard } from '../shared/guards/auth.guard';
 import { AttendanceDeadline } from './entities/attendanceDeadline';
 
-// @UseGuards(AuthGuard)
+@UseGuards(AuthGuard)
 @Controller('api/seminars')
 export class SeminarController {
   constructor(private readonly seminarService: SeminarService) {}
@@ -33,11 +31,6 @@ export class SeminarController {
     return this.seminarService.findAttendanceBySeminar(query.seminar);
   }
 
-  @Get('/attendance/:id/student')
-  findAttendanceByStudent(@Param('id') id): Promise<StudentAttendanceDto[]> {
-    return this.seminarService.findAttendanceByStudent(id);
-  }
-
   @Get('/attendanceDeadline')
   findAttendanceDeadline(): Promise<AttendanceDeadline> {
     return this.seminarService.findAttendanceDeadline();
@@ -46,10 +39,5 @@ export class SeminarController {
   @Get('/activity')
   findActivityPts(): Promise<ActivityViewDto[]> {
     return this.seminarService.findActivityPts();
-  }
-
-  @Get('/activity/:id/student')
-  findActivityByStudent(@Param('id') id): Promise<Activity[]> {
-    return this.seminarService.findActivityByStudent(id);
   }
 }

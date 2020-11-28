@@ -7,6 +7,9 @@ import { NotepadsDto } from './dtos/notepadsDto';
 import { Person } from './entities/person.entity';
 import { SubmissionLatest } from './entities/submissionLatest.entity';
 import { SubmissionFileDto } from './dtos/submissionFileDto';
+import { StudentAttendanceDto } from './dtos/studentAttendanceDto';
+import { Attendance } from '../seminar/entities/attendance.entity';
+import { Activity } from './entities/activity.entity';
 
 @Injectable()
 export class StudentService {
@@ -19,6 +22,10 @@ export class StudentService {
     private personRepository: Repository<Person>,
     @InjectRepository(SubmissionLatest)
     private submissionLatestRepository: Repository<SubmissionLatest>,
+    @InjectRepository(Attendance)
+    private attendanceRepository: Repository<Attendance>,
+    @InjectRepository(Activity)
+    private activityRepository: Repository<Activity>,
   ) {}
 
   async findNotepadsByStudent(id: number): Promise<NotepadsDto> {
@@ -93,6 +100,34 @@ export class StudentService {
         'assignment.id = submission_latest.assignment_id',
       )
       .where('submission_latest.author = :id', { id })
+      .getRawMany();
+  }
+
+  findAttendanceByStudent(id: number): Promise<StudentAttendanceDto[]> {
+    return this.attendanceRepository
+      .createQueryBuilder('attendance')
+      .select([
+        'attendance.student as student',
+        'attendance.seminar_id as seminar_id',
+        'attendance.date as date',
+        'attendance.stamp as stamp',
+        'seminar.name as seminar_name',
+      ])
+      .leftJoin('seminar', 'seminar', 'seminar.id = attendance.seminar_id')
+      .where('attendance.student = :id', { id })
+      .getRawMany();
+  }
+
+  findActivityByStudent(id: number): Promise<Activity[]> {
+    return this.activityRepository
+      .createQueryBuilder('activity')
+      .select([
+        'activity.student as student',
+        'activity.points as points',
+        'activity.stamp as stamp',
+        'activity.note as note',
+      ])
+      .where('activity.student = :id', { id })
       .getRawMany();
   }
 }

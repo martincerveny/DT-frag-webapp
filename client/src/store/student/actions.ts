@@ -35,14 +35,14 @@ export const fetchStudent: ActionCreator<ThunkAction<Promise<void>, State, any, 
 
 export const fetchAttendanceByStudent: ActionCreator<ThunkAction<Promise<void>, State, any, any>> = (id: number) => {
   return async (dispatch: Dispatch<Action>): Promise<void> => {
-    const response = await api.get(`/seminars/attendance/${id}/student`);
+    const response = await api.get(`/student/attendance/${id}/student`);
     dispatch(setStudentAttendance({ studentAttendance: response.data }));
   };
 };
 
 export const fetchActivityByStudent: ActionCreator<ThunkAction<Promise<void>, State, any, any>> = (id: number) => {
   return async (dispatch: Dispatch<Action>): Promise<void> => {
-    const response = await api.get(`/seminars/activity/${id}/student`);
+    const response = await api.get(`/student/activity/${id}/student`);
     dispatch(setActivity({ activity: response.data }));
   };
 };

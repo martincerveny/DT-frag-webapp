@@ -7,6 +7,8 @@ import { PadMisc } from './entities/padMisc.entity';
 import { Person } from './entities/person.entity';
 import { SubmissionLatest } from './entities/submissionLatest.entity';
 import { AuthModule } from '../auth/auth.module';
+import { Attendance } from '../seminar/entities/attendance.entity';
+import { Activity } from './entities/activity.entity';
 
 @Module({
   imports: [
@@ -15,6 +17,8 @@ import { AuthModule } from '../auth/auth.module';
       PadMisc,
       Person,
       SubmissionLatest,
+      Attendance,
+      Activity,
     ]),
     AuthModule,
   ],
