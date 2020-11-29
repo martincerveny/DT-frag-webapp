@@ -17,6 +17,7 @@ export class EvaluationService {
   findEvalsByAssignment(id: number): Promise<EvaluationDto[]> {
     return this.getFindEvalsQuery()
       .where('eval_out_pts.assignment_id = :id', { id })
+      .orderBy('eval_out_pts.stamp', 'ASC')
       .getRawMany();
   }
 

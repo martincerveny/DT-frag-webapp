@@ -55,6 +55,25 @@ const SeminarContentComponent: React.FC<SeminarContentProps> = ({
     fetchAttendanceDeadline();
   }, [seminars]);
 
+  const renderIconDescription = () => {
+    return (
+      <Grid container direction="column" css={iconDescriptionWrapper}>
+        <Grid item>
+          <SquareFill color="green" size={20} />
+          <span css={descriptionWrapper}>{t('seminar.yesPass')}</span>
+        </Grid>
+        <Grid item>
+          <Square size={20} />
+          <span css={descriptionWrapper}>{t('seminar.noFail')}</span>
+        </Grid>
+        <Grid item>
+          <XSquareFill color="gray" size={20} />
+          <span css={descriptionWrapper}>{t('seminar.noSubmit')}</span>
+        </Grid>
+      </Grid>
+    );
+  };
+
   return (
     <div>
       {renderIconDescription()}
@@ -78,25 +97,6 @@ const SeminarContentComponent: React.FC<SeminarContentProps> = ({
         );
       })}
     </div>
-  );
-};
-
-const renderIconDescription = () => {
-  return (
-    <Grid container direction="column" css={iconDescriptionWrapper}>
-      <Grid item>
-        <SquareFill color="green" size={20} />
-        <span css={descriptionWrapper}>{t('seminar.yesPass')}</span>
-      </Grid>
-      <Grid item>
-        <Square size={20} />
-        <span css={descriptionWrapper}>{t('seminar.noFail')}</span>
-      </Grid>
-      <Grid item>
-        <XSquareFill color="gray" size={20} />
-        <span css={descriptionWrapper}>{t('seminar.noSubmit')}</span>
-      </Grid>
-    </Grid>
   );
 };
 

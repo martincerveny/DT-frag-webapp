@@ -1,5 +1,5 @@
 /** @jsx jsx */
-import React, { useEffect } from 'react';
+import React from 'react';
 import styled from '@emotion/styled';
 import { css, jsx } from '@emotion/core';
 import {
@@ -21,16 +21,19 @@ import RadioButtonUncheckedIcon from '@material-ui/icons/RadioButtonUnchecked';
 import FiberManualRecordIcon from '@material-ui/icons/FiberManualRecord';
 import { Evaluation } from '../../../../code/interfaces/evaluation';
 import { getGroupByGroups, removeArrayDuplicatesByProp, sumArrayProps } from '../../../../code/helpers/helpers';
-import { AssignmentGroup } from '../../../../code/interfaces/assignmentGroup';
 import { colors } from '../../../../styles/colors';
 import { t } from '../../../../code/helpers/translations';
 import { TestDescription } from '../../../shared/TestDescription';
+import { LoadingState } from '../../../../code/enums/loading';
+import { Loader } from '../../../shared/Loader';
+import { NoData } from '../../../shared/NoData';
 
 interface StudentTableViewProps {
   evaluations: Evaluation[];
+  evaluationsRequestState: LoadingState;
 }
 
-const StudentTableViewComponent: React.FC<StudentTableViewProps> = ({ evaluations }) => {
+const StudentTableViewComponent: React.FC<StudentTableViewProps> = ({ evaluations, evaluationsRequestState }) => {
   const uniqueStudentEvals = removeArrayDuplicatesByProp(evaluations, ['author_name']);
   const uniqueTestGroups: Evaluation[] = removeArrayDuplicatesByProp(evaluations, ['group', 'name']).sort(
     (s1: Evaluation, s2: Evaluation) => Number(s1.sequence) - Number(s2.sequence),
@@ -69,103 +72,111 @@ const StudentTableViewComponent: React.FC<StudentTableViewProps> = ({ evaluation
     }
   };
 
+  const renderTestButton = (test: Evaluation, testIndex: number, groupIndex: number, rowIndex: number) => {
+    return (
+      <Tooltip title={test.name} placement="top" key={testIndex}>
+        <IconButton
+          aria-label="circle"
+          size="small"
+          onClick={() => handleClick(rowIndex, groupIndex.toString() + testIndex.toString(), test.data, test.name)}
+        >
+          {test.passed ? <FiberManualRecordIcon fontSize="small" /> : <RadioButtonUncheckedIcon fontSize="small" />}
+        </IconButton>
+      </Tooltip>
+    );
+  };
+
   return (
     <div css={content}>
       <TestDescription />
-      <TableContainer component={Paper} css={tableWrapper}>
-        <Table aria-label="simple table">
-          <TableHead>
-            <TableRow>
-              <TableCell>{t('assignmentView.studentTable.name')}</TableCell>
-              <TableCell align="left">{t('assignmentView.studentTable.date')}</TableCell>
-              {getGroupByGroups(uniqueTestGroups).map((group: string, index: number) => (
-                <TableCell key={index} align="left">
-                  {group}
-                </TableCell>
-              ))}
-              <TableCell align="left">{t('assignmentView.studentTable.points')}</TableCell>
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            {uniqueStudentEvals
-              .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-              .map((e: Evaluation, rowIndex: number) => {
-                const studentEval = evaluations.filter((se: Evaluation) => se.author === e.author);
-                const points = sumArrayProps(studentEval, 'points');
+      {evaluationsRequestState === LoadingState.Loading ? (
+        <Loader />
+      ) : (
+        <div>
+          <TableContainer component={Paper} css={tableWrapper}>
+            <Table aria-label="simple table">
+              <TableHead>
+                <TableRow>
+                  <TableCell>{t('assignmentView.studentTable.name')}</TableCell>
+                  <TableCell align="left">{t('assignmentView.studentTable.date')}</TableCell>
+                  {getGroupByGroups(uniqueTestGroups).map((group: string, index: number) => (
+                    <TableCell key={index} align="left">
+                      {group}
+                    </TableCell>
+                  ))}
+                  <TableCell align="left">{t('assignmentView.studentTable.points')}</TableCell>
+                </TableRow>
+              </TableHead>
+              <TableBody>
+                {evaluations.length > 0 ? (
+                  uniqueStudentEvals
+                    .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+                    .map((e: Evaluation, rowIndex: number) => {
+                      const studentEval = evaluations.filter((se: Evaluation) => se.author === e.author);
+                      const points = sumArrayProps(studentEval, 'points');
 
-                return (
-                  <React.Fragment key={rowIndex}>
-                    <TableRow>
-                      <TableCell component="th" scope="row">
-                        {e.author_name}
-                      </TableCell>
-                      <TableCell align="left">{new Date(studentEval[0].stamp).toLocaleDateString()}</TableCell>
-                      {getGroupByGroups(uniqueTestGroups).map((group: string, groupIndex: number) => {
-                        let studentTests = studentEval
-                          .filter((mse: Evaluation) => group === mse.group && mse.name)
-                          .sort((s1: Evaluation, s2: Evaluation) => Number(s1.sequence) - Number(s2.sequence));
+                      return (
+                        <React.Fragment key={rowIndex}>
+                          <TableRow>
+                            <TableCell component="th" scope="row">
+                              {e.author_name}
+                            </TableCell>
+                            <TableCell align="left">{new Date(studentEval[0].stamp).toLocaleDateString()}</TableCell>
+                            {getGroupByGroups(uniqueTestGroups).map((group: string, groupIndex: number) => {
+                              const studentTests = studentEval
+                                .filter((mse: Evaluation) => group === mse.group && mse.name)
+                                .sort((s1: Evaluation, s2: Evaluation) => Number(s1.sequence) - Number(s2.sequence));
 
-                        return (
-                          <TableCell key={groupIndex} align="left">
-                            {studentTests.map((test: Evaluation, testIndex: number) => {
                               return (
-                                <Tooltip title={test.name} placement="top" key={testIndex}>
-                                  <IconButton
-                                    aria-label="circle"
-                                    size="small"
-                                    onClick={() =>
-                                      handleClick(
-                                        rowIndex,
-                                        groupIndex.toString() + testIndex.toString(),
-                                        test.data,
-                                        test.name,
-                                      )
-                                    }
-                                  >
-                                    {test.passed ? (
-                                      <FiberManualRecordIcon fontSize="small" />
-                                    ) : (
-                                      <RadioButtonUncheckedIcon fontSize="small" />
-                                    )}
-                                  </IconButton>
-                                </Tooltip>
+                                <TableCell key={groupIndex} align="left">
+                                  {studentTests.map((test: Evaluation, testIndex: number) =>
+                                    renderTestButton(test, testIndex, groupIndex, rowIndex),
+                                  )}
+                                </TableCell>
                               );
                             })}
-                          </TableCell>
-                        );
-                      })}
-                      <TableCell align="left">{points / 100}</TableCell>
-                    </TableRow>
+                            <TableCell align="left">{points / 100}</TableCell>
+                          </TableRow>
 
-                    <TableRow>
-                      <TableCell css={contentCellWrapper} colSpan={3 + uniqueTestGroups.length}>
-                        <Collapse in={rowIndex === selectedRowIndex} timeout="auto" unmountOnExit css={collapseWrapper}>
-                          <Box css={contentBoxWrapper}>
-                            <Typography variant="h6" color="primary">
-                              {testName}
-                            </Typography>
-                            <div css={dataWrapper}>
-                              <pre>{data}</pre>
-                            </div>
-                          </Box>
-                        </Collapse>
-                      </TableCell>
-                    </TableRow>
-                  </React.Fragment>
-                );
-              })}
-          </TableBody>
-        </Table>
-      </TableContainer>
-      <TablePagination
-        rowsPerPageOptions={[10, 15, 20, 50]}
-        component="div"
-        count={uniqueStudentEvals.length}
-        rowsPerPage={rowsPerPage}
-        page={page}
-        onChangePage={handleChangePage}
-        onChangeRowsPerPage={handleChangeRowsPerPage}
-      />
+                          <TableRow>
+                            <TableCell css={contentCellWrapper} colSpan={3 + uniqueTestGroups.length}>
+                              <Collapse
+                                in={rowIndex === selectedRowIndex}
+                                timeout="auto"
+                                unmountOnExit
+                                css={collapseWrapper}
+                              >
+                                <Box css={contentBoxWrapper}>
+                                  <Typography variant="h6" color="primary">
+                                    {testName}
+                                  </Typography>
+                                  <div css={dataWrapper}>
+                                    <pre>{data}</pre>
+                                  </div>
+                                </Box>
+                              </Collapse>
+                            </TableCell>
+                          </TableRow>
+                        </React.Fragment>
+                      );
+                    })
+                ) : (
+                  <NoData />
+                )}
+              </TableBody>
+            </Table>
+          </TableContainer>
+          <TablePagination
+            rowsPerPageOptions={[10, 15, 20, 50]}
+            component="div"
+            count={uniqueStudentEvals.length}
+            rowsPerPage={rowsPerPage}
+            page={page}
+            onChangePage={handleChangePage}
+            onChangeRowsPerPage={handleChangeRowsPerPage}
+          />
+        </div>
+      )}
     </div>
   );
 };

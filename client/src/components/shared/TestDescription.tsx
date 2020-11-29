@@ -29,6 +29,8 @@ const TestDescriptionComponent: React.FC = () => (
 
 const StyledTestDescription = styled(TestDescriptionComponent)``;
 
+export const TestDescription: React.FC = () => <StyledTestDescription />;
+
 const descriptionWrapper = css`
   margin-left: 10px;
 `;
@@ -36,4 +38,3 @@ const descriptionWrapper = css`
 const gridDescriptionWrapper = css`
   margin-left: 2px;
 `;
-export const TestDescription: React.FC = () => <StyledTestDescription />;

@@ -1,8 +1,7 @@
 /** @jsx jsx */
-import React, { useEffect } from 'react';
+import React from 'react';
 import styled from '@emotion/styled';
 import { css, jsx } from '@emotion/core';
-import { useParams } from 'react-router';
 import {
   Grid,
   List,
@@ -15,21 +14,22 @@ import {
   Button,
   IconButton,
 } from '@material-ui/core';
-import { fetchSubmissionFilesByStudent } from '../../../store/student/actions';
 import { StudentFile } from '../../../code/interfaces/studentFile';
 import { getFileExtension, removeArrayDuplicatesByProp } from '../../../code/helpers/helpers';
 import { t } from '../../../code/helpers/translations';
 import { colors } from '../../../styles/colors';
 import CloseIcon from '@material-ui/icons/Close';
 import Highlight from 'react-highlight.js';
+import { LoadingState } from '../../../code/enums/loading';
+import { Loader } from '../../shared/Loader';
+import { NoData } from '../../shared/NoData';
 
 interface SourceCodeProps {
-  fetchSubmissionFilesByStudent: typeof fetchSubmissionFilesByStudent;
   studentFiles: StudentFile[];
+  studentFilesRequestState: LoadingState;
 }
 
-const SourceCodeComponent: React.FC<SourceCodeProps> = ({ studentFiles, fetchSubmissionFilesByStudent }) => {
-  const { studentId } = useParams();
+const SourceCodeComponent: React.FC<SourceCodeProps> = ({ studentFiles, studentFilesRequestState }) => {
   const assignments = removeArrayDuplicatesByProp(studentFiles, ['assignment_id']);
   const [fileName, setFileName] = React.useState<string>('');
   const [data, setData] = React.useState<string>('');
@@ -45,64 +45,64 @@ const SourceCodeComponent: React.FC<SourceCodeProps> = ({ studentFiles, fetchSub
     setOpen(false);
   };
 
-  useEffect(() => {
-    fetchSubmissionFilesByStudent(studentId);
-  }, []);
+  const renderDialogWindow = (
+    <div>
+      <Dialog onClose={handleCloseDialog} aria-labelledby="customized-dialog-title" open={open} fullWidth maxWidth="xl">
+        <DialogTitle>
+          <Grid container direction="row" alignItems="center" justify="space-between">
+            {fileName}
+            <IconButton aria-label="close" onClick={handleCloseDialog}>
+              <CloseIcon />
+            </IconButton>
+          </Grid>
+        </DialogTitle>
+        <DialogContent dividers>
+          <Highlight language={getFileExtension(fileName)}>
+            <pre css={dataWrapper}>{data}</pre>
+          </Highlight>
+        </DialogContent>
+      </Dialog>
+    </div>
+  );
 
   return (
     <div css={content}>
-      <Grid container direction="row" justify="flex-start" alignItems="flex-start">
-        {assignments.map((a: StudentFile, assignmentIndex: number) => {
-          return (
-            <Grid item lg={3} md={4} sm={6} xs={12} key={assignmentIndex}>
-              <List>
-                <Typography variant="h6" color="primary">
-                  {t('student.assignment')}: {a.assignment_name}
-                </Typography>
-                {studentFiles.map((sf: StudentFile, sfIndex) => {
-                  if (sf.assignment_id === a.assignment_id) {
-                    return (
-                      <ListItem key={sfIndex}>
-                        <Button
-                          size="small"
-                          variant="text"
-                          css={fileButton}
-                          onClick={() => handleOpenDialog(sf.name, sf.data)}
-                        >
-                          <ListItemText primary={sf.name} />
-                        </Button>
-                      </ListItem>
-                    );
-                  }
-                })}
-              </List>
-            </Grid>
-          );
-        })}
-        <div>
-          <Dialog
-            onClose={handleCloseDialog}
-            aria-labelledby="customized-dialog-title"
-            open={open}
-            fullWidth
-            maxWidth="xl"
-          >
-            <DialogTitle>
-              <Grid container direction="row" alignItems="center" justify="space-between">
-                {fileName}
-                <IconButton aria-label="close" onClick={handleCloseDialog}>
-                  <CloseIcon />
-                </IconButton>
+      {studentFilesRequestState === LoadingState.Loading ? (
+        <Loader />
+      ) : assignments.length > 0 ? (
+        <Grid container direction="row" justify="flex-start" alignItems="flex-start">
+          {assignments.map((a: StudentFile, assignmentIndex: number) => {
+            return (
+              <Grid item lg={3} md={4} sm={6} xs={12} key={assignmentIndex}>
+                <List>
+                  <Typography variant="h6" color="primary">
+                    {t('student.assignment')}: {a.assignment_name}
+                  </Typography>
+                  {studentFiles.map((sf: StudentFile, sfIndex) => {
+                    if (sf.assignment_id === a.assignment_id) {
+                      return (
+                        <ListItem key={sfIndex}>
+                          <Button
+                            size="small"
+                            variant="text"
+                            css={fileButton}
+                            onClick={() => handleOpenDialog(sf.name, sf.data)}
+                          >
+                            <ListItemText primary={sf.name} />
+                          </Button>
+                        </ListItem>
+                      );
+                    }
+                  })}
+                </List>
               </Grid>
-            </DialogTitle>
-            <DialogContent dividers>
-              <Highlight language={getFileExtension(fileName)}>
-                <pre css={dataWrapper}>{data}</pre>
-              </Highlight>
-            </DialogContent>
-          </Dialog>
-        </div>
-      </Grid>
+            );
+          })}
+          {renderDialogWindow}
+        </Grid>
+      ) : (
+        <NoData />
+      )}
     </div>
   );
 };

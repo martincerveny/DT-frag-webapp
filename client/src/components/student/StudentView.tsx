@@ -33,6 +33,7 @@ import NoteIcon from '@material-ui/icons/Note';
 import CodeIcon from '@material-ui/icons/Code';
 import { SourceCode } from './comps/SourceCode';
 import { StudentFile } from '../../code/interfaces/studentFile';
+import { LoadingState } from '../../code/enums/loading';
 
 export interface StateProps {
   assignments: Assignment[];
@@ -42,6 +43,12 @@ export interface StateProps {
   notepads: Notepads | undefined;
   student: Person | undefined;
   studentFiles: StudentFile[];
+  studentRequestState: LoadingState;
+  evaluationsRequestState: LoadingState;
+  studentActivityRequestState: LoadingState;
+  studentAttendanceRequestState: LoadingState;
+  studentFilesRequestState: LoadingState;
+  studentNotepadsRequestState: LoadingState;
 }
 
 export interface DispatchProps {
@@ -71,12 +78,24 @@ const StudentViewComponent: React.FC<StudentViewProps> = ({
   fetchStudent,
   studentFiles,
   fetchSubmissionFilesByStudent,
+  studentRequestState,
+  evaluationsRequestState,
+  studentActivityRequestState,
+  studentAttendanceRequestState,
+  studentFilesRequestState,
+  studentNotepadsRequestState,
 }) => {
   const { studentId } = useParams();
   const [selectedMenuItem, setSelectedMenuItem] = React.useState<StudentMenu>(StudentMenu.Assignment);
 
   useEffect(() => {
     fetchStudent(studentId);
+    fetchAssignments();
+    fetchEvaluationsByStudent(studentId);
+    fetchAttendanceByStudent(studentId);
+    fetchActivityByStudent(studentId);
+    fetchNotepadsByStudent(studentId);
+    fetchSubmissionFilesByStudent(studentId);
   }, []);
 
   const handleMenuClick = (menuItem: StudentMenu) => {
@@ -155,44 +174,48 @@ const StudentViewComponent: React.FC<StudentViewProps> = ({
       return (
         <AssignmentTable
           assignments={assignments}
-          fetchAssignments={fetchAssignments}
-          fetchEvaluationsByStudent={fetchEvaluationsByStudent}
           evaluations={evaluations}
+          evaluationsRequestState={evaluationsRequestState}
         />
       );
     } else if (selectedMenuItem === StudentMenu.ActivityList) {
-      return <ActivityList activity={activity} fetchActivityByStudent={fetchActivityByStudent} />;
+      return <ActivityList activity={activity} studentActivityRequestState={studentActivityRequestState} />;
     } else if (selectedMenuItem === StudentMenu.Attendance) {
       return (
-        <AttendanceDetails studentAttendance={studentAttendance} fetchAttendanceByStudent={fetchAttendanceByStudent} />
+        <AttendanceDetails
+          studentAttendance={studentAttendance}
+          studentAttendanceRequestState={studentAttendanceRequestState}
+        />
       );
     } else if (selectedMenuItem === StudentMenu.Notepads) {
-      return <NotepadsContent fetchNotepadsByStudent={fetchNotepadsByStudent} notepads={notepads} />;
+      return <NotepadsContent notepads={notepads} studentNotepadsRequestState={studentNotepadsRequestState} />;
     } else if (selectedMenuItem === StudentMenu.SourceCode) {
-      return <SourceCode studentFiles={studentFiles} fetchSubmissionFilesByStudent={fetchSubmissionFilesByStudent} />;
+      return <SourceCode studentFiles={studentFiles} studentFilesRequestState={studentFilesRequestState} />;
     }
   };
 
   return (
     <div css={root}>
-      {student ? (
-        <Container maxWidth="lg" css={container}>
-          <Grid container spacing={3}>
-            <Grid item xs={12} md={12} lg={12}>
-              <Paper css={paper}>
-                <Grid container direction="column">
-                  <Typography component="h2" variant="h6" color="primary" gutterBottom css={heading}>
-                    {t('student.student')}: {student.name} ({student.login})
-                  </Typography>
-                  {renderHorizontalMenu()}
-                  {renderDataComponent()}
-                </Grid>
-              </Paper>
-            </Grid>
-          </Grid>
-        </Container>
-      ) : (
+      {studentRequestState === LoadingState.Loading ? (
         <Loader />
+      ) : (
+        student && (
+          <Container maxWidth="lg" css={container}>
+            <Grid container spacing={3}>
+              <Grid item xs={12} md={12} lg={12}>
+                <Paper css={paper}>
+                  <Grid container direction="column">
+                    <Typography component="h2" variant="h6" color="primary" gutterBottom css={heading}>
+                      {t('student.student')}: {student.name} ({student.login})
+                    </Typography>
+                    {renderHorizontalMenu()}
+                    {renderDataComponent()}
+                  </Grid>
+                </Paper>
+              </Grid>
+            </Grid>
+          </Container>
+        )
       )}
     </div>
   );

@@ -1,35 +1,31 @@
 /** @jsx jsx */
-import React, { useEffect } from 'react';
+import React from 'react';
 import styled from '@emotion/styled';
 import { css, jsx } from '@emotion/core';
-import { useParams } from 'react-router';
 import { Notepads } from '../../../code/interfaces/notepads';
-import { fetchNotepadsByStudent } from '../../../store/student/actions';
 import { Loader } from '../../shared/Loader';
 import { PadAssignmentsTable } from './PadAssignmentsTable';
 import { PadMiscTable } from './PadMiscTable';
+import { LoadingState } from '../../../code/enums/loading';
+import { NoData } from '../../shared/NoData';
 
 interface NotepadsProps {
   notepads: Notepads | undefined;
-  fetchNotepadsByStudent: typeof fetchNotepadsByStudent;
+  studentNotepadsRequestState: LoadingState;
 }
 
-const NotepadsContentComponent: React.FC<NotepadsProps> = ({ notepads, fetchNotepadsByStudent }) => {
-  const { studentId } = useParams();
-
-  useEffect(() => {
-    fetchNotepadsByStudent(studentId);
-  }, []);
-
+const NotepadsContentComponent: React.FC<NotepadsProps> = ({ notepads, studentNotepadsRequestState }) => {
   return (
     <div css={content}>
-      {notepads ? (
+      {studentNotepadsRequestState === LoadingState.Loading ? (
+        <Loader />
+      ) : notepads ? (
         <div>
           <PadAssignmentsTable notepads={notepads} />
           <PadMiscTable notepads={notepads} />
         </div>
       ) : (
-        <Loader />
+        <NoData />
       )}
     </div>
   );

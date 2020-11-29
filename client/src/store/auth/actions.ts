@@ -11,20 +11,19 @@ import {
 } from '../../code/helpers/api';
 import { AxiosResponse } from 'axios';
 import { Person } from '../../code/interfaces/person';
-import { snackbarService } from 'uno-material-ui/dist';
 import { t } from '../../code/helpers/translations';
 import { LoadingState } from '../../code/enums/loading';
 
 export enum ActionTypes {
   SET_LOGGED_USER = '[auth] SET_LOGGED_USER',
   LOG_OUT = '[auth] LOG_OUT',
-  SET_LOADING_STATE = '[auth] SET_LOADING_STATE',
+  SET_LOGIN_REQUEST_STATE = '[auth] SET_LOGIN_REQUEST_STATE',
   SET_REFRESH_COOKIE_STATE = '[auth] SET_REFRESH_COOKIE_STATE',
 }
 
 export const setLoggedUser = action(ActionTypes.SET_LOGGED_USER, payload<{ user: Person | undefined }>());
 export const logOut = action(ActionTypes.LOG_OUT, payload<undefined>());
-export const setLoadingState = action(ActionTypes.SET_LOADING_STATE, payload<{ loadingState: LoadingState }>());
+export const setLoginRequestState = action(ActionTypes.SET_LOGIN_REQUEST_STATE, payload<{ loginRequestState: LoadingState }>());
 export const setRefreshCookieState = action(
   ActionTypes.SET_REFRESH_COOKIE_STATE,
   payload<{ refreshCookieState: LoadingState }>(),
@@ -35,7 +34,7 @@ export const login: ActionCreator<ThunkAction<Promise<void>, State, any, any>> =
   password: string,
 ) => {
   return async (dispatch: Dispatch<Action>): Promise<void> => {
-    dispatch(setLoadingState({ loadingState: LoadingState.Loading }));
+    dispatch(setLoginRequestState({ loginRequestState: LoadingState.Loading }));
 
     await api
       .post(`/auth/login`, {
@@ -46,15 +45,15 @@ export const login: ActionCreator<ThunkAction<Promise<void>, State, any, any>> =
         if (response.data.status === 200) {
           saveUserToCookie(response.data.token, response.data.data.id);
           dispatch(setLoggedUser({ user: response.data.data }));
-          dispatch(setLoadingState({ loadingState: LoadingState.Success }));
+          dispatch(setLoginRequestState({ loginRequestState: LoadingState.Success }));
           showMessage(t('auth.login'), 'success');
         } else {
-          dispatch(setLoadingState({ loadingState: LoadingState.Failure }));
-          showMessage(response.data.data.message, 'error');
+          dispatch(setLoginRequestState({ loginRequestState: LoadingState.Failure }));
+          showMessage(response.data.data.message ?? t('app.timeout'), 'error');
         }
       })
       .catch(error => {
-        dispatch(setLoadingState({ loadingState: LoadingState.Failure }));
+        dispatch(setLoginRequestState({ loginRequestState: LoadingState.Failure }));
         showMessage(error.message, 'error');
       });
   };

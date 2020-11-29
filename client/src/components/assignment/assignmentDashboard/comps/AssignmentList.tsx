@@ -12,7 +12,7 @@ import { AssignmentArray } from '../../../../code/interfaces/assignmentArray';
 import { AuthorAssignment } from '../../../../code/interfaces/authorAssignment';
 import { Enrollment } from '../../../../code/interfaces/enrollment';
 import { Loader } from '../../../shared/Loader';
-import { LoadingState } from '../../../../code/enums/loading';
+import { t } from '../../../../code/helpers/translations';
 
 export interface AssignmentListProps {
   assignments: Assignment[];
@@ -28,26 +28,19 @@ const AssignmentListComponent: React.FC<AssignmentListProps> = ({ assignments, a
           {assignments.map((a: Assignment, index: number) => {
             const studentsPassed =
               authorAssignments &&
-              authorAssignments.assignmentsPassed.filter((i: AuthorAssignment) => {
-                if (i.assignment_id === a.id) {
-                  return i;
-                }
-              });
+              authorAssignments.assignmentsPassed.filter((i: AuthorAssignment) => i.assignment_id === a.id);
 
             const studentsNotPassed =
               authorAssignments &&
-              authorAssignments.assignmentsNotPassed.filter((i: AuthorAssignment) => {
-                if (i.assignment_id === a.id) {
-                  return i;
-                }
-              });
+              authorAssignments.assignmentsNotPassed.filter((i: AuthorAssignment) => i.assignment_id === a.id);
 
-            let studentsPassedPercent = studentsPassed && getPercents(studentsPassed.length, allEnrollments.length);
-            let studentsNotPassedPercent =
-              studentsNotPassed && getPercents(studentsNotPassed.length, allEnrollments.length);
+            const studentsPassedPercent = studentsPassed
+              ? getPercents(studentsPassed.length, allEnrollments.length)
+              : 0;
+            const studentsNotPassedPercent = studentsNotPassed
+              ? getPercents(studentsNotPassed.length, allEnrollments.length)
+              : 0;
 
-            studentsPassedPercent = studentsPassedPercent ?? 0;
-            studentsNotPassedPercent = studentsNotPassedPercent ?? 0;
             const studentsNotSubmittedPercent = 100 - studentsPassedPercent - studentsNotPassedPercent;
 
             return (
@@ -66,28 +59,28 @@ const AssignmentListComponent: React.FC<AssignmentListProps> = ({ assignments, a
                     aria-label="outlined primary button group"
                     css={buttonGroupWrapper}
                   >
-                    <Tooltip title="Pass" placement="top">
+                    <Tooltip title={t('tooltip.pass')} placement="top">
                       <Button css={buttonWrapperPass(studentsPassedPercent)}>{studentsPassedPercent} %</Button>
                     </Tooltip>
-                    <Tooltip title="Fail" placement="top">
+                    <Tooltip title={t('tooltip.fail')} placement="top">
                       <Button color="secondary" css={buttonWrapper(studentsNotPassedPercent)}>
                         <Grid container direction="row">
                           {studentsNotPassedPercent} %
                         </Grid>
                       </Button>
                     </Tooltip>
-                    <Tooltip title="Not submitted" placement="top">
+                    <Tooltip title={t('tooltip.notSubmitted')} placement="top">
                       <Button css={buttonWrapper(studentsNotSubmittedPercent)}>{studentsNotSubmittedPercent} %</Button>
                     </Tooltip>
                   </ButtonGroup>
-                  <Typography>{getRemainingDays(a.end!)}</Typography>
+                  <Typography>{a.end ? getRemainingDays(a.end) : ''}</Typography>
                 </Grid>
               </ListItem>
             );
           })}
         </List>
       ) : (
-        <Loader requestState={LoadingState.Loading} />
+        <Loader />
       )}
     </div>
   );

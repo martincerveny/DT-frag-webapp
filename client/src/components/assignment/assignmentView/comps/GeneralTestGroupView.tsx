@@ -7,12 +7,19 @@ import { colors } from '../../../../styles/colors';
 import { Evaluation } from '../../../../code/interfaces/evaluation';
 import { getGroupByGroups, getPercents, removeArrayDuplicatesByProp } from '../../../../code/helpers/helpers';
 import { Loader } from '../../../shared/Loader';
+import { LoadingState } from '../../../../code/enums/loading';
+import { NoData } from '../../../shared/NoData';
+import { t } from '../../../../code/helpers/translations';
 
 interface GeneralTestGroupViewProps {
   evaluations: Evaluation[];
+  evaluationsRequestState: LoadingState;
 }
 
-const GeneralTestGroupViewComponent: React.FC<GeneralTestGroupViewProps> = ({ evaluations }) => {
+const GeneralTestGroupViewComponent: React.FC<GeneralTestGroupViewProps> = ({
+  evaluations,
+  evaluationsRequestState,
+}) => {
   const tests: Evaluation[] = removeArrayDuplicatesByProp(evaluations, ['group', 'name']).sort(
     (s1: Evaluation, s2: Evaluation) => Number(s1.sequence) - Number(s2.sequence),
   );
@@ -26,10 +33,10 @@ const GeneralTestGroupViewComponent: React.FC<GeneralTestGroupViewProps> = ({ ev
         aria-label="outlined primary button group"
         css={buttonGroupWrapper}
       >
-        <Tooltip title="Pass" placement="top">
+        <Tooltip title={t('tooltip.pass')} placement="top">
           <Button css={buttonWrapperPass(passedPercents)}>{passedPercents} %</Button>
         </Tooltip>
-        <Tooltip title="Fail" placement="top">
+        <Tooltip title={t('tooltip.fail')} placement="top">
           <Button color="secondary" css={buttonWrapper(failedPercents)}>
             {failedPercents} %
           </Button>
@@ -56,43 +63,48 @@ const GeneralTestGroupViewComponent: React.FC<GeneralTestGroupViewProps> = ({ ev
 
   return (
     <div css={content}>
-      {tests.length > 0 ? (
-        <List component="nav" aria-label="main mailbox folders">
-          {getGroupByGroups(tests).map((ag: string, index: any) => {
-            const groupPercents = getStatPercents('group', ag);
-
-            return (
-              <ListItem key={index} css={groupWrapper}>
-                <Grid container direction="column">
-                  <Grid container direction="row" justify="flex-start" alignItems="center">
-                    <Typography css={groupHeading} variant="h6">
-                      {ag}
-                    </Typography>
-                    {!isNaN(groupPercents.passedPercents) &&
-                      !isNaN(groupPercents.failedPercents) &&
-                      renderStatsButtonGroup(groupPercents.passedPercents, groupPercents.failedPercents)}
-                  </Grid>
-                  {tests.map((t: Evaluation, index) => {
-                    const percents = getStatPercents(t.name, ag);
-
-                    if (t.group === ag && t.name !== 'group') {
-                      return (
-                        <Grid key={index} container direction="row" justify="flex-start" alignItems="center">
-                          <Button css={testNameButtonWrapper} variant="text">
-                            <p>{t.name}</p>
-                          </Button>
-                          {renderStatsButtonGroup(percents.passedPercents, percents.failedPercents)}
-                        </Grid>
-                      );
-                    }
-                  })}
-                </Grid>
-              </ListItem>
-            );
-          })}
-        </List>
-      ) : (
+      {evaluationsRequestState === LoadingState.Loading ? (
         <Loader />
+      ) : (
+        <List component="nav" aria-label="main mailbox folders">
+          {tests.length > 0 ? (
+            getGroupByGroups(tests).map((ag: string, index: any) => {
+              const groupPercents = getStatPercents('group', ag);
+
+              return (
+                <ListItem key={index} css={groupWrapper}>
+                  <Grid container direction="column">
+                    <Grid container direction="row" justify="flex-start" alignItems="center">
+                      <Typography css={groupHeading} variant="h6">
+                        {ag}
+                      </Typography>
+                      {!isNaN(groupPercents.passedPercents) &&
+                        !isNaN(groupPercents.failedPercents) &&
+                        renderStatsButtonGroup(groupPercents.passedPercents, groupPercents.failedPercents)}
+                    </Grid>
+
+                    {tests.map((t: Evaluation, index) => {
+                      const percents = getStatPercents(t.name, ag);
+
+                      if (t.group === ag && t.name !== 'group') {
+                        return (
+                          <Grid key={index} container direction="row" justify="flex-start" alignItems="center">
+                            <Button css={testNameButtonWrapper} variant="text">
+                              <p>{t.name}</p>
+                            </Button>
+                            {renderStatsButtonGroup(percents.passedPercents, percents.failedPercents)}
+                          </Grid>
+                        );
+                      }
+                    })}
+                  </Grid>
+                </ListItem>
+              );
+            })
+          ) : (
+            <NoData />
+          )}
+        </List>
       )}
     </div>
   );

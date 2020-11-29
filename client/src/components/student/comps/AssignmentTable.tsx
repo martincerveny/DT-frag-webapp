@@ -1,5 +1,5 @@
 /** @jsx jsx */
-import React, { useEffect } from 'react';
+import React from 'react';
 import styled from '@emotion/styled';
 import { css, jsx } from '@emotion/core';
 import {
@@ -20,39 +20,30 @@ import {
 import RadioButtonUncheckedIcon from '@material-ui/icons/RadioButtonUnchecked';
 import FiberManualRecordIcon from '@material-ui/icons/FiberManualRecord';
 import { Assignment } from '../../../code/interfaces/assignment';
-import { fetchAssignments } from '../../../store/assignment/actions';
 import { colors } from '../../../styles/colors';
-import { useParams } from 'react-router';
-import { fetchEvaluationsByStudent } from '../../../store/evaluation/actions';
 import { Evaluation } from '../../../code/interfaces/evaluation';
-import { Loader } from '../../shared/Loader';
 import { t } from '../../../code/helpers/translations';
 import { TestDescription } from '../../shared/TestDescription';
 import _ from 'underscore';
+import { NoData } from '../../shared/NoData';
+import { LoadingState } from '../../../code/enums/loading';
+import { Loader } from '../../shared/Loader';
 
 interface AssignmentTableProps {
   assignments: Assignment[];
-  fetchAssignments: typeof fetchAssignments;
-  fetchEvaluationsByStudent: typeof fetchEvaluationsByStudent;
   evaluations: Evaluation[];
+  evaluationsRequestState: LoadingState;
 }
 
 const AssignmentTableComponent: React.FC<AssignmentTableProps> = ({
   assignments,
-  fetchAssignments,
-  fetchEvaluationsByStudent,
   evaluations,
+  evaluationsRequestState,
 }) => {
   const [selectedRowIndex, setSelectedRowIndex] = React.useState<number | null>(null);
   const [selectedTestIndex, setSelectedTestIndex] = React.useState<number | null>(null);
   const [testName, setTestName] = React.useState<string>('');
   const [data, setData] = React.useState<string>('');
-  const { studentId } = useParams();
-
-  useEffect(() => {
-    fetchAssignments();
-    fetchEvaluationsByStudent(studentId);
-  }, []);
 
   const handleClick = (rowIndex: number | null, testIndex: number | null, data: string, testName: string) => {
     if (selectedTestIndex === testIndex && selectedRowIndex === rowIndex) {
@@ -68,10 +59,26 @@ const AssignmentTableComponent: React.FC<AssignmentTableProps> = ({
     }
   };
 
+  const renderTestButton = (test: Evaluation, rowIndex: number, testIndex: number) => {
+    return (
+      <Tooltip title={test.group} placement="top" key={testIndex}>
+        <IconButton
+          aria-label="circle"
+          size="small"
+          onClick={() => handleClick(rowIndex, testIndex, test.data, test.name)}
+        >
+          {test.passed ? <FiberManualRecordIcon fontSize="small" /> : <RadioButtonUncheckedIcon fontSize="small" />}
+        </IconButton>
+      </Tooltip>
+    );
+  };
+
   return (
     <div css={content}>
       <TestDescription />
-      {assignments && evaluations ? (
+      {evaluationsRequestState === LoadingState.Loading ? (
+        <Loader />
+      ) : assignments.length > 0 ? (
         <TableContainer css={tableWrapper} component={Paper}>
           <Table aria-label="simple table">
             <TableHead>
@@ -83,7 +90,6 @@ const AssignmentTableComponent: React.FC<AssignmentTableProps> = ({
             <TableBody>
               {assignments.map((a: Assignment, rowIndex: number) => {
                 const assignmentEvals = evaluations.filter((ae: Evaluation) => ae.assignment_id === a.id);
-
                 const groupByAssignmentEvals = Object.values(_.groupBy(assignmentEvals, 'group'));
 
                 return (
@@ -98,23 +104,9 @@ const AssignmentTableComponent: React.FC<AssignmentTableProps> = ({
                             {groupByAssignmentEvals.map((group: Evaluation[], groupIndex: number) => {
                               return (
                                 <div css={groupWrapper} key={groupIndex}>
-                                  {group.map((test: Evaluation, testIndex: number) => {
-                                    return (
-                                      <Tooltip title={test.group} placement="top" key={testIndex}>
-                                        <IconButton
-                                          aria-label="circle"
-                                          size="small"
-                                          onClick={() => handleClick(rowIndex, testIndex, test.data, test.name)}
-                                        >
-                                          {test.passed ? (
-                                            <FiberManualRecordIcon fontSize="small" />
-                                          ) : (
-                                            <RadioButtonUncheckedIcon fontSize="small" />
-                                          )}
-                                        </IconButton>
-                                      </Tooltip>
-                                    );
-                                  })}
+                                  {group.map((test: Evaluation, testIndex: number) =>
+                                    renderTestButton(test, rowIndex, testIndex),
+                                  )}
                                   {groupIndex < groupByAssignmentEvals.length - 1 ? <span css={verticalLine} /> : ''}
                                 </div>
                               );
@@ -147,7 +139,7 @@ const AssignmentTableComponent: React.FC<AssignmentTableProps> = ({
           </Table>
         </TableContainer>
       ) : (
-        <Loader />
+        <NoData />
       )}
     </div>
   );

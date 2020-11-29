@@ -6,14 +6,14 @@ import { Grid } from '@material-ui/core';
 import { t } from '../../code/helpers/translations';
 
 const NoDataComponent: React.FC = () => (
-  <Grid container alignItems="center" justify="center" css={circularProgressWrapper}>
+  <Grid container alignItems="center" justify="center" css={noDataWrapper}>
     {t('app.noData')}
   </Grid>
 );
 
 const StyledNoData = styled(NoDataComponent)``;
 
-const circularProgressWrapper = css`
+const noDataWrapper = css`
   margin-top: 50px;
   margin-bottom: 50px;
 `;

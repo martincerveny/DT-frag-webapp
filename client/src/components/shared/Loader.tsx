@@ -2,22 +2,12 @@
 import * as React from 'react';
 import { css, jsx } from '@emotion/core';
 import styled from '@emotion/styled-base';
-import { Grid } from '@material-ui/core';
-import CircularProgress from '@material-ui/core/CircularProgress';
-import { LoadingState } from '../../code/enums/loading';
+import { CircularProgress, Grid } from '@material-ui/core';
 
-interface LoaderProps {
-  requestState: LoadingState;
-}
-
-export const Spinner: React.FC = () => (
+const LoaderComponent: React.FC = () => (
   <Grid container alignItems="center" justify="center" css={circularProgressWrapper}>
     <CircularProgress color="primary" />
   </Grid>
-);
-
-const LoaderComponent: React.FC<LoaderProps> = ({ requestState }) => (
-  <div>{requestState === LoadingState.Loading && <Spinner />}</div>
 );
 
 const StyledLoader = styled(LoaderComponent)``;

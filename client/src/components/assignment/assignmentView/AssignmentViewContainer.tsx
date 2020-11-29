@@ -9,6 +9,8 @@ const mapStateToProps = (state: State): StateProps => ({
   assignmentGroups: state.assignment.assignmentGroups,
   evaluations: state.evaluation.evaluations,
   assignment: state.assignment.assignment,
+  assignmentRequestState: state.assignment.assignmentRequestState,
+  evaluationsRequestState: state.evaluation.evaluationsRequestState,
 });
 
 const mapDispatchToProps = (dispatch: Dispatch): DispatchProps => ({

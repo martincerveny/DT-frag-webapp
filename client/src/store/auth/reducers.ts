@@ -1,19 +1,19 @@
 import { on } from 'ts-action-immer';
 import { reducer } from 'ts-action';
-import { logOut, setLoadingState, setLoggedUser, setRefreshCookieState } from './actions';
+import {logOut, setLoggedUser, setLoginRequestState, setRefreshCookieState} from './actions';
 import { removeUserFromCookie } from '../../code/helpers/api';
 import { Person } from '../../code/interfaces/person';
 import { LoadingState } from '../../code/enums/loading';
 
 export interface State {
   loggedUser: undefined | Person;
-  loadingState: LoadingState;
+  loginRequestState: LoadingState;
   refreshCookieState: LoadingState;
 }
 
 export const initialState: State = {
   loggedUser: undefined,
-  loadingState: LoadingState.Initial,
+  loginRequestState: LoadingState.Initial,
   refreshCookieState: LoadingState.Initial,
 };
 
@@ -22,8 +22,8 @@ export const authReducer = reducer<State>(
   on(setLoggedUser, (state: State, { payload }) => {
     state.loggedUser = payload.user;
   }),
-  on(setLoadingState, (state: State, { payload }) => {
-    state.loadingState = payload.loadingState;
+  on(setLoginRequestState, (state: State, { payload }) => {
+    state.loginRequestState = payload.loginRequestState;
   }),
   on(setRefreshCookieState, (state: State, { payload }) => {
     state.refreshCookieState = payload.refreshCookieState;

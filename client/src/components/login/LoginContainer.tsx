@@ -5,7 +5,7 @@ import { DispatchProps, Login, StateProps } from './Login';
 import { login } from '../../store/auth/actions';
 
 const mapStateToProps = (state: State): StateProps => ({
-  loadingState: state.auth.loadingState,
+  loginRequestState: state.auth.loginRequestState,
 });
 
 const mapDispatchToProps = (dispatch: Dispatch): DispatchProps => ({

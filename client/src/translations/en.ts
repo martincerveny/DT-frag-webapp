@@ -1,9 +1,11 @@
 export const translates: {
   [key: string]: string;
 } = {
+  'app.name': 'Frag',
   'app.loading': 'App is loading',
   'app.noData': 'No data available',
   'app.error': 'Error',
+  'app.timeout': 'Connection timeout',
   'assignment.dashboard': 'Assignment Dashboard',
   'assignment.statistics.graph1': 'Statistics 1',
   'assignment.statistics.graph2': 'All submissions per hour of the day',
@@ -54,4 +56,7 @@ export const translates: {
   'test.fail': 'fail',
   'auth.logout': 'You have been successfully logged out',
   'auth.login': 'You have been successfully logged in',
+  'tooltip.pass': 'Pass',
+  'tooltip.fail': 'Fail',
+  'tooltip.notSubmitted': 'Not submitted',
 };

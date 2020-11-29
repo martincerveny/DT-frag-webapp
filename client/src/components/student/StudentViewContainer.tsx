@@ -20,6 +20,12 @@ const mapStateToProps = (state: State): StateProps => ({
   notepads: state.student.notepads,
   student: state.student.student,
   studentFiles: state.student.studentFiles,
+  studentRequestState: state.student.studentRequestState,
+  evaluationsRequestState: state.evaluation.evaluationsRequestState,
+  studentActivityRequestState: state.student.studentActivityRequestState,
+  studentAttendanceRequestState: state.student.studentAttendanceRequestState,
+  studentNotepadsRequestState: state.student.studentNotepadsRequestState,
+  studentFilesRequestState: state.student.studentFilesRequestState,
 });
 
 const mapDispatchToProps = (dispatch: Dispatch): DispatchProps => ({

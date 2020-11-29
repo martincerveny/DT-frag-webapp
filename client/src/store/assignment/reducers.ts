@@ -3,6 +3,7 @@ import { reducer } from 'ts-action';
 import {
   setAssignment,
   setAssignmentGroups,
+  setAssignmentRequestState,
   setAssignments,
   setAuthorAssignments,
   setSubmissionCountPerHour,
@@ -11,6 +12,7 @@ import { Assignment } from '../../code/interfaces/assignment';
 import { AssignmentGroup } from '../../code/interfaces/assignmentGroup';
 import { AssignmentArray } from '../../code/interfaces/assignmentArray';
 import { SubmissionCountPerHour } from '../../code/interfaces/submissionCountPerHour';
+import { LoadingState } from '../../code/enums/loading';
 
 export interface State {
   assignments: Assignment[];
@@ -18,6 +20,7 @@ export interface State {
   authorAssignments: AssignmentArray | undefined;
   submissionCountPerHour: SubmissionCountPerHour[];
   assignment: Assignment | undefined;
+  assignmentRequestState: LoadingState;
 }
 
 export const initialState: State = {
@@ -26,6 +29,7 @@ export const initialState: State = {
   authorAssignments: undefined,
   submissionCountPerHour: [],
   assignment: undefined,
+  assignmentRequestState: LoadingState.Initial,
 };
 
 export const assignmentReducer = reducer<State>(
@@ -44,5 +48,8 @@ export const assignmentReducer = reducer<State>(
   }),
   on(setAssignment, (state: State, { payload }) => {
     state.assignment = payload.assignment;
+  }),
+  on(setAssignmentRequestState, (state: State, { payload }) => {
+    state.assignmentRequestState = payload.assignmentRequestState;
   }),
 );

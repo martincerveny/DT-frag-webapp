@@ -16,11 +16,14 @@ import { Assignment } from '../../../code/interfaces/assignment';
 import { Loader } from '../../shared/Loader';
 import AssessmentIcon from '@material-ui/icons/Assessment';
 import PeopleIcon from '@material-ui/icons/People';
+import { LoadingState } from '../../../code/enums/loading';
 
 export interface StateProps {
   assignmentGroups: AssignmentGroup[];
   evaluations: Evaluation[];
   assignment: Assignment | undefined;
+  evaluationsRequestState: LoadingState;
+  assignmentRequestState: LoadingState;
 }
 
 export interface DispatchProps {
@@ -37,6 +40,8 @@ const AssignmentViewComponent: React.FC<AssignmentViewProps> = ({
   evaluations,
   assignment,
   fetchAssignment,
+  evaluationsRequestState,
+  assignmentRequestState,
 }) => {
   const { assignmentId } = useParams();
   const [selectedMenuItem, setSelectedMenuItem] = React.useState<AssignmentViewMenu>(AssignmentViewMenu.Stats);
@@ -80,7 +85,7 @@ const AssignmentViewComponent: React.FC<AssignmentViewProps> = ({
 
   const renderDataComponent = () => {
     if (selectedMenuItem === AssignmentViewMenu.Stats) {
-      return <GeneralTestGroupView evaluations={evaluations} />;
+      return <GeneralTestGroupView evaluations={evaluations} evaluationsRequestState={evaluationsRequestState} />;
     } else if (selectedMenuItem === AssignmentViewMenu.Students) {
       return <StudentTableView evaluations={evaluations} />;
     }
@@ -88,24 +93,26 @@ const AssignmentViewComponent: React.FC<AssignmentViewProps> = ({
 
   return (
     <div css={root}>
-      {assignment ? (
-        <Container maxWidth="lg" css={container}>
-          <Grid container spacing={3}>
-            <Grid item xs={12} md={12} lg={12}>
-              <Paper css={paper}>
-                <Grid container direction="column">
-                  <Typography component="h2" variant="h6" color="primary" gutterBottom css={heading}>
-                    {t('assignmentView.assignment')}: {assignment.name}
-                  </Typography>
-                  {renderHorizontalMenu()}
-                  {renderDataComponent()}
-                </Grid>
-              </Paper>
-            </Grid>
-          </Grid>
-        </Container>
-      ) : (
+      {assignmentRequestState === LoadingState.Loading ? (
         <Loader />
+      ) : (
+        assignment && (
+          <Container maxWidth="lg" css={container}>
+            <Grid container spacing={3}>
+              <Grid item xs={12} md={12} lg={12}>
+                <Paper css={paper}>
+                  <Grid container direction="column">
+                    <Typography component="h2" variant="h6" color="primary" gutterBottom css={heading}>
+                      {t('assignmentView.assignment')}: {assignment.name}
+                    </Typography>
+                    {renderHorizontalMenu()}
+                    {renderDataComponent()}
+                  </Grid>
+                </Paper>
+              </Grid>
+            </Grid>
+          </Container>
+        )
       )}
     </div>
   );

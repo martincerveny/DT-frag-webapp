@@ -14,7 +14,7 @@ import { login } from '../../store/auth/actions';
 import { LoadingState } from '../../code/enums/loading';
 
 export interface StateProps {
-  loadingState: LoadingState;
+  loginRequestState: LoadingState;
 }
 
 export interface DispatchProps {
@@ -23,10 +23,10 @@ export interface DispatchProps {
 
 type LoginProps = DispatchProps & StateProps;
 
-const LoginComponent: React.FC<LoginProps> = ({ login, loadingState }) => {
+const LoginComponent: React.FC<LoginProps> = ({ login, loginRequestState }) => {
   const [username, setUsername] = React.useState<string>('');
   const [password, setPassword] = React.useState<string>('');
-  const isSubmitting = loadingState === LoadingState.Loading;
+  const isSubmitting = loginRequestState === LoadingState.Loading;
 
   const onSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -44,7 +44,7 @@ const LoginComponent: React.FC<LoginProps> = ({ login, loadingState }) => {
   return (
     <Container component="main" maxWidth="xs">
       <Typography css={heading} component="h1" variant="h2">
-        Frag
+        {t('app.name')}
       </Typography>
       <div css={paper}>
         <Avatar css={loginIcon}>
