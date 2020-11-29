@@ -1,10 +1,7 @@
-import { Column, Entity, PrimaryColumn } from 'typeorm';
+import { Entity, PrimaryColumn } from 'typeorm';
 
-@Entity()
-export class Tutor {
+@Entity('teacher_list')
+export class Teacher {
   @PrimaryColumn()
-  seminar_id: number;
-
-  @Column()
   teacher: number;
 }

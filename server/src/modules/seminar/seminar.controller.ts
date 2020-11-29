@@ -12,9 +12,9 @@ import { AttendanceDeadline } from './entities/attendanceDeadline';
 export class SeminarController {
   constructor(private readonly seminarService: SeminarService) {}
 
-  @Get('/:id/teacher')
-  findSeminarsByTeacher(@Param('id') id): Promise<Seminar[]> {
-    return this.seminarService.findSeminarsByTeacher(id);
+  @Get('/:id/tutor')
+  findSeminarsByTutor(@Param('id') id): Promise<Seminar[]> {
+    return this.seminarService.findSeminarsByTutor(id);
   }
 
   @Get('/enrollment')

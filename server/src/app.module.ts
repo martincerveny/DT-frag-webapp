@@ -23,7 +23,7 @@ import { StudentModule } from './modules/student/student.module';
 import { Person } from './modules/student/entities/person.entity';
 import { SubmissionLatest } from './modules/student/entities/submissionLatest.entity';
 import { AuthModule } from './modules/auth/auth.module';
-import { Tutor } from './modules/auth/entities/tutor.entity';
+import { Teacher } from './modules/auth/entities/teacher.entity';
 import { AttendanceDeadline } from './modules/seminar/entities/attendanceDeadline';
 
 const dbOptions: PostgresConnectionOptions = {
@@ -51,7 +51,7 @@ const dbOptions: PostgresConnectionOptions = {
     PadMisc,
     Person,
     SubmissionLatest,
-    Tutor,
+    Teacher,
     AttendanceDeadline,
   ],
 };

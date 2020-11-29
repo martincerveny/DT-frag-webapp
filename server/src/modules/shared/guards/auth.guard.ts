@@ -32,7 +32,7 @@ export class AuthGuard implements CanActivate {
       return false;
     }
 
-    const user = await this.authService.findTutorById(data.id);
+    const user = await this.authService.findTeacherById(data.id);
 
     if (!user) {
       return false;

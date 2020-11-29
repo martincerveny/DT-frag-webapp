@@ -26,7 +26,7 @@ export class SeminarService {
     private attendanceDeadlineRepository: Repository<AttendanceDeadline>,
   ) {}
 
-  findSeminarsByTeacher(id: number): Promise<Seminar[]> {
+  findSeminarsByTutor(id: number): Promise<Seminar[]> {
     return this.seminarRepository
       .createQueryBuilder('seminar')
       .select([

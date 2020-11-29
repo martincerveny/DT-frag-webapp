@@ -2,31 +2,31 @@ import { Injectable } from '@nestjs/common';
 import * as passport from 'passport';
 import { LoginResponseDto } from './dtos/LoginResponseDto';
 import * as jwt from 'jsonwebtoken';
-import { UserDto } from './dtos/UseDto';
+import { UserDto } from './dtos/UserDto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { Tutor } from './entities/tutor.entity';
-import { TutorDto } from './dtos/TutorDto';
+import { Teacher } from './entities/teacher.entity';
+import { TeacherDto } from './dtos/TeacherDto';
 
 const TOKEN_EXPIRATION_SECS = 2 * 86400; // 2 days
 
 @Injectable()
 export class AuthService {
   constructor(
-    @InjectRepository(Tutor)
-    private tutorRepisotiry: Repository<Tutor>,
+    @InjectRepository(Teacher)
+    private teacherRepository: Repository<Teacher>,
   ) {}
 
-  findTutorById(id: number): Promise<TutorDto> {
-    return this.tutorRepisotiry
-      .createQueryBuilder('tutor')
+  findTeacherById(id: number): Promise<TeacherDto> {
+    return this.teacherRepository
+      .createQueryBuilder('teacher_list')
       .select([
-        'tutor.teacher as id',
+        'teacher_list.teacher as id',
         'person.name as name',
         'encode("login"::bytea, \'escape\') as login',
       ])
-      .leftJoin('person', 'person', 'person.id = tutor.teacher')
-      .where('tutor.teacher = :id', { id })
+      .leftJoin('person', 'person', 'person.id = teacher_list.teacher')
+      .where('teacher_list.teacher = :id', { id })
       .getRawOne();
   }
 
@@ -41,9 +41,9 @@ export class AuthService {
         });
       }
 
-      const tutor = await this.findTutorById(this.getUserId(user));
+      const teacher = await this.findTeacherById(this.getUserId(user));
 
-      if (!tutor) {
+      if (!teacher) {
         return res.send({
           status: 404,
           data: { message: 'User not found' },
@@ -51,8 +51,8 @@ export class AuthService {
       } else {
         return res.send({
           status: 200,
-          data: tutor,
-          token: this.generateAuthToken(tutor.id),
+          data: teacher,
+          token: this.generateAuthToken(teacher.id),
         });
       }
     })(req, res);

@@ -8,7 +8,7 @@ import {
   UseGuards,
 } from '@nestjs/common';
 import { AuthService } from './auth.service';
-import { TutorDto } from './dtos/TutorDto';
+import { TeacherDto } from './dtos/TeacherDto';
 import { AuthGuard } from '../shared/guards/auth.guard';
 
 @Controller('api/auth')
@@ -21,8 +21,8 @@ export class AuthController {
   }
 
   @UseGuards(AuthGuard)
-  @Get('/tutor/:id')
-  findTutorById(@Param('id') id): Promise<TutorDto> {
-    return this.authService.findTutorById(id);
+  @Get('/teacher/:id')
+  findTeacherById(@Param('id') id): Promise<TeacherDto> {
+    return this.authService.findTeacherById(id);
   }
 }
