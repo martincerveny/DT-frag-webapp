@@ -10,12 +10,10 @@ import {
   fetchAttendance,
   fetchAttendanceDeadline,
   fetchEnrollments,
-  setLoadingState,
 } from '../../../store/seminar/actions';
 import { Enrollment } from '../../../code/interfaces/enrollment';
 import { Attendance } from '../../../code/interfaces/attendance';
 import { ActivityPts } from '../../../code/interfaces/activityPts';
-import { LoadingState } from '../../../code/enums/loading';
 import { AssignmentArray } from '../../../code/interfaces/assignmentArray';
 import { Assignment } from '../../../code/interfaces/assignment';
 import { Square, SquareFill, XSquareFill } from 'react-bootstrap-icons';
@@ -32,8 +30,6 @@ export interface SeminarContentProps {
   fetchAttendanceDeadline: typeof fetchAttendanceDeadline;
   fetchActivityPts: typeof fetchActivityPts;
   fetchEnrollments: typeof fetchEnrollments;
-  loadingState: LoadingState;
-  setLoadingState: typeof setLoadingState;
   assignments: Assignment[];
   attendanceDeadline: AttendanceDeadline | undefined;
 }
@@ -47,8 +43,6 @@ const SeminarContentComponent: React.FC<SeminarContentProps> = ({
   activityPts,
   fetchActivityPts,
   authorAssignments,
-  loadingState,
-  setLoadingState,
   assignments,
   fetchAttendanceDeadline,
   attendanceDeadline,
@@ -77,8 +71,6 @@ const SeminarContentComponent: React.FC<SeminarContentProps> = ({
               currentSeminar={s.id}
               activityPts={activityPts}
               authorAssignments={authorAssignments}
-              setLoadingState={setLoadingState}
-              loadingState={loadingState}
               assignments={assignments}
               attendanceDeadline={attendanceDeadline}
             />

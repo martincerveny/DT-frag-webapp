@@ -2,6 +2,8 @@ export const translates: {
   [key: string]: string;
 } = {
   'app.loading': 'App is loading',
+  'app.noData': 'No data available',
+  'app.error': 'Error',
   'assignment.dashboard': 'Assignment Dashboard',
   'assignment.statistics.graph1': 'Statistics 1',
   'assignment.statistics.graph2': 'All submissions per hour of the day',

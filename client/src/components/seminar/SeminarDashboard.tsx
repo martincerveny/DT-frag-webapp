@@ -10,7 +10,6 @@ import {
   fetchAttendanceDeadline,
   fetchEnrollments,
   fetchSeminars,
-  setLoadingState,
 } from '../../store/seminar/actions';
 import { Enrollment } from '../../code/interfaces/enrollment';
 import { Attendance } from '../../code/interfaces/attendance';
@@ -24,6 +23,7 @@ import { Loader } from '../shared/Loader';
 import { t } from '../../code/helpers/translations';
 import { UserContext } from '../../App';
 import { AttendanceDeadline } from '../../code/interfaces/attendanceDeadline';
+import { NoData } from '../shared/NoData';
 
 export interface StateProps {
   seminars: Seminar[];
@@ -31,7 +31,7 @@ export interface StateProps {
   attendance: Attendance[];
   activityPts: ActivityPts[];
   authorAssignments: AssignmentArray | undefined;
-  loadingState: LoadingState;
+  seminarRequestState: LoadingState;
   assignments: Assignment[];
   attendanceDeadline: AttendanceDeadline | undefined;
 }
@@ -42,7 +42,6 @@ export interface DispatchProps {
   fetchAttendance: typeof fetchAttendance;
   fetchActivityPts: typeof fetchActivityPts;
   fetchAuthorAssignments: typeof fetchAuthorAssignments;
-  setLoadingState: typeof setLoadingState;
   fetchAssignments: typeof fetchAssignments;
   fetchAttendanceDeadline: typeof fetchAttendanceDeadline;
 }
@@ -60,8 +59,7 @@ const SeminarDashboardComponent: React.FC<SeminarDashboardProps> = ({
   fetchActivityPts,
   authorAssignments,
   fetchAuthorAssignments,
-  loadingState,
-  setLoadingState,
+  seminarRequestState,
   assignments,
   fetchAssignments,
   fetchAttendanceDeadline,
@@ -85,6 +83,7 @@ const SeminarDashboardComponent: React.FC<SeminarDashboardProps> = ({
                 <Typography component="h2" variant="h6" color="primary" gutterBottom css={heading}>
                   {t('seminar.dashboard')}
                 </Typography>
+                <Loader requestState={seminarRequestState} />
                 {seminars.length > 0 ? (
                   <SeminarContent
                     seminarEnrollments={seminarEnrollments}
@@ -95,14 +94,12 @@ const SeminarDashboardComponent: React.FC<SeminarDashboardProps> = ({
                     activityPts={activityPts}
                     fetchActivityPts={fetchActivityPts}
                     authorAssignments={authorAssignments}
-                    loadingState={loadingState}
-                    setLoadingState={setLoadingState}
                     assignments={assignments}
                     fetchAttendanceDeadline={fetchAttendanceDeadline}
                     attendanceDeadline={attendanceDeadline}
                   />
                 ) : (
-                  <Loader />
+                  <NoData />
                 )}
               </Grid>
             </Paper>

@@ -17,6 +17,7 @@ import { fetchEnrollments } from '../../../store/seminar/actions';
 import { colors } from '../../../styles/colors';
 import { SubmissionCountPerHour } from '../../../code/interfaces/submissionCountPerHour';
 import { t } from '../../../code/helpers/translations';
+import { NoData } from '../../shared/NoData';
 
 export interface StateProps {
   assignments: Assignment[];
@@ -91,11 +92,15 @@ const AssignmentDashboardComponent: React.FC<AssignmentDashboardProps> = ({
                 <Typography component="h2" variant="h6" color="primary" gutterBottom css={heading}>
                   {t('assignment.dashboard')}
                 </Typography>
-                <AssignmentList
-                  assignments={assignments}
-                  authorAssignments={authorAssignments}
-                  allEnrollments={allEnrollments}
-                />
+                {assignments.length > 0 ? (
+                  <AssignmentList
+                    assignments={assignments}
+                    authorAssignments={authorAssignments}
+                    allEnrollments={allEnrollments}
+                  />
+                ) : (
+                  <NoData />
+                )}
               </Grid>
             </Paper>
           </Grid>
@@ -108,7 +113,7 @@ const AssignmentDashboardComponent: React.FC<AssignmentDashboardProps> = ({
                 <Typography component="h2" variant="h6" color="primary" gutterBottom css={heading}>
                   {t('assignment.statistics.graph1')}
                 </Typography>
-                <div css={content}>{renderLineChart}</div>
+                <div css={content}>{submissionCountPerHour.length > 0 ? renderLineChart : <NoData />}</div>
               </Grid>
             </Paper>
           </Grid>
@@ -119,7 +124,7 @@ const AssignmentDashboardComponent: React.FC<AssignmentDashboardProps> = ({
                 <Typography component="h2" variant="h6" color="primary" gutterBottom css={heading}>
                   {t('assignment.statistics.graph2')}
                 </Typography>
-                <div css={content}>{renderBarChart}</div>
+                <div css={content}>{submissionCountPerHour.length > 0 ? renderBarChart : <NoData />}</div>
               </Grid>
             </Paper>
           </Grid>

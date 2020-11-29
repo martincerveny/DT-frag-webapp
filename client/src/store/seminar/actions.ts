@@ -2,7 +2,7 @@ import { Action, ActionCreator, Dispatch } from 'redux';
 import { ThunkAction } from 'redux-thunk';
 import { action, payload } from 'ts-action';
 import { State } from './reducers';
-import { api } from '../../code/helpers/api';
+import { api, showMessage } from '../../code/helpers/api';
 import { Seminar } from '../../code/interfaces/seminar';
 import { Enrollment } from '../../code/interfaces/enrollment';
 import { Attendance } from '../../code/interfaces/attendance';
@@ -17,7 +17,7 @@ export enum ActionTypes {
   SET_ATTENDANCE = '[seminar] SET_ATTENDANCE',
   SET_ATTENDANCE_DEADLINE = '[seminar] SET_ATTENDANCE_DEADLINE',
   SET_ACTIVITY_PTS = '[seminar] SET_ACTIVITY_PTS',
-  SET_LOADING_STATE = '[seminar] SET_LOADING_STATE',
+  SET_SEMINAR_REQUEST_STATE = '[seminar] SET_SEMINAR_REQUEST_STATE',
 }
 
 export const setSeminars = action(ActionTypes.SET_SEMINARS, payload<{ seminars: Seminar[] }>());
@@ -32,12 +32,23 @@ export const setAttendanceDeadline = action(
   payload<{ attendanceDeadline: AttendanceDeadline }>(),
 );
 export const setActivityPts = action(ActionTypes.SET_ACTIVITY_PTS, payload<{ activityPts: ActivityPts[] }>());
-export const setLoadingState = action(ActionTypes.SET_LOADING_STATE, payload<{ loadingState: LoadingState }>());
+export const setSeminarRequestState = action(
+  ActionTypes.SET_SEMINAR_REQUEST_STATE,
+  payload<{ seminarRequestState: LoadingState }>(),
+);
 
 export const fetchSeminars: ActionCreator<ThunkAction<Promise<void>, State, any, any>> = (id: number) => {
   return async (dispatch: Dispatch<Action>): Promise<void> => {
-    const response = await api.get(`/seminars/${id}/teacher`);
-    dispatch(setSeminars({ seminars: response.data }));
+    setSeminarRequestState({ seminarRequestState: LoadingState.Loading });
+    await api
+      .get(`/seminars/${id}/tutor`)
+      .then(response => {
+        setSeminarRequestState({ seminarRequestState: LoadingState.Success });
+        dispatch(setSeminars({ seminars: response.data }));
+      })
+      .catch(error => {
+        showMessage(error.message, 'error');
+      });
   };
 };
 

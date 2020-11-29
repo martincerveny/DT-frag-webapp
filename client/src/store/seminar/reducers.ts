@@ -5,8 +5,7 @@ import {
   setAllEnrollments,
   setAttendance,
   setAttendanceDeadline,
-  setLoadingState,
-  setSeminarEnrollments,
+  setSeminarEnrollments, setSeminarRequestState,
   setSeminars,
 } from './actions';
 import { Seminar } from '../../code/interfaces/seminar';
@@ -17,7 +16,7 @@ import { LoadingState } from '../../code/enums/loading';
 import { AttendanceDeadline } from '../../code/interfaces/attendanceDeadline';
 
 export interface State {
-  loadingState: LoadingState;
+  seminarRequestState: LoadingState;
   seminars: Seminar[];
   seminarEnrollments: Enrollment[];
   allEnrollments: Enrollment[];
@@ -27,7 +26,7 @@ export interface State {
 }
 
 export const initialState: State = {
-  loadingState: LoadingState.Initial,
+  seminarRequestState: LoadingState.Initial,
   seminars: [],
   seminarEnrollments: [],
   allEnrollments: [],
@@ -56,7 +55,7 @@ export const seminarReducer = reducer<State>(
   on(setActivityPts, (state: State, { payload }) => {
     state.activityPts = payload.activityPts;
   }),
-  on(setLoadingState, (state: State, { payload }) => {
-    state.loadingState = payload.loadingState;
+  on(setSeminarRequestState, (state: State, { payload }) => {
+    state.seminarRequestState = payload.seminarRequestState;
   }),
 );

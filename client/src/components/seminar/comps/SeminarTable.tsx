@@ -9,8 +9,6 @@ import { Enrollment } from '../../../code/interfaces/enrollment';
 import { Attendance } from '../../../code/interfaces/attendance';
 import { getDateString } from '../../../code/helpers/helpers';
 import { ActivityPts } from '../../../code/interfaces/activityPts';
-import { setLoadingState } from '../../../store/seminar/actions';
-import { LoadingState } from '../../../code/enums/loading';
 import { AssignmentArray } from '../../../code/interfaces/assignmentArray';
 import { AuthorAssignment } from '../../../code/interfaces/authorAssignment';
 import { Assignment } from '../../../code/interfaces/assignment';
@@ -27,8 +25,6 @@ interface SeminarTableProps {
   attendance: Attendance[];
   activityPts: ActivityPts[];
   authorAssignments: AssignmentArray | undefined;
-  setLoadingState: typeof setLoadingState;
-  loadingState: LoadingState;
   assignments: Assignment[];
   attendanceDeadline: AttendanceDeadline | undefined;
 }
@@ -39,8 +35,6 @@ const SeminarTableComponent: React.FC<SeminarTableProps> = ({
   attendance,
   activityPts,
   authorAssignments,
-  setLoadingState,
-  loadingState,
   assignments,
   attendanceDeadline,
 }) => {

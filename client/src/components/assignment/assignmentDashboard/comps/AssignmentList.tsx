@@ -12,6 +12,7 @@ import { AssignmentArray } from '../../../../code/interfaces/assignmentArray';
 import { AuthorAssignment } from '../../../../code/interfaces/authorAssignment';
 import { Enrollment } from '../../../../code/interfaces/enrollment';
 import { Loader } from '../../../shared/Loader';
+import { LoadingState } from '../../../../code/enums/loading';
 
 export interface AssignmentListProps {
   assignments: Assignment[];
@@ -86,7 +87,7 @@ const AssignmentListComponent: React.FC<AssignmentListProps> = ({ assignments, a
           })}
         </List>
       ) : (
-        <Loader />
+        <Loader requestState={LoadingState.Loading} />
       )}
     </div>
   );

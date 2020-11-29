@@ -8,7 +8,6 @@ import {
   fetchAttendanceDeadline,
   fetchEnrollments,
   fetchSeminars,
-  setLoadingState,
 } from '../../store/seminar/actions';
 import { State } from '../../store/combinedReducers';
 import { fetchAssignments, fetchAuthorAssignments } from '../../store/assignment/actions';
@@ -19,7 +18,7 @@ const mapStateToProps = (state: State): StateProps => ({
   attendance: state.seminar.attendance,
   activityPts: state.seminar.activityPts,
   authorAssignments: state.assignment.authorAssignments,
-  loadingState: state.seminar.loadingState,
+  seminarRequestState: state.seminar.seminarRequestState,
   assignments: state.assignment.assignments,
   attendanceDeadline: state.seminar.attendanceDeadline,
 });
@@ -32,7 +31,6 @@ const mapDispatchToProps = (dispatch: Dispatch): DispatchProps => ({
       fetchAttendance,
       fetchActivityPts,
       fetchAuthorAssignments,
-      setLoadingState,
       fetchAssignments,
       fetchAttendanceDeadline,
     },

@@ -2,7 +2,13 @@ import { Action, ActionCreator, Dispatch } from 'redux';
 import { ThunkAction } from 'redux-thunk';
 import { action, payload } from 'ts-action';
 import { State } from './reducers';
-import { api, receiveUserFromCookie, removeUserFromCookie, saveUserToCookie } from '../../code/helpers/api';
+import {
+  api,
+  receiveUserFromCookie,
+  removeUserFromCookie,
+  saveUserToCookie,
+  showMessage,
+} from '../../code/helpers/api';
 import { AxiosResponse } from 'axios';
 import { Person } from '../../code/interfaces/person';
 import { snackbarService } from 'uno-material-ui/dist';
@@ -41,11 +47,15 @@ export const login: ActionCreator<ThunkAction<Promise<void>, State, any, any>> =
           saveUserToCookie(response.data.token, response.data.data.id);
           dispatch(setLoggedUser({ user: response.data.data }));
           dispatch(setLoadingState({ loadingState: LoadingState.Success }));
-          snackbarService.showSnackbar(t('auth.login'), 'success', 7000);
+          showMessage(t('auth.login'), 'success');
         } else {
           dispatch(setLoadingState({ loadingState: LoadingState.Failure }));
-          snackbarService.showSnackbar(response.data.data.message, 'error', 7000);
+          showMessage(response.data.data.message, 'error');
         }
+      })
+      .catch(error => {
+        dispatch(setLoadingState({ loadingState: LoadingState.Failure }));
+        showMessage(error.message, 'error');
       });
   };
 };
@@ -60,13 +70,13 @@ export const refreshUserFromCookie: ActionCreator<ThunkAction<Promise<void>, Sta
     }
 
     await api
-      .get(`/auth/tutor/${user.id}`)
+      .get(`/auth/teacher/${user.id}`)
       .then(response => {
         dispatch(setLoggedUser({ user: response.data }));
         dispatch(setRefreshCookieState({ refreshCookieState: LoadingState.Success }));
       })
       .catch(error => {
-        snackbarService.showSnackbar(error.message, 'error', 7000);
+        showMessage(error.message, 'error');
         removeUserFromCookie();
         dispatch(setRefreshCookieState({ refreshCookieState: LoadingState.Failure }));
       });
@@ -76,6 +86,6 @@ export const refreshUserFromCookie: ActionCreator<ThunkAction<Promise<void>, Sta
 export const logUserOut: ActionCreator<ThunkAction<Promise<void>, State, any, any>> = (id: number) => {
   return async (dispatch: Dispatch<Action>): Promise<void> => {
     dispatch(logOut(undefined));
-    snackbarService.showSnackbar(t('auth.logout'), 'success', 7000);
+    await showMessage(t('auth.logout'), 'success');
   };
 };

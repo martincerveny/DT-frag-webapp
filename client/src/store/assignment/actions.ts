@@ -3,7 +3,7 @@ import { ThunkAction } from 'redux-thunk';
 import { action, payload } from 'ts-action';
 import { State } from './reducers';
 import { Assignment } from '../../code/interfaces/assignment';
-import { api } from '../../code/helpers/api';
+import { api, showMessage } from '../../code/helpers/api';
 import { AssignmentGroup } from '../../code/interfaces/assignmentGroup';
 import { AssignmentArray } from '../../code/interfaces/assignmentArray';
 import { SubmissionCountPerHour } from '../../code/interfaces/submissionCountPerHour';
@@ -33,8 +33,14 @@ export const setAssignment = action(ActionTypes.SET_ASSIGNMENT, payload<{ assign
 
 export const fetchAssignments: ActionCreator<ThunkAction<Promise<void>, State, any, any>> = () => {
   return async (dispatch: Dispatch<Action>): Promise<void> => {
-    const response = await api.get('/assignments');
-    dispatch(setAssignments({ assignments: response.data }));
+    await api
+      .get('/assignments')
+      .then(response => {
+        dispatch(setAssignments({ assignments: response.data }));
+      })
+      .catch(error => {
+        showMessage(error.message, 'error');
+      });
   };
 };
 
@@ -68,7 +74,13 @@ export const fetchAuthorAssignments: ActionCreator<ThunkAction<Promise<void>, St
 
 export const fetchSubmissionCountPerHour: ActionCreator<ThunkAction<Promise<void>, State, any, any>> = () => {
   return async (dispatch: Dispatch<Action>): Promise<void> => {
-    const response = await api.get(`/assignments/submissions/countperhour`);
-    dispatch(setSubmissionCountPerHour({ submissionCountPerHour: response.data }));
+    await api
+      .get(`/assignments/submissions/countperhour`)
+      .then(response => {
+        dispatch(setSubmissionCountPerHour({ submissionCountPerHour: response.data }));
+      })
+      .catch(error => {
+        showMessage(error.message, 'error');
+      });
   };
 };
