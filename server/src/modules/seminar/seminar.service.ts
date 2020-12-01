@@ -4,9 +4,8 @@ import { Seminar } from './entities/seminar.entity';
 import { Repository } from 'typeorm';
 import { Enrollment } from './entities/enrollment.entity';
 import { Attendance } from './entities/attendance.entity';
-import { ActivityView } from './entities/activityView.entity';
+import { ActivityPts } from './entities/activityPts.entity';
 import { ActivityMax } from './entities/activityMax.entity';
-import { ActivityViewDto } from './dtos/activityViewDto';
 import { AttendanceDeadline } from './entities/attendanceDeadline';
 
 @Injectable()
@@ -18,8 +17,8 @@ export class SeminarService {
     private enrollmentRepository: Repository<Enrollment>,
     @InjectRepository(Attendance)
     private attendanceRepository: Repository<Attendance>,
-    @InjectRepository(ActivityView)
-    private activityViewRepository: Repository<ActivityView>,
+    @InjectRepository(ActivityPts)
+    private activityPtsRepository: Repository<ActivityPts>,
     @InjectRepository(ActivityMax)
     private activityMaxRepository: Repository<ActivityMax>,
     @InjectRepository(AttendanceDeadline)
@@ -87,19 +86,11 @@ export class SeminarService {
     return this.attendanceDeadlineRepository.findOne();
   }
 
-  async findActivityPts(): Promise<ActivityViewDto[]> {
-    const activityMaxPoints = await this.activityMaxRepository.find();
+  async findActivityPts(): Promise<ActivityPts[]> {
+    return this.activityPtsRepository.find();
+  }
 
-    const studentPoints = await this.activityViewRepository
-      .createQueryBuilder('activityView')
-      .getMany();
-
-    return studentPoints.map((s: ActivityView) => {
-      return {
-        student: s.student,
-        points: s.points,
-        maxPoints: activityMaxPoints[0].points,
-      };
-    });
+  findActivityMaxPts(): Promise<ActivityMax> {
+    return this.activityMaxRepository.findOne();
   }
 }

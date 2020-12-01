@@ -9,6 +9,7 @@ import { Attendance } from '../../code/interfaces/attendance';
 import { ActivityPts } from '../../code/interfaces/activityPts';
 import { LoadingState } from '../../code/enums/loading';
 import { AttendanceDeadline } from '../../code/interfaces/attendanceDeadline';
+import {ActivityMax} from "../../code/interfaces/activityMax";
 
 export enum ActionTypes {
   SET_SEMINARS = '[seminar] SET_SEMINARS',
@@ -17,6 +18,7 @@ export enum ActionTypes {
   SET_ATTENDANCE = '[seminar] SET_ATTENDANCE',
   SET_ATTENDANCE_DEADLINE = '[seminar] SET_ATTENDANCE_DEADLINE',
   SET_ACTIVITY_PTS = '[seminar] SET_ACTIVITY_PTS',
+  SET_ACTIVITY_MAX_PTS = '[seminar] SET_ACTIVITY_MAX_PTS',
   SET_SEMINAR_REQUEST_STATE = '[seminar] SET_SEMINAR_REQUEST_STATE',
 }
 
@@ -32,6 +34,7 @@ export const setAttendanceDeadline = action(
   payload<{ attendanceDeadline: AttendanceDeadline }>(),
 );
 export const setActivityPts = action(ActionTypes.SET_ACTIVITY_PTS, payload<{ activityPts: ActivityPts[] }>());
+export const setActivityMaxPts = action(ActionTypes.SET_ACTIVITY_MAX_PTS, payload<{ activityMax: ActivityMax }>());
 export const setSeminarRequestState = action(
   ActionTypes.SET_SEMINAR_REQUEST_STATE,
   payload<{ seminarRequestState: LoadingState }>(),
@@ -106,5 +109,18 @@ export const fetchActivityPts: ActionCreator<ThunkAction<Promise<void>, State, a
       .catch(error => {
         showMessage(error.message, 'error');
       });
+  };
+};
+
+export const fetchActivityMaxPts: ActionCreator<ThunkAction<Promise<void>, State, any, any>> = () => {
+  return async (dispatch: Dispatch<Action>): Promise<void> => {
+    await api
+        .get(`/seminars/activityMax`)
+        .then(response => {
+          dispatch(setActivityMaxPts({ activityMax: response.data }));
+        })
+        .catch(error => {
+          showMessage(error.message, 'error');
+        });
   };
 };

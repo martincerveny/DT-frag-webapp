@@ -6,6 +6,7 @@ import { Grid, Typography } from '@material-ui/core';
 import { SeminarTable } from './SeminarTable';
 import { Seminar } from '../../../code/interfaces/seminar';
 import {
+  fetchActivityMaxPts,
   fetchActivityPts,
   fetchAttendance,
   fetchAttendanceDeadline,
@@ -19,17 +20,20 @@ import { Assignment } from '../../../code/interfaces/assignment';
 import { Square, SquareFill, XSquareFill } from 'react-bootstrap-icons';
 import { t } from '../../../code/helpers/translations';
 import { AttendanceDeadline } from '../../../code/interfaces/attendanceDeadline';
+import { ActivityMax } from '../../../code/interfaces/activityMax';
 
 export interface SeminarContentProps {
   seminarEnrollments: Enrollment[];
   seminars: Seminar[];
   attendance: Attendance[];
   activityPts: ActivityPts[];
+  activityMax: ActivityMax | undefined;
   authorAssignments: AssignmentArray | undefined;
   fetchAttendance: typeof fetchAttendance;
   fetchAttendanceDeadline: typeof fetchAttendanceDeadline;
   fetchActivityPts: typeof fetchActivityPts;
   fetchEnrollments: typeof fetchEnrollments;
+  fetchActivityMaxPts: typeof fetchActivityMaxPts;
   assignments: Assignment[];
   attendanceDeadline: AttendanceDeadline | undefined;
 }
@@ -46,14 +50,17 @@ const SeminarContentComponent: React.FC<SeminarContentProps> = ({
   assignments,
   fetchAttendanceDeadline,
   attendanceDeadline,
+  activityMax,
+  fetchActivityMaxPts,
 }) => {
   useEffect(() => {
     const seminarIds = Array.prototype.map.call(seminars, s => s.id).toString();
     fetchEnrollments(seminarIds);
     fetchAttendance(seminarIds);
+    fetchActivityMaxPts();
     fetchActivityPts();
     fetchAttendanceDeadline();
-  }, [seminars, fetchActivityPts, fetchAttendanceDeadline, fetchAttendance, fetchEnrollments]);
+  }, [seminars, fetchActivityPts, fetchAttendanceDeadline, fetchAttendance, fetchEnrollments, fetchActivityMaxPts]);
 
   const renderIconDescription = () => {
     return (
@@ -89,6 +96,7 @@ const SeminarContentComponent: React.FC<SeminarContentProps> = ({
               attendance={attendance}
               currentSeminar={s.id}
               activityPts={activityPts}
+              activityMax={activityMax}
               authorAssignments={authorAssignments}
               assignments={assignments}
               attendanceDeadline={attendanceDeadline}

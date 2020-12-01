@@ -1,11 +1,13 @@
 import { on } from 'ts-action-immer';
 import { reducer } from 'ts-action';
 import {
+  setActivityMaxPts,
   setActivityPts,
   setAllEnrollments,
   setAttendance,
   setAttendanceDeadline,
-  setSeminarEnrollments, setSeminarRequestState,
+  setSeminarEnrollments,
+  setSeminarRequestState,
   setSeminars,
 } from './actions';
 import { Seminar } from '../../code/interfaces/seminar';
@@ -14,6 +16,7 @@ import { Attendance } from '../../code/interfaces/attendance';
 import { ActivityPts } from '../../code/interfaces/activityPts';
 import { LoadingState } from '../../code/enums/loading';
 import { AttendanceDeadline } from '../../code/interfaces/attendanceDeadline';
+import { ActivityMax } from '../../code/interfaces/activityMax';
 
 export interface State {
   seminarRequestState: LoadingState;
@@ -23,6 +26,7 @@ export interface State {
   attendance: Attendance[];
   attendanceDeadline: AttendanceDeadline | undefined;
   activityPts: ActivityPts[];
+  activityMax: ActivityMax | undefined;
 }
 
 export const initialState: State = {
@@ -33,6 +37,7 @@ export const initialState: State = {
   attendance: [],
   attendanceDeadline: undefined,
   activityPts: [],
+  activityMax: undefined,
 };
 
 export const seminarReducer = reducer<State>(
@@ -54,6 +59,9 @@ export const seminarReducer = reducer<State>(
   }),
   on(setActivityPts, (state: State, { payload }) => {
     state.activityPts = payload.activityPts;
+  }),
+  on(setActivityMaxPts, (state: State, { payload }) => {
+    state.activityMax = payload.activityMax;
   }),
   on(setSeminarRequestState, (state: State, { payload }) => {
     state.seminarRequestState = payload.seminarRequestState;

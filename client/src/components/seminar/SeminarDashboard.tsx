@@ -5,6 +5,7 @@ import { css, jsx } from '@emotion/core';
 import { Container, Grid, Paper, Typography } from '@material-ui/core';
 import { Seminar } from '../../code/interfaces/seminar';
 import {
+  fetchActivityMaxPts,
   fetchActivityPts,
   fetchAttendance,
   fetchAttendanceDeadline,
@@ -24,12 +25,14 @@ import { t } from '../../code/helpers/translations';
 import { UserContext } from '../../App';
 import { AttendanceDeadline } from '../../code/interfaces/attendanceDeadline';
 import { NoData } from '../shared/NoData';
+import { ActivityMax } from '../../code/interfaces/activityMax';
 
 export interface StateProps {
   seminars: Seminar[];
   seminarEnrollments: Enrollment[];
   attendance: Attendance[];
   activityPts: ActivityPts[];
+  activityMax: ActivityMax | undefined;
   authorAssignments: AssignmentArray | undefined;
   seminarRequestState: LoadingState;
   assignments: Assignment[];
@@ -44,6 +47,7 @@ export interface DispatchProps {
   fetchAuthorAssignments: typeof fetchAuthorAssignments;
   fetchAssignments: typeof fetchAssignments;
   fetchAttendanceDeadline: typeof fetchAttendanceDeadline;
+  fetchActivityMaxPts: typeof fetchActivityMaxPts;
 }
 
 type SeminarDashboardProps = DispatchProps & StateProps;
@@ -64,6 +68,8 @@ const SeminarDashboardComponent: React.FC<SeminarDashboardProps> = ({
   fetchAssignments,
   fetchAttendanceDeadline,
   attendanceDeadline,
+  fetchActivityMaxPts,
+  activityMax,
 }) => {
   const loggedUser = useContext(UserContext);
 
@@ -98,6 +104,8 @@ const SeminarDashboardComponent: React.FC<SeminarDashboardProps> = ({
                     assignments={assignments}
                     fetchAttendanceDeadline={fetchAttendanceDeadline}
                     attendanceDeadline={attendanceDeadline}
+                    activityMax={activityMax}
+                    fetchActivityMaxPts={fetchActivityMaxPts}
                   />
                 ) : (
                   <NoData />

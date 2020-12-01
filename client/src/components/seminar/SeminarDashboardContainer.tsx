@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import { DispatchProps, StateProps } from './SeminarDashboard';
 import { SeminarDashboard } from './SeminarDashboard';
 import {
+  fetchActivityMaxPts,
   fetchActivityPts,
   fetchAttendance,
   fetchAttendanceDeadline,
@@ -21,6 +22,7 @@ const mapStateToProps = (state: State): StateProps => ({
   seminarRequestState: state.seminar.seminarRequestState,
   assignments: state.assignment.assignments,
   attendanceDeadline: state.seminar.attendanceDeadline,
+  activityMax: state.seminar.activityMax,
 });
 
 const mapDispatchToProps = (dispatch: Dispatch): DispatchProps => ({
@@ -33,6 +35,7 @@ const mapDispatchToProps = (dispatch: Dispatch): DispatchProps => ({
       fetchAuthorAssignments,
       fetchAssignments,
       fetchAttendanceDeadline,
+      fetchActivityMaxPts,
     },
     dispatch,
   ),

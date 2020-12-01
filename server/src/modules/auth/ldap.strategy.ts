@@ -2,7 +2,7 @@ import * as Strategy from 'passport-ldapauth';
 import { PassportStrategy } from '@nestjs/passport';
 import { Injectable } from '@nestjs/common';
 import { Request } from 'express';
-import { getLdapConfig } from '../../code/constants/ldap';
+import { getLdapConfig } from '../../config/ldap';
 
 @Injectable()
 export class LdapStrategy extends PassportStrategy(Strategy, 'ldap') {

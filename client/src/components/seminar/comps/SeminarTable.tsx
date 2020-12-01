@@ -18,12 +18,14 @@ import { Link } from 'react-router-dom';
 import { t } from '../../../code/helpers/translations';
 import { AttendanceDeadline } from '../../../code/interfaces/attendanceDeadline';
 import moment from 'moment';
+import { ActivityMax } from '../../../code/interfaces/activityMax';
 
 interface SeminarTableProps {
   seminarEnrollments: Enrollment[];
   currentSeminar: number;
   attendance: Attendance[];
   activityPts: ActivityPts[];
+  activityMax: ActivityMax | undefined;
   authorAssignments: AssignmentArray | undefined;
   assignments: Assignment[];
   attendanceDeadline: AttendanceDeadline | undefined;
@@ -37,6 +39,7 @@ const SeminarTableComponent: React.FC<SeminarTableProps> = ({
   authorAssignments,
   assignments,
   attendanceDeadline,
+  activityMax,
 }) => {
   let studentActivity: ActivityPts[] | null = null;
   let studentAssignmentsPassed: AuthorAssignment[] | null = null;
@@ -164,8 +167,8 @@ const SeminarTableComponent: React.FC<SeminarTableProps> = ({
                       </TableCell>
                       <TableCell align="right">{renderAttendance(studentAttendance)}</TableCell>
                       <TableCell align="right">
-                        {studentActivity && activityPts.length > 0 && (
-                          <ProgressBar points={studentActivity[0].points} maxPoints={studentActivity[0].maxPoints} />
+                        {studentActivity && activityMax && activityPts.length > 0 && (
+                          <ProgressBar points={studentActivity[0].points} maxPoints={activityMax.points} />
                         )}
                       </TableCell>
                     </TableRow>

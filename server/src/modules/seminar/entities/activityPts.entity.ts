@@ -1,7 +1,7 @@
 import { Column, PrimaryColumn, ViewEntity } from 'typeorm';
 
 @ViewEntity({ name: 'activity_pts' })
-export class ActivityView {
+export class ActivityPts {
   @PrimaryColumn()
   student: number;
 

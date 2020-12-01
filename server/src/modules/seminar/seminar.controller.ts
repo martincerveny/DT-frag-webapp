@@ -3,9 +3,10 @@ import { SeminarService } from './seminar.service';
 import { Seminar } from './entities/seminar.entity';
 import { Enrollment } from './entities/enrollment.entity';
 import { Attendance } from './entities/attendance.entity';
-import { ActivityViewDto } from './dtos/activityViewDto';
 import { AuthGuard } from '../shared/guards/auth.guard';
 import { AttendanceDeadline } from './entities/attendanceDeadline';
+import { ActivityMax } from './entities/activityMax.entity';
+import { ActivityPts } from './entities/activityPts.entity';
 
 @UseGuards(AuthGuard)
 @Controller('api/seminars')
@@ -37,7 +38,12 @@ export class SeminarController {
   }
 
   @Get('/activity')
-  findActivityPts(): Promise<ActivityViewDto[]> {
+  findActivityPts(): Promise<ActivityPts[]> {
     return this.seminarService.findActivityPts();
+  }
+
+  @Get('/activityMax')
+  findActivityMaxPts(): Promise<ActivityMax> {
+    return this.seminarService.findActivityMaxPts();
   }
 }
