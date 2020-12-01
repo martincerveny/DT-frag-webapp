@@ -41,6 +41,7 @@ const AttendanceDetailsComponent: React.FC<AttendanceDetailsProps> = ({
                       </ListItem>
                     );
                   }
+                  return null;
                 })}
               </List>
             </Grid>

@@ -53,7 +53,7 @@ const SeminarContentComponent: React.FC<SeminarContentProps> = ({
     fetchAttendance(seminarIds);
     fetchActivityPts();
     fetchAttendanceDeadline();
-  }, [seminars]);
+  }, [seminars, fetchActivityPts, fetchAttendanceDeadline, fetchAttendance, fetchEnrollments]);
 
   const renderIconDescription = () => {
     return (

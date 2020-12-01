@@ -48,7 +48,7 @@ const renderGlobalCssSettings = () => (
 const App: React.FC<AppProps> = ({ loggedUser, refreshUserFromCookie, logUserOut, refreshCookieState }) => {
   useEffect(() => {
     refreshUserFromCookie();
-  }, []);
+  }, [refreshUserFromCookie]);
 
   const renderRoutes = () => {
     if (refreshCookieState === LoadingState.Loading) {

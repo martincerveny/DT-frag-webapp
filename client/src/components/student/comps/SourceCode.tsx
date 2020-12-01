@@ -93,6 +93,7 @@ const SourceCodeComponent: React.FC<SourceCodeProps> = ({ studentFiles, studentF
                         </ListItem>
                       );
                     }
+                    return null;
                   })}
                 </List>
               </Grid>

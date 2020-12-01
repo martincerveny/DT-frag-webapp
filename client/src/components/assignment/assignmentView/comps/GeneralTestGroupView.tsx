@@ -95,6 +95,7 @@ const GeneralTestGroupViewComponent: React.FC<GeneralTestGroupViewProps> = ({
                           </Grid>
                         );
                       }
+                      return null;
                     })}
                   </Grid>
                 </ListItem>

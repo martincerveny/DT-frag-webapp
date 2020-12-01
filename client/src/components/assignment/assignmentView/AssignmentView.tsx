@@ -49,7 +49,7 @@ const AssignmentViewComponent: React.FC<AssignmentViewProps> = ({
   useEffect(() => {
     fetchAssignment(assignmentId);
     fetchEvaluations(assignmentId);
-  }, []);
+  }, [fetchAssignment, fetchEvaluations, assignmentId]);
 
   const renderHorizontalMenu = () => {
     return (

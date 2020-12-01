@@ -96,7 +96,16 @@ const StudentViewComponent: React.FC<StudentViewProps> = ({
     fetchActivityByStudent(studentId);
     fetchNotepadsByStudent(studentId);
     fetchSubmissionFilesByStudent(studentId);
-  }, []);
+  }, [
+    fetchStudent,
+    fetchAssignments,
+    fetchEvaluationsByStudent,
+    fetchAttendanceByStudent,
+    fetchActivityByStudent,
+    fetchNotepadsByStudent,
+    fetchSubmissionFilesByStudent,
+    studentId,
+  ]);
 
   const handleMenuClick = (menuItem: StudentMenu) => {
     setSelectedMenuItem(menuItem);

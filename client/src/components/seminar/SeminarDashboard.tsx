@@ -71,7 +71,7 @@ const SeminarDashboardComponent: React.FC<SeminarDashboardProps> = ({
     fetchSeminars(loggedUser!.id);
     fetchAuthorAssignments();
     fetchAssignments();
-  }, []);
+  }, [fetchSeminars, fetchAuthorAssignments, fetchAssignments, loggedUser]);
 
   return (
     <div css={root}>

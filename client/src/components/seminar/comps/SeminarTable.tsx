@@ -171,6 +171,7 @@ const SeminarTableComponent: React.FC<SeminarTableProps> = ({
                     </TableRow>
                   );
                 }
+                return null;
               })}
             </TableBody>
           </Table>

@@ -50,7 +50,7 @@ const AssignmentDashboardComponent: React.FC<AssignmentDashboardProps> = ({
     fetchAuthorAssignments();
     fetchEnrollments();
     fetchSubmissionCountPerHour();
-  }, []);
+  }, [fetchAssignments, fetchAuthorAssignments, fetchEnrollments, fetchSubmissionCountPerHour]);
 
   const exampleData = [
     { name: 'Page A', uv: 200 },
