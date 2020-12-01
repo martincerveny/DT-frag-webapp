@@ -21,28 +21,28 @@ export interface AssignmentListProps {
 }
 
 const AssignmentListComponent: React.FC<AssignmentListProps> = ({ assignments, authorAssignments, allEnrollments }) => {
+  const countStats = (a: Assignment) => {
+    const studentsPassed =
+      authorAssignments &&
+      authorAssignments.assignmentsPassed.filter((i: AuthorAssignment) => i.assignment_id === a.id);
+    const studentsNotPassed =
+      authorAssignments &&
+      authorAssignments.assignmentsNotPassed.filter((i: AuthorAssignment) => i.assignment_id === a.id);
+    const studentsPassedPercent = studentsPassed ? getPercents(studentsPassed.length, allEnrollments.length) : 0;
+    const studentsNotPassedPercent = studentsNotPassed
+      ? getPercents(studentsNotPassed.length, allEnrollments.length)
+      : 0;
+    const studentsNotSubmittedPercent = 100 - studentsPassedPercent - studentsNotPassedPercent;
+
+    return { studentsPassedPercent, studentsNotPassedPercent, studentsNotSubmittedPercent };
+  };
+
   return (
     <div css={content}>
       {assignments && authorAssignments && allEnrollments ? (
         <List component="nav" aria-label="main mailbox folders">
           {assignments.map((a: Assignment, index: number) => {
-            const studentsPassed =
-              authorAssignments &&
-              authorAssignments.assignmentsPassed.filter((i: AuthorAssignment) => i.assignment_id === a.id);
-
-            const studentsNotPassed =
-              authorAssignments &&
-              authorAssignments.assignmentsNotPassed.filter((i: AuthorAssignment) => i.assignment_id === a.id);
-
-            const studentsPassedPercent = studentsPassed
-              ? getPercents(studentsPassed.length, allEnrollments.length)
-              : 0;
-            const studentsNotPassedPercent = studentsNotPassed
-              ? getPercents(studentsNotPassed.length, allEnrollments.length)
-              : 0;
-
-            const studentsNotSubmittedPercent = 100 - studentsPassedPercent - studentsNotPassedPercent;
-
+            const stats = countStats(a);
             return (
               <ListItem key={index}>
                 <Grid container direction="row" justify="space-around" alignItems="center">
@@ -60,17 +60,21 @@ const AssignmentListComponent: React.FC<AssignmentListProps> = ({ assignments, a
                     css={buttonGroupWrapper}
                   >
                     <Tooltip title={t('tooltip.pass')} placement="top">
-                      <Button css={buttonWrapperPass(studentsPassedPercent)}>{studentsPassedPercent} %</Button>
+                      <Button css={buttonWrapperPass(stats.studentsPassedPercent)}>
+                        {stats.studentsPassedPercent} %
+                      </Button>
                     </Tooltip>
                     <Tooltip title={t('tooltip.fail')} placement="top">
-                      <Button color="secondary" css={buttonWrapper(studentsNotPassedPercent)}>
+                      <Button color="secondary" css={buttonWrapper(stats.studentsNotPassedPercent)}>
                         <Grid container direction="row">
-                          {studentsNotPassedPercent} %
+                          {stats.studentsNotPassedPercent} %
                         </Grid>
                       </Button>
                     </Tooltip>
                     <Tooltip title={t('tooltip.notSubmitted')} placement="top">
-                      <Button css={buttonWrapper(studentsNotSubmittedPercent)}>{studentsNotSubmittedPercent} %</Button>
+                      <Button css={buttonWrapper(stats.studentsNotSubmittedPercent)}>
+                        {stats.studentsNotSubmittedPercent} %
+                      </Button>
                     </Tooltip>
                   </ButtonGroup>
                   <Typography>{a.end ? getRemainingDays(a.end) : ''}</Typography>

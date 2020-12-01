@@ -84,9 +84,8 @@ const GeneralTestGroupViewComponent: React.FC<GeneralTestGroupViewProps> = ({
                     </Grid>
 
                     {tests.map((t: Evaluation, index) => {
-                      const percents = getStatPercents(t.name, ag);
-
                       if (t.group === ag && t.name !== 'group') {
+                        const percents = getStatPercents(t.name, ag);
                         return (
                           <Grid key={index} container direction="row" justify="flex-start" alignItems="center">
                             <Button css={testNameButtonWrapper} variant="text">

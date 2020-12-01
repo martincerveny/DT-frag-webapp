@@ -4,7 +4,6 @@ import { AssignmentModule } from './modules/assignment/assignment.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { Assignment } from './modules/assignment/entities/assignment.entity';
 import { PostgresConnectionOptions } from 'typeorm/driver/postgres/PostgresConnectionOptions';
-import { AssignmentGroup } from './modules/assignment/entities/assignmentGroup.entity';
 import { Evaluation } from './modules/evaluation/entities/evaluation.entity';
 import { EvaluationModule } from './modules/evaluation/evaluation.module';
 import { Seminar } from './modules/seminar/entities/seminar.entity';
@@ -36,7 +35,6 @@ const dbOptions: PostgresConnectionOptions = {
   schema: process.env.DB_SCHEMA,
   entities: [
     Assignment,
-    AssignmentGroup,
     Evaluation,
     Seminar,
     Enrollment,

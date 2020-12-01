@@ -4,14 +4,12 @@ import { action, payload } from 'ts-action';
 import { State } from './reducers';
 import { Assignment } from '../../code/interfaces/assignment';
 import { api, showMessage } from '../../code/helpers/api';
-import { AssignmentGroup } from '../../code/interfaces/assignmentGroup';
 import { AssignmentArray } from '../../code/interfaces/assignmentArray';
 import { SubmissionCountPerHour } from '../../code/interfaces/submissionCountPerHour';
 import { LoadingState } from '../../code/enums/loading';
 
 export enum ActionTypes {
   SET_ASSIGNMENTS = '[assignment] SET_ASSIGNMENTS',
-  SET_ASSIGNMENT_GROUPS = '[assignment] SET_ASSIGNMENT_GROUPS',
   SET_AUTHOR_ASSIGNMENTS = '[assignment] SET_AUTHOR_ASSIGNMENTS',
   SET_SUBMISSION_COUNT_PER_HOUR = '[assignment] SET_SUBMISSION_COUNT_PER_HOUR',
   SET_ASSIGNMENT = '[assignment] SET_ASSIGNMENT',
@@ -19,10 +17,6 @@ export enum ActionTypes {
 }
 
 export const setAssignments = action(ActionTypes.SET_ASSIGNMENTS, payload<{ assignments: Assignment[] }>());
-export const setAssignmentGroups = action(
-  ActionTypes.SET_ASSIGNMENT_GROUPS,
-  payload<{ assignmentGroups: AssignmentGroup[] }>(),
-);
 export const setAuthorAssignments = action(
   ActionTypes.SET_AUTHOR_ASSIGNMENTS,
   payload<{ authorAssignments: AssignmentArray }>(),
@@ -63,20 +57,6 @@ export const fetchAssignment: ActionCreator<ThunkAction<Promise<void>, State, an
         dispatch(setAssignmentRequestState({ assignmentRequestState: LoadingState.Failure }));
         showMessage(error.message, 'error');
       });
-  };
-};
-
-export const fetchGroupsByAssignment: ActionCreator<ThunkAction<Promise<void>, State, any, any>> = (id: number) => {
-  return async (dispatch: Dispatch<Action>): Promise<void> => {
-    const response = await api.get(`/assignments/${id}/groups`);
-    dispatch(setAssignmentGroups({ assignmentGroups: response.data }));
-  };
-};
-
-export const fetchAllAssignmentGroups: ActionCreator<ThunkAction<Promise<void>, State, any, any>> = () => {
-  return async (dispatch: Dispatch<Action>): Promise<void> => {
-    const response = await api.get(`/assignments/groups`);
-    dispatch(setAssignmentGroups({ assignmentGroups: response.data }));
   };
 };
 

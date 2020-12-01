@@ -86,6 +86,21 @@ const StudentTableViewComponent: React.FC<StudentTableViewProps> = ({ evaluation
     );
   };
 
+  const renderTableHead = (
+    <TableHead>
+      <TableRow>
+        <TableCell>{t('assignmentView.studentTable.name')}</TableCell>
+        <TableCell align="left">{t('assignmentView.studentTable.date')}</TableCell>
+        {getGroupByGroups(uniqueTestGroups).map((group: string, index: number) => (
+          <TableCell key={index} align="left">
+            {group}
+          </TableCell>
+        ))}
+        <TableCell align="left">{t('assignmentView.studentTable.points')}</TableCell>
+      </TableRow>
+    </TableHead>
+  );
+
   return (
     <div css={content}>
       <TestDescription />
@@ -95,24 +110,15 @@ const StudentTableViewComponent: React.FC<StudentTableViewProps> = ({ evaluation
         <div>
           <TableContainer component={Paper} css={tableWrapper}>
             <Table aria-label="simple table">
-              <TableHead>
-                <TableRow>
-                  <TableCell>{t('assignmentView.studentTable.name')}</TableCell>
-                  <TableCell align="left">{t('assignmentView.studentTable.date')}</TableCell>
-                  {getGroupByGroups(uniqueTestGroups).map((group: string, index: number) => (
-                    <TableCell key={index} align="left">
-                      {group}
-                    </TableCell>
-                  ))}
-                  <TableCell align="left">{t('assignmentView.studentTable.points')}</TableCell>
-                </TableRow>
-              </TableHead>
+              {renderTableHead}
               <TableBody>
                 {evaluations.length > 0 ? (
                   uniqueStudentEvals
                     .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                     .map((e: Evaluation, rowIndex: number) => {
-                      const studentEval = evaluations.filter((se: Evaluation) => se.author === e.author);
+                      const studentEval = evaluations.filter(
+                        (se: Evaluation) => se.author === e.author && se.name !== 'group',
+                      );
                       const points = sumArrayProps(studentEval, 'points');
 
                       return (
@@ -161,7 +167,11 @@ const StudentTableViewComponent: React.FC<StudentTableViewProps> = ({ evaluation
                       );
                     })
                 ) : (
-                  <NoData />
+                  <TableRow>
+                    <TableCell>
+                      <NoData />
+                    </TableCell>
+                  </TableRow>
                 )}
               </TableBody>
             </Table>

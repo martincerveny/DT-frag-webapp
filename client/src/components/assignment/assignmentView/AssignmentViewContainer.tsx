@@ -1,12 +1,11 @@
 import { State } from '../../../store/combinedReducers';
 import { bindActionCreators, Dispatch } from 'redux';
 import { connect } from 'react-redux';
-import { fetchAssignment, fetchAuthorAssignments, fetchGroupsByAssignment } from '../../../store/assignment/actions';
+import { fetchAssignment, fetchAuthorAssignments } from '../../../store/assignment/actions';
 import { AssignmentView, DispatchProps, StateProps } from './AssignmentView';
 import { fetchEvaluations } from '../../../store/evaluation/actions';
 
 const mapStateToProps = (state: State): StateProps => ({
-  assignmentGroups: state.assignment.assignmentGroups,
   evaluations: state.evaluation.evaluations,
   assignment: state.assignment.assignment,
   assignmentRequestState: state.assignment.assignmentRequestState,
@@ -16,7 +15,6 @@ const mapStateToProps = (state: State): StateProps => ({
 const mapDispatchToProps = (dispatch: Dispatch): DispatchProps => ({
   ...bindActionCreators(
     {
-      fetchGroupsByAssignment,
       fetchEvaluations,
       fetchAuthorAssignments,
       fetchAssignment,

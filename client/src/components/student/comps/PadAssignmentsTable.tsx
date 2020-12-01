@@ -55,7 +55,11 @@ const PadAssignmentsTableComponent: React.FC<PadAssignmentsTableProps> = ({ note
                 />
               ))
             ) : (
-              <NoData />
+              <TableRow>
+                <TableCell>
+                  <NoData />
+                </TableCell>
+              </TableRow>
             )}
           </TableBody>
         </Table>

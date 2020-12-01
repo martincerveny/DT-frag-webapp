@@ -55,7 +55,11 @@ const PadMiscTableComponent: React.FC<PadMiscTableProps> = ({ notepads }) => {
                 />
               ))
             ) : (
-              <NoData />
+              <TableRow>
+                <TableCell>
+                  <NoData />
+                </TableCell>
+              </TableRow>
             )}
           </TableBody>
         </Table>

@@ -54,34 +54,57 @@ export const fetchSeminars: ActionCreator<ThunkAction<Promise<void>, State, any,
 
 export const fetchEnrollments: ActionCreator<ThunkAction<Promise<void>, State, any, any>> = (ids?: string) => {
   return async (dispatch: Dispatch<Action>): Promise<void> => {
-    let response;
-    if (ids) {
-      response = await api.get(`/seminars/enrollment?seminar=${ids}`);
-      dispatch(setSeminarEnrollments({ seminarEnrollments: response.data }));
-    } else {
-      response = await api.get(`/seminars/enrollment`);
-      dispatch(setAllEnrollments({ allEnrollments: response.data }));
+    try {
+      if (ids) {
+        await api.get(`/seminars/enrollment?seminar=${ids}`).then(response => {
+          dispatch(setSeminarEnrollments({ seminarEnrollments: response.data }));
+        });
+      } else {
+        await api.get(`/seminars/enrollment`).then(response => {
+          dispatch(setAllEnrollments({ allEnrollments: response.data }));
+        });
+      }
+    } catch (error) {
+      await showMessage(error.message, 'error');
     }
   };
 };
 
 export const fetchAttendance: ActionCreator<ThunkAction<Promise<void>, State, any, any>> = (ids: string) => {
   return async (dispatch: Dispatch<Action>): Promise<void> => {
-    const response = await api.get(`/seminars/attendance?seminar=${ids}`);
-    dispatch(setAttendance({ attendance: response.data }));
+    await api
+      .get(`/seminars/attendance?seminar=${ids}`)
+      .then(response => {
+        dispatch(setAttendance({ attendance: response.data }));
+      })
+      .catch(error => {
+        showMessage(error.message, 'error');
+      });
   };
 };
 
 export const fetchAttendanceDeadline: ActionCreator<ThunkAction<Promise<void>, State, any, any>> = () => {
   return async (dispatch: Dispatch<Action>): Promise<void> => {
-    const response = await api.get(`/seminars/attendanceDeadline`);
-    dispatch(setAttendanceDeadline({ attendanceDeadline: response.data }));
+    await api
+      .get(`/seminars/attendanceDeadline`)
+      .then(response => {
+        dispatch(setAttendanceDeadline({ attendanceDeadline: response.data }));
+      })
+      .catch(error => {
+        showMessage(error.message, 'error');
+      });
   };
 };
 
 export const fetchActivityPts: ActionCreator<ThunkAction<Promise<void>, State, any, any>> = () => {
   return async (dispatch: Dispatch<Action>): Promise<void> => {
-    const response = await api.get(`/seminars/activity`);
-    dispatch(setActivityPts({ activityPts: response.data }));
+    await api
+      .get(`/seminars/activity`)
+      .then(response => {
+        dispatch(setActivityPts({ activityPts: response.data }));
+      })
+      .catch(error => {
+        showMessage(error.message, 'error');
+      });
   };
 };

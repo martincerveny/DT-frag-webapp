@@ -6,8 +6,7 @@ import { Button, Container, Grid, Paper, Typography } from '@material-ui/core';
 import { useParams } from 'react-router-dom';
 import { GeneralTestGroupView } from './comps/GeneralTestGroupView';
 import { StudentTableView } from './comps/StudentTableView';
-import { AssignmentGroup } from '../../../code/interfaces/assignmentGroup';
-import { fetchAssignment, fetchGroupsByAssignment } from '../../../store/assignment/actions';
+import { fetchAssignment } from '../../../store/assignment/actions';
 import { Evaluation } from '../../../code/interfaces/evaluation';
 import { fetchEvaluations } from '../../../store/evaluation/actions';
 import { AssignmentViewMenu } from '../../../code/enums/assignmentViewMenu';
@@ -19,7 +18,6 @@ import PeopleIcon from '@material-ui/icons/People';
 import { LoadingState } from '../../../code/enums/loading';
 
 export interface StateProps {
-  assignmentGroups: AssignmentGroup[];
   evaluations: Evaluation[];
   assignment: Assignment | undefined;
   evaluationsRequestState: LoadingState;
@@ -27,7 +25,6 @@ export interface StateProps {
 }
 
 export interface DispatchProps {
-  fetchGroupsByAssignment: typeof fetchGroupsByAssignment;
   fetchEvaluations: typeof fetchEvaluations;
   fetchAssignment: typeof fetchAssignment;
 }
@@ -35,7 +32,6 @@ export interface DispatchProps {
 type AssignmentViewProps = DispatchProps & StateProps;
 
 const AssignmentViewComponent: React.FC<AssignmentViewProps> = ({
-  fetchGroupsByAssignment,
   fetchEvaluations,
   evaluations,
   assignment,
@@ -52,7 +48,6 @@ const AssignmentViewComponent: React.FC<AssignmentViewProps> = ({
 
   useEffect(() => {
     fetchAssignment(assignmentId);
-    fetchGroupsByAssignment(assignmentId);
     fetchEvaluations(assignmentId);
   }, []);
 
@@ -87,7 +82,7 @@ const AssignmentViewComponent: React.FC<AssignmentViewProps> = ({
     if (selectedMenuItem === AssignmentViewMenu.Stats) {
       return <GeneralTestGroupView evaluations={evaluations} evaluationsRequestState={evaluationsRequestState} />;
     } else if (selectedMenuItem === AssignmentViewMenu.Students) {
-      return <StudentTableView evaluations={evaluations} />;
+      return <StudentTableView evaluations={evaluations} evaluationsRequestState={evaluationsRequestState} />;
     }
   };
 

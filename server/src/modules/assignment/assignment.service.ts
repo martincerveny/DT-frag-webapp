@@ -2,7 +2,6 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Assignment } from './entities/assignment.entity';
 import { Repository } from 'typeorm';
-import { AssignmentGroup } from './entities/assignmentGroup.entity';
 import { AssignmentPassed } from './entities/assignmentPassed.entity';
 import { AssignmentArrayDto } from './dtos/assignmentArrayDto';
 import { Submission } from './entities/submission.entity';
@@ -13,8 +12,6 @@ export class AssignmentService {
   constructor(
     @InjectRepository(Assignment)
     private assignmentRepository: Repository<Assignment>,
-    @InjectRepository(AssignmentGroup)
-    private assignmentGroupRepository: Repository<AssignmentGroup>,
     @InjectRepository(AssignmentPassed)
     private assignmentPassedRepository: Repository<AssignmentPassed>,
     @InjectRepository(Submission)
@@ -40,16 +37,8 @@ export class AssignmentService {
       .getRawMany();
   }
 
-  findGroupsByAssignment(id: number): Promise<AssignmentGroup[]> {
-    return this.assignmentGroupRepository.find({ assignment_id: id });
-  }
-
   findAssignment(id: number): Promise<Assignment> {
     return this.assignmentRepository.findOne(id);
-  }
-
-  findAllAssignmentGroups(): Promise<AssignmentGroup[]> {
-    return this.assignmentGroupRepository.find();
   }
 
   async findAuthorAssignments(): Promise<AssignmentArrayDto> {

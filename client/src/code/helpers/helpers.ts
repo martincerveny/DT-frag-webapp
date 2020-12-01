@@ -24,7 +24,7 @@ export const getRemainingDays = (date: string): string => {
   const endDate = new Date(date);
   let days = 'days';
 
-  const remainingDays = Math.floor(
+  const remainingDays = Math.round(
     (Date.UTC(endDate.getFullYear(), endDate.getMonth(), endDate.getDate()) -
       Date.UTC(today.getFullYear(), today.getMonth(), today.getDate())) /
       (1000 * 60 * 60 * 24),
@@ -38,7 +38,7 @@ export const getRemainingDays = (date: string): string => {
 };
 
 export const getPercents = (value: number, count: number) => {
-  return Math.floor((value / count) * 100);
+  return Math.round((value / count) * 100);
 };
 
 export const sumArrayProps = (array: Array<any>, key: string) => {

@@ -89,7 +89,9 @@ const AssignmentTableComponent: React.FC<AssignmentTableProps> = ({
             </TableHead>
             <TableBody>
               {assignments.map((a: Assignment, rowIndex: number) => {
-                const assignmentEvals = evaluations.filter((ae: Evaluation) => ae.assignment_id === a.id);
+                const assignmentEvals = evaluations.filter(
+                  (ae: Evaluation) => ae.assignment_id === a.id && ae.name !== 'group',
+                );
                 const groupByAssignmentEvals = Object.values(_.groupBy(assignmentEvals, 'group'));
 
                 return (
