@@ -1,9 +1,9 @@
 import { Controller, Get, Param, UseGuards } from '@nestjs/common';
 import { AssignmentService } from './assignment.service';
 import { Assignment } from './entities/assignment.entity';
-import { AssignmentArrayDto } from './dtos/assignmentArrayDto';
 import { SubmissionPerHourCountDto } from './dtos/submissionPerHourCountDto';
 import { AuthGuard } from '../shared/guards/auth.guard';
+import { AuthorAssignmentDto } from './dtos/authorAssignmentDto';
 
 @UseGuards(AuthGuard)
 @Controller('api/assignments')
@@ -25,8 +25,13 @@ export class AssignmentController {
     return this.assignmentService.findSubmissionCountPerHour();
   }
 
-  @Get('/author')
-  findAuthorAssignments(): Promise<AssignmentArrayDto> {
-    return this.assignmentService.findAuthorAssignments();
+  @Get('/passed')
+  findPassedAssignments(): Promise<AuthorAssignmentDto[]> {
+    return this.assignmentService.findPassedAssignments();
+  }
+
+  @Get('/failed')
+  findFailedAssignments(): Promise<AuthorAssignmentDto[]> {
+    return this.assignmentService.findFailedAssignments();
   }
 }

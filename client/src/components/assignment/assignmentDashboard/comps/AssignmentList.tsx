@@ -8,7 +8,6 @@ import { Assignment } from '../../../../code/interfaces/assignment';
 import { Routes } from '../../../../code/enums/routes';
 import { colors } from '../../../../styles/colors';
 import { getPercents, getRemainingDays } from '../../../../code/helpers/helpers';
-import { AssignmentArray } from '../../../../code/interfaces/assignmentArray';
 import { AuthorAssignment } from '../../../../code/interfaces/authorAssignment';
 import { Enrollment } from '../../../../code/interfaces/enrollment';
 import { Loader } from '../../../shared/Loader';
@@ -16,18 +15,20 @@ import { t } from '../../../../code/helpers/translations';
 
 export interface AssignmentListProps {
   assignments: Assignment[];
-  authorAssignments: AssignmentArray | undefined;
+  passedAssignments: AuthorAssignment[];
+  failedAssignments: AuthorAssignment[];
   allEnrollments: Enrollment[];
 }
 
-const AssignmentListComponent: React.FC<AssignmentListProps> = ({ assignments, authorAssignments, allEnrollments }) => {
+const AssignmentListComponent: React.FC<AssignmentListProps> = ({
+  assignments,
+  passedAssignments,
+  failedAssignments,
+  allEnrollments,
+}) => {
   const countStats = (a: Assignment) => {
-    const studentsPassed =
-      authorAssignments &&
-      authorAssignments.assignmentsPassed.filter((i: AuthorAssignment) => i.assignment_id === a.id);
-    const studentsNotPassed =
-      authorAssignments &&
-      authorAssignments.assignmentsNotPassed.filter((i: AuthorAssignment) => i.assignment_id === a.id);
+    const studentsPassed = passedAssignments.filter((i: AuthorAssignment) => i.assignment_id === a.id);
+    const studentsNotPassed = failedAssignments.filter((i: AuthorAssignment) => i.assignment_id === a.id);
     const studentsPassedPercent = studentsPassed ? getPercents(studentsPassed.length, allEnrollments.length) : 0;
     const studentsNotPassedPercent = studentsNotPassed
       ? getPercents(studentsNotPassed.length, allEnrollments.length)
@@ -39,7 +40,7 @@ const AssignmentListComponent: React.FC<AssignmentListProps> = ({ assignments, a
 
   return (
     <div css={content}>
-      {assignments && authorAssignments && allEnrollments ? (
+      {assignments && allEnrollments ? (
         <List component="nav" aria-label="main mailbox folders">
           {assignments.map((a: Assignment, index: number) => {
             const stats = countStats(a);

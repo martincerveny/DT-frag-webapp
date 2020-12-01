@@ -17,8 +17,7 @@ import { Attendance } from '../../code/interfaces/attendance';
 import { SeminarContent } from './comps/SeminarContent';
 import { ActivityPts } from '../../code/interfaces/activityPts';
 import { LoadingState } from '../../code/enums/loading';
-import { fetchAssignments, fetchAuthorAssignments } from '../../store/assignment/actions';
-import { AssignmentArray } from '../../code/interfaces/assignmentArray';
+import { fetchAssignments, fetchFailedAssignments, fetchPassedAssignments } from '../../store/assignment/actions';
 import { Assignment } from '../../code/interfaces/assignment';
 import { Loader } from '../shared/Loader';
 import { t } from '../../code/helpers/translations';
@@ -26,6 +25,7 @@ import { UserContext } from '../../App';
 import { AttendanceDeadline } from '../../code/interfaces/attendanceDeadline';
 import { NoData } from '../shared/NoData';
 import { ActivityMax } from '../../code/interfaces/activityMax';
+import { AuthorAssignment } from '../../code/interfaces/authorAssignment';
 
 export interface StateProps {
   seminars: Seminar[];
@@ -33,7 +33,8 @@ export interface StateProps {
   attendance: Attendance[];
   activityPts: ActivityPts[];
   activityMax: ActivityMax | undefined;
-  authorAssignments: AssignmentArray | undefined;
+  passedAssignments: AuthorAssignment[];
+  failedAssignments: AuthorAssignment[];
   seminarRequestState: LoadingState;
   assignments: Assignment[];
   attendanceDeadline: AttendanceDeadline | undefined;
@@ -44,7 +45,8 @@ export interface DispatchProps {
   fetchEnrollments: typeof fetchEnrollments;
   fetchAttendance: typeof fetchAttendance;
   fetchActivityPts: typeof fetchActivityPts;
-  fetchAuthorAssignments: typeof fetchAuthorAssignments;
+  fetchPassedAssignments: typeof fetchPassedAssignments;
+  fetchFailedAssignments: typeof fetchFailedAssignments;
   fetchAssignments: typeof fetchAssignments;
   fetchAttendanceDeadline: typeof fetchAttendanceDeadline;
   fetchActivityMaxPts: typeof fetchActivityMaxPts;
@@ -61,8 +63,10 @@ const SeminarDashboardComponent: React.FC<SeminarDashboardProps> = ({
   attendance,
   activityPts,
   fetchActivityPts,
-  authorAssignments,
-  fetchAuthorAssignments,
+  passedAssignments,
+  failedAssignments,
+  fetchPassedAssignments,
+  fetchFailedAssignments,
   seminarRequestState,
   assignments,
   fetchAssignments,
@@ -75,9 +79,10 @@ const SeminarDashboardComponent: React.FC<SeminarDashboardProps> = ({
 
   useEffect(() => {
     fetchSeminars(loggedUser!.id);
-    fetchAuthorAssignments();
+    fetchPassedAssignments();
+    fetchFailedAssignments();
     fetchAssignments();
-  }, [fetchSeminars, fetchAuthorAssignments, fetchAssignments, loggedUser]);
+  }, [fetchSeminars, fetchPassedAssignments, fetchFailedAssignments, fetchAssignments, loggedUser]);
 
   return (
     <div css={root}>
@@ -100,7 +105,8 @@ const SeminarDashboardComponent: React.FC<SeminarDashboardProps> = ({
                     fetchAttendance={fetchAttendance}
                     activityPts={activityPts}
                     fetchActivityPts={fetchActivityPts}
-                    authorAssignments={authorAssignments}
+                    passedAssignments={passedAssignments}
+                    failedAssignments={failedAssignments}
                     assignments={assignments}
                     fetchAttendanceDeadline={fetchAttendanceDeadline}
                     attendanceDeadline={attendanceDeadline}

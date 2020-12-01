@@ -3,9 +3,10 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Assignment } from './entities/assignment.entity';
 import { Repository } from 'typeorm';
 import { AssignmentPassed } from './entities/assignmentPassed.entity';
-import { AssignmentArrayDto } from './dtos/assignmentArrayDto';
 import { Submission } from './entities/submission.entity';
 import { SubmissionPerHourCountDto } from './dtos/submissionPerHourCountDto';
+import { getConnection } from 'typeorm';
+import { AuthorAssignmentDto } from './dtos/authorAssignmentDto';
 
 @Injectable()
 export class AssignmentService {
@@ -41,8 +42,8 @@ export class AssignmentService {
     return this.assignmentRepository.findOne(id);
   }
 
-  async findAuthorAssignments(): Promise<AssignmentArrayDto> {
-    const assignmentsPassed = await this.assignmentPassedRepository
+  findPassedAssignments(): Promise<AuthorAssignmentDto[]> {
+    return this.assignmentPassedRepository
       .createQueryBuilder('assignmentPassed')
       .select([
         'assignmentPassed.author as author',
@@ -56,9 +57,10 @@ export class AssignmentService {
       )
       .where('author IN (SELECT student FROM enrollment)')
       .getRawMany();
+  }
 
-    const assignmentNotPassed = await this.assignmentPassedRepository
-      .query(`SELECT DISTINCT subm.author,
+  async findFailedAssignments(): Promise<AuthorAssignmentDto[]> {
+    return getConnection().query(`SELECT DISTINCT subm.author,
       subm.assignment_id,
       subm.name as assignment_name
       FROM (
@@ -74,11 +76,6 @@ export class AssignmentService {
       ) as subm
       WHERE author IN (SELECT student FROM enrollment)
       `);
-
-    return {
-      assignmentsPassed: assignmentsPassed,
-      assignmentsNotPassed: assignmentNotPassed,
-    };
   }
 
   findSubmissionCountPerHour(): Promise<SubmissionPerHourCountDto[]> {

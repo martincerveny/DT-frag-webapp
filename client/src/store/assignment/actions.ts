@@ -4,22 +4,29 @@ import { action, payload } from 'ts-action';
 import { State } from './reducers';
 import { Assignment } from '../../code/interfaces/assignment';
 import { api, showMessage } from '../../code/helpers/api';
-import { AssignmentArray } from '../../code/interfaces/assignmentArray';
 import { SubmissionCountPerHour } from '../../code/interfaces/submissionCountPerHour';
 import { LoadingState } from '../../code/enums/loading';
+import { AuthorAssignment } from '../../code/interfaces/authorAssignment';
 
 export enum ActionTypes {
   SET_ASSIGNMENTS = '[assignment] SET_ASSIGNMENTS',
-  SET_AUTHOR_ASSIGNMENTS = '[assignment] SET_AUTHOR_ASSIGNMENTS',
+  SET_PASSED_ASSIGNMENTS = '[assignment] SET_PASSED_ASSIGNMENTS',
+  SET_FAILED_ASSIGNMENTS = '[assignment] SET_FAILED_ASSIGNMENTS',
   SET_SUBMISSION_COUNT_PER_HOUR = '[assignment] SET_SUBMISSION_COUNT_PER_HOUR',
   SET_ASSIGNMENT = '[assignment] SET_ASSIGNMENT',
   SET_ASSIGNMENT_REQUEST_STATE = '[assignment] SET_ASSIGNMENT_REQUEST_STATE',
+  SET_PASSED_ASSIGNMENTS_REQUEST_STATE = '[assignment] SET_PASSED_ASSIGNMENTS_REQUEST_STATE',
+  SET_FAILED_ASSIGNMENTS_REQUEST_STATE = '[assignment] SET_FAILED_ASSIGNMENTS_REQUEST_STATE',
 }
 
 export const setAssignments = action(ActionTypes.SET_ASSIGNMENTS, payload<{ assignments: Assignment[] }>());
-export const setAuthorAssignments = action(
-  ActionTypes.SET_AUTHOR_ASSIGNMENTS,
-  payload<{ authorAssignments: AssignmentArray }>(),
+export const setPassedAssignments = action(
+  ActionTypes.SET_PASSED_ASSIGNMENTS,
+  payload<{ passedAssignments: AuthorAssignment[] }>(),
+);
+export const setFailedAssignments = action(
+  ActionTypes.SET_FAILED_ASSIGNMENTS,
+  payload<{ failedAssignments: AuthorAssignment[] }>(),
 );
 export const setSubmissionCountPerHour = action(
   ActionTypes.SET_SUBMISSION_COUNT_PER_HOUR,
@@ -30,15 +37,26 @@ export const setAssignmentRequestState = action(
   ActionTypes.SET_ASSIGNMENT_REQUEST_STATE,
   payload<{ assignmentRequestState: LoadingState }>(),
 );
+export const setPassedAssignmentsRequestState = action(
+  ActionTypes.SET_PASSED_ASSIGNMENTS_REQUEST_STATE,
+  payload<{ passedAssignmentRequestState: LoadingState }>(),
+);
+export const setFailedAssignmentsRequestState = action(
+  ActionTypes.SET_FAILED_ASSIGNMENTS_REQUEST_STATE,
+  payload<{ failedAssignmentRequestState: LoadingState }>(),
+);
 
 export const fetchAssignments: ActionCreator<ThunkAction<Promise<void>, State, any, any>> = () => {
   return async (dispatch: Dispatch<Action>): Promise<void> => {
+    dispatch(setAssignmentRequestState({ assignmentRequestState: LoadingState.Loading }));
     await api
       .get('/assignments')
       .then(response => {
         dispatch(setAssignments({ assignments: response.data }));
+        dispatch(setAssignmentRequestState({ assignmentRequestState: LoadingState.Success }));
       })
       .catch(error => {
+        dispatch(setAssignmentRequestState({ assignmentRequestState: LoadingState.Failure }));
         showMessage(error.message, 'error');
       });
   };
@@ -60,14 +78,33 @@ export const fetchAssignment: ActionCreator<ThunkAction<Promise<void>, State, an
   };
 };
 
-export const fetchAuthorAssignments: ActionCreator<ThunkAction<Promise<void>, State, any, any>> = () => {
+export const fetchPassedAssignments: ActionCreator<ThunkAction<Promise<void>, State, any, any>> = () => {
   return async (dispatch: Dispatch<Action>): Promise<void> => {
+    dispatch(setPassedAssignmentsRequestState({ passedAssignmentRequestState: LoadingState.Loading }));
     await api
-      .get(`/assignments/author`)
+      .get(`/assignments/passed`)
       .then(response => {
-        dispatch(setAuthorAssignments({ authorAssignments: response.data }));
+        dispatch(setPassedAssignments({ passedAssignments: response.data }));
+        dispatch(setPassedAssignmentsRequestState({ passedAssignmentRequestState: LoadingState.Success }));
       })
       .catch(error => {
+        dispatch(setPassedAssignmentsRequestState({ passedAssignmentRequestState: LoadingState.Failure }));
+        showMessage(error.message, 'error');
+      });
+  };
+};
+
+export const fetchFailedAssignments: ActionCreator<ThunkAction<Promise<void>, State, any, any>> = () => {
+  return async (dispatch: Dispatch<Action>): Promise<void> => {
+    dispatch(setFailedAssignmentsRequestState({ failedAssignmentRequestState: LoadingState.Loading }));
+    await api
+      .get(`/assignments/failed`)
+      .then(response => {
+        dispatch(setFailedAssignments({ failedAssignments: response.data }));
+        dispatch(setFailedAssignmentsRequestState({ failedAssignmentRequestState: LoadingState.Success }));
+      })
+      .catch(error => {
+        dispatch(setFailedAssignmentsRequestState({ failedAssignmentRequestState: LoadingState.Failure }));
         showMessage(error.message, 'error');
       });
   };

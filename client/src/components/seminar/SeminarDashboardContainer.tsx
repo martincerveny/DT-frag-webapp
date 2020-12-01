@@ -11,14 +11,15 @@ import {
   fetchSeminars,
 } from '../../store/seminar/actions';
 import { State } from '../../store/combinedReducers';
-import { fetchAssignments, fetchAuthorAssignments } from '../../store/assignment/actions';
+import { fetchAssignments, fetchFailedAssignments, fetchPassedAssignments } from '../../store/assignment/actions';
 
 const mapStateToProps = (state: State): StateProps => ({
   seminars: state.seminar.seminars,
   seminarEnrollments: state.seminar.seminarEnrollments,
   attendance: state.seminar.attendance,
   activityPts: state.seminar.activityPts,
-  authorAssignments: state.assignment.authorAssignments,
+  passedAssignments: state.assignment.passedAssignments,
+  failedAssignments: state.assignment.failedAssignments,
   seminarRequestState: state.seminar.seminarRequestState,
   assignments: state.assignment.assignments,
   attendanceDeadline: state.seminar.attendanceDeadline,
@@ -32,7 +33,8 @@ const mapDispatchToProps = (dispatch: Dispatch): DispatchProps => ({
       fetchEnrollments,
       fetchAttendance,
       fetchActivityPts,
-      fetchAuthorAssignments,
+      fetchPassedAssignments,
+      fetchFailedAssignments,
       fetchAssignments,
       fetchAttendanceDeadline,
       fetchActivityMaxPts,

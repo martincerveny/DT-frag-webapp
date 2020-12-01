@@ -9,7 +9,6 @@ import { Enrollment } from '../../../code/interfaces/enrollment';
 import { Attendance } from '../../../code/interfaces/attendance';
 import { getDateString } from '../../../code/helpers/helpers';
 import { ActivityPts } from '../../../code/interfaces/activityPts';
-import { AssignmentArray } from '../../../code/interfaces/assignmentArray';
 import { AuthorAssignment } from '../../../code/interfaces/authorAssignment';
 import { Assignment } from '../../../code/interfaces/assignment';
 import { colors } from '../../../styles/colors';
@@ -26,7 +25,8 @@ interface SeminarTableProps {
   attendance: Attendance[];
   activityPts: ActivityPts[];
   activityMax: ActivityMax | undefined;
-  authorAssignments: AssignmentArray | undefined;
+  passedAssignments: AuthorAssignment[];
+  failedAssignments: AuthorAssignment[];
   assignments: Assignment[];
   attendanceDeadline: AttendanceDeadline | undefined;
 }
@@ -36,20 +36,22 @@ const SeminarTableComponent: React.FC<SeminarTableProps> = ({
   currentSeminar,
   attendance,
   activityPts,
-  authorAssignments,
+  passedAssignments,
+  failedAssignments,
   assignments,
   attendanceDeadline,
   activityMax,
 }) => {
   let studentActivity: ActivityPts[] | null = null;
   let studentAssignmentsPassed: AuthorAssignment[] | null = null;
-  let studentAssignmentsNotPassed: AuthorAssignment[] | null = null;
+  let studentAssignmentsFailed: AuthorAssignment[] | null = null;
   let notSubmittedAssignments: Assignment[] | null = null;
 
   const renderAttendance = (studentAttendance: Attendance[]) => {
     if (attendanceDeadline) {
+      const seminarWeeksCount = 11;
       const lastSemesterWeek = moment(attendanceDeadline.stamp).isoWeek();
-      const firstSemesterWeek = lastSemesterWeek - 11;
+      const firstSemesterWeek = lastSemesterWeek - seminarWeeksCount;
       const attendanceItems = [];
 
       for (let i = firstSemesterWeek; i <= lastSemesterWeek; i++) {
@@ -102,76 +104,79 @@ const SeminarTableComponent: React.FC<SeminarTableProps> = ({
                     });
                   }
 
-                  if (authorAssignments && authorAssignments.assignmentsPassed.length > 0) {
-                    studentAssignmentsPassed = authorAssignments.assignmentsPassed.filter(
-                      (assignmentPassed: AuthorAssignment) => {
-                        return assignmentPassed['author'] === e.student;
-                      },
-                    );
+                  if (passedAssignments.length > 0) {
+                    studentAssignmentsPassed = passedAssignments.filter((passedAssignment: AuthorAssignment) => {
+                      return passedAssignment['author'] === e.student;
+                    });
                   }
 
-                  if (authorAssignments && authorAssignments.assignmentsNotPassed.length > 0) {
-                    studentAssignmentsNotPassed = authorAssignments.assignmentsNotPassed.filter(
-                      (assignmentNotPassed: AuthorAssignment) => {
-                        return assignmentNotPassed['author'] === e.student;
-                      },
-                    );
+                  if (failedAssignments.length > 0) {
+                    studentAssignmentsFailed = failedAssignments.filter((failedAssignment: AuthorAssignment) => {
+                      return failedAssignment['author'] === e.student;
+                    });
                   }
 
-                  if (studentAssignmentsPassed && studentAssignmentsNotPassed) {
+                  if (studentAssignmentsPassed && studentAssignmentsFailed) {
                     const studentAssignments = studentAssignmentsPassed
-                      .concat(studentAssignmentsNotPassed)
+                      .concat(studentAssignmentsFailed)
                       .map(({ assignment_name }) => assignment_name);
 
                     notSubmittedAssignments = assignments.filter(a => !studentAssignments.includes(a.name));
                   }
 
                   return (
-                    <TableRow key={index}>
-                      <TableCell component="th" scope="row">
-                        <Link to={`${Routes.Student}/${e.student}`} css={linkName}>
-                          {e.name}
-                        </Link>
-                      </TableCell>
-                      <TableCell align="right">
-                        {studentAssignmentsPassed &&
-                          studentAssignmentsPassed.map((sap: AuthorAssignment, index: number) => {
-                            return (
-                              <Link key={index} to={`${Routes.Assignments}/${sap.assignment_id}`}>
-                                <Tooltip title={sap.assignment_name} placement="top">
-                                  <SquareFill size={20} css={passedButton} />
-                                </Tooltip>
-                              </Link>
-                            );
-                          })}
-                        {studentAssignmentsNotPassed &&
-                          studentAssignmentsNotPassed.map((sanp: AuthorAssignment, index: number) => {
-                            return (
-                              <Link key={index} to={`${Routes.Assignments}/${sanp.assignment_id}`}>
-                                <Tooltip title={sanp.assignment_name} placement="top">
-                                  <Square size={20} css={notPassedButton} />
-                                </Tooltip>
-                              </Link>
-                            );
-                          })}
-                        {notSubmittedAssignments &&
-                          notSubmittedAssignments.map((nsa: Assignment, index: number) => {
-                            return (
-                              <Link key={index} to={`${Routes.Assignments}/${nsa.id}`}>
-                                <Tooltip title={nsa.name} placement="top">
-                                  <XSquareFill size={20} css={notSubmittedButton} />
-                                </Tooltip>
-                              </Link>
-                            );
-                          })}
-                      </TableCell>
-                      <TableCell align="right">{renderAttendance(studentAttendance)}</TableCell>
-                      <TableCell align="right">
-                        {studentActivity && activityMax && activityPts.length > 0 && (
-                          <ProgressBar points={studentActivity[0].points} maxPoints={activityMax.points} />
-                        )}
-                      </TableCell>
-                    </TableRow>
+                    studentAssignmentsPassed &&
+                    studentAssignmentsFailed &&
+                    notSubmittedAssignments && (
+                      <TableRow key={index}>
+                        <TableCell component="th" scope="row">
+                          <Link to={`${Routes.Student}/${e.student}`} css={linkName}>
+                            {e.name}
+                          </Link>
+                        </TableCell>
+                        <TableCell align="right">
+                          {studentAssignmentsPassed &&
+                            studentAssignmentsPassed.map((sap: AuthorAssignment, index: number) => {
+                              return (
+                                <Link key={index} to={`${Routes.Assignments}/${sap.assignment_id}`}>
+                                  <Tooltip title={sap.assignment_name} placement="top">
+                                    <SquareFill size={20} css={passedButton} />
+                                  </Tooltip>
+                                </Link>
+                              );
+                            })}
+                          {studentAssignmentsFailed &&
+                            studentAssignmentsFailed.map((sanp: AuthorAssignment, index: number) => {
+                              return (
+                                <Link key={index} to={`${Routes.Assignments}/${sanp.assignment_id}`}>
+                                  <Tooltip title={sanp.assignment_name} placement="top">
+                                    <Square size={20} css={notPassedButton} />
+                                  </Tooltip>
+                                </Link>
+                              );
+                            })}
+                          {notSubmittedAssignments &&
+                            notSubmittedAssignments.map((nsa: Assignment, index: number) => {
+                              return (
+                                <Link key={index} to={`${Routes.Assignments}/${nsa.id}`}>
+                                  <Tooltip title={nsa.name} placement="top">
+                                    <XSquareFill size={20} css={notSubmittedButton} />
+                                  </Tooltip>
+                                </Link>
+                              );
+                            })}
+                        </TableCell>
+                        <TableCell align="right">{renderAttendance(studentAttendance)}</TableCell>
+                        <TableCell align="right">
+                          {activityMax && (
+                            <ProgressBar
+                              points={(studentActivity && studentActivity[0].points) ?? 0}
+                              maxPoints={activityMax.points}
+                            />
+                          )}
+                        </TableCell>
+                      </TableRow>
+                    )
                   );
                 }
                 return null;

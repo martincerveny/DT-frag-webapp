@@ -3,32 +3,40 @@ import React, { useEffect } from 'react';
 import styled from '@emotion/styled';
 import { css, jsx } from '@emotion/core';
 import { Container, Grid, Paper, Typography } from '@material-ui/core';
-import { LineChart, Line, CartesianGrid, XAxis, YAxis, Tooltip, Bar, BarChart } from 'recharts';
+import { Bar, BarChart, CartesianGrid, Line, LineChart, Tooltip, XAxis, YAxis } from 'recharts';
 import { Assignment } from '../../../code/interfaces/assignment';
 import {
   fetchAssignments,
-  fetchAuthorAssignments,
+  fetchFailedAssignments,
+  fetchPassedAssignments,
   fetchSubmissionCountPerHour,
 } from '../../../store/assignment/actions';
 import { AssignmentList } from './comps/AssignmentList';
-import { AssignmentArray } from '../../../code/interfaces/assignmentArray';
 import { Enrollment } from '../../../code/interfaces/enrollment';
 import { fetchEnrollments } from '../../../store/seminar/actions';
 import { colors } from '../../../styles/colors';
 import { SubmissionCountPerHour } from '../../../code/interfaces/submissionCountPerHour';
 import { t } from '../../../code/helpers/translations';
 import { NoData } from '../../shared/NoData';
+import { AuthorAssignment } from '../../../code/interfaces/authorAssignment';
+import { LoadingState } from '../../../code/enums/loading';
+import { Loader } from '../../shared/Loader';
 
 export interface StateProps {
   assignments: Assignment[];
-  authorAssignments: AssignmentArray | undefined;
+  passedAssignments: AuthorAssignment[];
+  failedAssignments: AuthorAssignment[];
   allEnrollments: Enrollment[];
   submissionCountPerHour: SubmissionCountPerHour[];
+  assignmentRequestState: LoadingState;
+  passedAssignmentRequestState: LoadingState;
+  failedAssignmentRequestState: LoadingState;
 }
 
 export interface DispatchProps {
   fetchAssignments: typeof fetchAssignments;
-  fetchAuthorAssignments: typeof fetchAuthorAssignments;
+  fetchPassedAssignments: typeof fetchPassedAssignments;
+  fetchFailedAssignments: typeof fetchFailedAssignments;
   fetchEnrollments: typeof fetchEnrollments;
   fetchSubmissionCountPerHour: typeof fetchSubmissionCountPerHour;
 }
@@ -38,19 +46,25 @@ type AssignmentDashboardProps = DispatchProps & StateProps;
 const AssignmentDashboardComponent: React.FC<AssignmentDashboardProps> = ({
   assignments,
   fetchAssignments,
-  authorAssignments,
-  fetchAuthorAssignments,
+  passedAssignments,
+  failedAssignments,
+  fetchFailedAssignments,
+  fetchPassedAssignments,
   allEnrollments,
   fetchEnrollments,
   submissionCountPerHour,
   fetchSubmissionCountPerHour,
+  assignmentRequestState,
+  passedAssignmentRequestState,
+  failedAssignmentRequestState,
 }) => {
   useEffect(() => {
     fetchAssignments();
-    fetchAuthorAssignments();
+    fetchPassedAssignments();
+    fetchFailedAssignments();
     fetchEnrollments();
     fetchSubmissionCountPerHour();
-  }, [fetchAssignments, fetchAuthorAssignments, fetchEnrollments, fetchSubmissionCountPerHour]);
+  }, [fetchAssignments, fetchPassedAssignments, fetchFailedAssignments, fetchEnrollments, fetchSubmissionCountPerHour]);
 
   const exampleData = [
     { name: 'Page A', uv: 200 },
@@ -93,11 +107,18 @@ const AssignmentDashboardComponent: React.FC<AssignmentDashboardProps> = ({
                   {t('assignment.dashboard')}
                 </Typography>
                 {assignments.length > 0 ? (
-                  <AssignmentList
-                    assignments={assignments}
-                    authorAssignments={authorAssignments}
-                    allEnrollments={allEnrollments}
-                  />
+                  assignmentRequestState !== LoadingState.Loading &&
+                  passedAssignmentRequestState !== LoadingState.Loading &&
+                  failedAssignmentRequestState !== LoadingState.Loading ? (
+                    <AssignmentList
+                      assignments={assignments}
+                      passedAssignments={passedAssignments}
+                      failedAssignments={failedAssignments}
+                      allEnrollments={allEnrollments}
+                    />
+                  ) : (
+                    <Loader />
+                  )
                 ) : (
                   <NoData />
                 )}

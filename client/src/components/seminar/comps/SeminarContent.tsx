@@ -15,12 +15,12 @@ import {
 import { Enrollment } from '../../../code/interfaces/enrollment';
 import { Attendance } from '../../../code/interfaces/attendance';
 import { ActivityPts } from '../../../code/interfaces/activityPts';
-import { AssignmentArray } from '../../../code/interfaces/assignmentArray';
 import { Assignment } from '../../../code/interfaces/assignment';
 import { Square, SquareFill, XSquareFill } from 'react-bootstrap-icons';
 import { t } from '../../../code/helpers/translations';
 import { AttendanceDeadline } from '../../../code/interfaces/attendanceDeadline';
 import { ActivityMax } from '../../../code/interfaces/activityMax';
+import { AuthorAssignment } from '../../../code/interfaces/authorAssignment';
 
 export interface SeminarContentProps {
   seminarEnrollments: Enrollment[];
@@ -28,7 +28,8 @@ export interface SeminarContentProps {
   attendance: Attendance[];
   activityPts: ActivityPts[];
   activityMax: ActivityMax | undefined;
-  authorAssignments: AssignmentArray | undefined;
+  passedAssignments: AuthorAssignment[];
+  failedAssignments: AuthorAssignment[];
   fetchAttendance: typeof fetchAttendance;
   fetchAttendanceDeadline: typeof fetchAttendanceDeadline;
   fetchActivityPts: typeof fetchActivityPts;
@@ -46,7 +47,8 @@ const SeminarContentComponent: React.FC<SeminarContentProps> = ({
   fetchAttendance,
   activityPts,
   fetchActivityPts,
-  authorAssignments,
+  passedAssignments,
+  failedAssignments,
   assignments,
   fetchAttendanceDeadline,
   attendanceDeadline,
@@ -97,7 +99,8 @@ const SeminarContentComponent: React.FC<SeminarContentProps> = ({
               currentSeminar={s.id}
               activityPts={activityPts}
               activityMax={activityMax}
-              authorAssignments={authorAssignments}
+              passedAssignments={passedAssignments}
+              failedAssignments={failedAssignments}
               assignments={assignments}
               attendanceDeadline={attendanceDeadline}
             />
