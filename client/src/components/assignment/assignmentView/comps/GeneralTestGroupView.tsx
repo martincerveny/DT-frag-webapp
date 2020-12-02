@@ -46,13 +46,13 @@ const GeneralTestGroupViewComponent: React.FC<GeneralTestGroupViewProps> = ({
   };
 
   const getStatPercents = (test: string, group: string) => {
-    const passedTestEvaluations = evaluations.filter((e: Evaluation) => {
-      return e.group === group && e.name === test && e.passed;
-    });
+    const passedTestEvaluations = evaluations.filter(
+      (e: Evaluation) => e.group === group && e.name === test && e.passed,
+    );
 
-    const failedTestEvaluations = evaluations.filter((e: Evaluation) => {
-      return e.group === group && e.name === test && !e.passed;
-    });
+    const failedTestEvaluations = evaluations.filter(
+      (e: Evaluation) => e.group === group && e.name === test && !e.passed,
+    );
 
     const allEvaluations = passedTestEvaluations.length + failedTestEvaluations.length;
     const passedPercents = getPercents(passedTestEvaluations.length, allEvaluations);

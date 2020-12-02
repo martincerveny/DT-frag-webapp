@@ -106,19 +106,17 @@ const AssignmentDashboardComponent: React.FC<AssignmentDashboardProps> = ({
                 <Typography component="h2" variant="h6" color="primary" gutterBottom css={heading}>
                   {t('assignment.dashboard')}
                 </Typography>
-                {assignments.length > 0 ? (
-                  assignmentRequestState !== LoadingState.Loading &&
-                  passedAssignmentRequestState !== LoadingState.Loading &&
-                  failedAssignmentRequestState !== LoadingState.Loading ? (
-                    <AssignmentList
-                      assignments={assignments}
-                      passedAssignments={passedAssignments}
-                      failedAssignments={failedAssignments}
-                      allEnrollments={allEnrollments}
-                    />
-                  ) : (
-                    <Loader />
-                  )
+                {assignmentRequestState === LoadingState.Loading ||
+                passedAssignmentRequestState === LoadingState.Loading ||
+                failedAssignmentRequestState === LoadingState.Loading ? (
+                  <Loader />
+                ) : assignments.length > 0 ? (
+                  <AssignmentList
+                    assignments={assignments}
+                    passedAssignments={passedAssignments}
+                    failedAssignments={failedAssignments}
+                    allEnrollments={allEnrollments}
+                  />
                 ) : (
                   <NoData />
                 )}

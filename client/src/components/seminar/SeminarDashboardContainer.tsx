@@ -24,6 +24,8 @@ const mapStateToProps = (state: State): StateProps => ({
   assignments: state.assignment.assignments,
   attendanceDeadline: state.seminar.attendanceDeadline,
   activityMax: state.seminar.activityMax,
+  passedAssignmentRequestState: state.assignment.passedAssignmentRequestState,
+  failedAssignmentRequestState: state.assignment.failedAssignmentRequestState,
 });
 
 const mapDispatchToProps = (dispatch: Dispatch): DispatchProps => ({

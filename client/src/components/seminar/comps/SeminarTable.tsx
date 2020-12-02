@@ -18,6 +18,7 @@ import { t } from '../../../code/helpers/translations';
 import { AttendanceDeadline } from '../../../code/interfaces/attendanceDeadline';
 import moment from 'moment';
 import { ActivityMax } from '../../../code/interfaces/activityMax';
+import { NoData } from '../../shared/NoData';
 
 interface SeminarTableProps {
   seminarEnrollments: Enrollment[];
@@ -31,6 +32,14 @@ interface SeminarTableProps {
   attendanceDeadline: AttendanceDeadline | undefined;
 }
 
+interface StudentDetails {
+  studentAttendance: Attendance[];
+  studentActivity: ActivityPts[];
+  studentAssignmentsPassed: AuthorAssignment[];
+  studentAssignmentsFailed: AuthorAssignment[];
+  studentAssignmentsNotSubmitted: Assignment[];
+}
+
 const SeminarTableComponent: React.FC<SeminarTableProps> = ({
   seminarEnrollments,
   currentSeminar,
@@ -42,10 +51,76 @@ const SeminarTableComponent: React.FC<SeminarTableProps> = ({
   attendanceDeadline,
   activityMax,
 }) => {
-  let studentActivity: ActivityPts[] | null = null;
-  let studentAssignmentsPassed: AuthorAssignment[] | null = null;
-  let studentAssignmentsFailed: AuthorAssignment[] | null = null;
-  let notSubmittedAssignments: Assignment[] | null = null;
+  const renderTableHead = (
+    <TableHead>
+      <TableRow>
+        <TableCell>{t('seminar.seminarTable.name')}</TableCell>
+        <TableCell align="right">{t('seminar.seminarTable.assignments')}</TableCell>
+        <TableCell align="right">{t('seminar.seminarTable.attendance')}</TableCell>
+        <TableCell align="right">{t('seminar.seminarTable.activity')}</TableCell>
+      </TableRow>
+    </TableHead>
+  );
+
+  const getStudentDetails = (e: Enrollment): StudentDetails => {
+    const studentAttendance = attendance
+      .filter((a: Attendance) => a['student'] === e.student)
+      .sort((a: Attendance, b: Attendance) => new Date(a['date']).getTime() - new Date(b['date']).getTime());
+
+    const studentActivity = activityPts.filter((activityPts: ActivityPts) => activityPts['student'] === e.student);
+
+    const studentAssignmentsPassed = passedAssignments.filter(
+      (passedAssignment: AuthorAssignment) => passedAssignment['author'] === e.student,
+    );
+
+    const studentAssignmentsFailed = failedAssignments.filter(
+      (failedAssignment: AuthorAssignment) => failedAssignment['author'] === e.student,
+    );
+
+    const studentAssignments = studentAssignmentsPassed
+      .concat(studentAssignmentsFailed)
+      .map(({ assignment_name }) => assignment_name);
+
+    const studentAssignmentsNotSubmitted = assignments.filter(a => !studentAssignments.includes(a.name));
+
+    return {
+      studentAttendance,
+      studentActivity,
+      studentAssignmentsPassed,
+      studentAssignmentsFailed,
+      studentAssignmentsNotSubmitted,
+    };
+  };
+
+  const renderAssignments = (sd: StudentDetails) => {
+    return (
+      <React.Fragment>
+        {sd.studentAssignmentsPassed.map((sap: AuthorAssignment, index: number) => (
+          <Link key={index} to={`${Routes.Assignments}/${sap.assignment_id}`}>
+            <Tooltip title={sap.assignment_name} placement="top">
+              <SquareFill size={20} css={passedButton} />
+            </Tooltip>
+          </Link>
+        ))}
+
+        {sd.studentAssignmentsFailed.map((sanp: AuthorAssignment, index: number) => (
+          <Link key={index} to={`${Routes.Assignments}/${sanp.assignment_id}`}>
+            <Tooltip title={sanp.assignment_name} placement="top">
+              <Square size={20} css={notPassedButton} />
+            </Tooltip>
+          </Link>
+        ))}
+
+        {sd.studentAssignmentsNotSubmitted.map((nsa: Assignment, index: number) => (
+          <Link key={index} to={`${Routes.Assignments}/${nsa.id}`}>
+            <Tooltip title={nsa.name} placement="top">
+              <XSquareFill size={20} css={notSubmittedButton} />
+            </Tooltip>
+          </Link>
+        ))}
+      </React.Fragment>
+    );
+  };
 
   const renderAttendance = (studentAttendance: Attendance[]) => {
     if (attendanceDeadline) {
@@ -74,107 +149,39 @@ const SeminarTableComponent: React.FC<SeminarTableProps> = ({
     }
   };
 
+  const renderActivity = (studentDetails: StudentDetails) => {
+    return (
+      activityMax && (
+        <ProgressBar
+          points={studentDetails.studentActivity.length > 0 ? studentDetails.studentActivity[0].points : 0}
+          maxPoints={activityMax.points}
+        />
+      )
+    );
+  };
+
   return (
     <div css={content}>
-      {seminarEnrollments.length > 0 && (
+      {seminarEnrollments.length > 0 ? (
         <TableContainer component={Paper}>
           <Table aria-label="simple table">
-            <TableHead>
-              <TableRow>
-                <TableCell>{t('seminar.seminarTable.name')}</TableCell>
-                <TableCell align="right">{t('seminar.seminarTable.assignments')}</TableCell>
-                <TableCell align="right">{t('seminar.seminarTable.attendance')}</TableCell>
-                <TableCell align="right">{t('seminar.seminarTable.activity')}</TableCell>
-              </TableRow>
-            </TableHead>
+            {renderTableHead}
             <TableBody>
               {seminarEnrollments.map((e: Enrollment, index: number) => {
                 if (currentSeminar === e.seminar_id) {
-                  const studentAttendance = attendance
-                    .filter((a: Attendance) => {
-                      return a['student'] === e.student && a['seminar_id'] === e.seminar_id;
-                    })
-                    .sort(
-                      (a: Attendance, b: Attendance) => new Date(a['date']).getTime() - new Date(b['date']).getTime(),
-                    );
-
-                  if (activityPts.length > 0) {
-                    studentActivity = activityPts.filter((activityPts: ActivityPts) => {
-                      return activityPts['student'] === e.student;
-                    });
-                  }
-
-                  if (passedAssignments.length > 0) {
-                    studentAssignmentsPassed = passedAssignments.filter((passedAssignment: AuthorAssignment) => {
-                      return passedAssignment['author'] === e.student;
-                    });
-                  }
-
-                  if (failedAssignments.length > 0) {
-                    studentAssignmentsFailed = failedAssignments.filter((failedAssignment: AuthorAssignment) => {
-                      return failedAssignment['author'] === e.student;
-                    });
-                  }
-
-                  if (studentAssignmentsPassed && studentAssignmentsFailed) {
-                    const studentAssignments = studentAssignmentsPassed
-                      .concat(studentAssignmentsFailed)
-                      .map(({ assignment_name }) => assignment_name);
-
-                    notSubmittedAssignments = assignments.filter(a => !studentAssignments.includes(a.name));
-                  }
+                  const studentDetails = getStudentDetails(e);
 
                   return (
-                    studentAssignmentsPassed &&
-                    studentAssignmentsFailed &&
-                    notSubmittedAssignments && (
+                    studentDetails && (
                       <TableRow key={index}>
                         <TableCell component="th" scope="row">
                           <Link to={`${Routes.Student}/${e.student}`} css={linkName}>
                             {e.name}
                           </Link>
                         </TableCell>
-                        <TableCell align="right">
-                          {studentAssignmentsPassed &&
-                            studentAssignmentsPassed.map((sap: AuthorAssignment, index: number) => {
-                              return (
-                                <Link key={index} to={`${Routes.Assignments}/${sap.assignment_id}`}>
-                                  <Tooltip title={sap.assignment_name} placement="top">
-                                    <SquareFill size={20} css={passedButton} />
-                                  </Tooltip>
-                                </Link>
-                              );
-                            })}
-                          {studentAssignmentsFailed &&
-                            studentAssignmentsFailed.map((sanp: AuthorAssignment, index: number) => {
-                              return (
-                                <Link key={index} to={`${Routes.Assignments}/${sanp.assignment_id}`}>
-                                  <Tooltip title={sanp.assignment_name} placement="top">
-                                    <Square size={20} css={notPassedButton} />
-                                  </Tooltip>
-                                </Link>
-                              );
-                            })}
-                          {notSubmittedAssignments &&
-                            notSubmittedAssignments.map((nsa: Assignment, index: number) => {
-                              return (
-                                <Link key={index} to={`${Routes.Assignments}/${nsa.id}`}>
-                                  <Tooltip title={nsa.name} placement="top">
-                                    <XSquareFill size={20} css={notSubmittedButton} />
-                                  </Tooltip>
-                                </Link>
-                              );
-                            })}
-                        </TableCell>
-                        <TableCell align="right">{renderAttendance(studentAttendance)}</TableCell>
-                        <TableCell align="right">
-                          {activityMax && (
-                            <ProgressBar
-                              points={(studentActivity && studentActivity[0].points) ?? 0}
-                              maxPoints={activityMax.points}
-                            />
-                          )}
-                        </TableCell>
+                        <TableCell align="right">{renderAssignments(studentDetails)}</TableCell>
+                        <TableCell align="right">{renderAttendance(studentDetails.studentAttendance)}</TableCell>
+                        <TableCell align="right">{renderActivity(studentDetails)}</TableCell>
                       </TableRow>
                     )
                   );
@@ -184,6 +191,8 @@ const SeminarTableComponent: React.FC<SeminarTableProps> = ({
             </TableBody>
           </Table>
         </TableContainer>
+      ) : (
+        <NoData />
       )}
     </div>
   );

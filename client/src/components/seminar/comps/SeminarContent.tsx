@@ -88,7 +88,7 @@ const SeminarContentComponent: React.FC<SeminarContentProps> = ({
       {renderIconDescription()}
       {seminars.map((s: Seminar, index: number) => {
         return (
-          <div key={index}>
+          <div key={index} css={seminarTableWrapper}>
             <Typography component="h2" variant="h6" color="primary" gutterBottom css={heading}>
               {t('seminar.seminar')} {s.name}
             </Typography>
@@ -125,4 +125,8 @@ const descriptionWrapper = css`
 
 const iconDescriptionWrapper = css`
   padding: 20px;
+`;
+
+const seminarTableWrapper = css`
+  margin-bottom: 100px;
 `;

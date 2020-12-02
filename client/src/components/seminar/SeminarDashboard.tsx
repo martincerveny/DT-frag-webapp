@@ -36,6 +36,8 @@ export interface StateProps {
   passedAssignments: AuthorAssignment[];
   failedAssignments: AuthorAssignment[];
   seminarRequestState: LoadingState;
+  passedAssignmentRequestState: LoadingState;
+  failedAssignmentRequestState: LoadingState;
   assignments: Assignment[];
   attendanceDeadline: AttendanceDeadline | undefined;
 }
@@ -74,6 +76,8 @@ const SeminarDashboardComponent: React.FC<SeminarDashboardProps> = ({
   attendanceDeadline,
   fetchActivityMaxPts,
   activityMax,
+  passedAssignmentRequestState,
+  failedAssignmentRequestState,
 }) => {
   const loggedUser = useContext(UserContext);
 
@@ -94,7 +98,9 @@ const SeminarDashboardComponent: React.FC<SeminarDashboardProps> = ({
                 <Typography component="h2" variant="h6" color="primary" gutterBottom css={heading}>
                   {t('seminar.dashboard')}
                 </Typography>
-                {seminarRequestState === LoadingState.Loading ? (
+                {seminarRequestState === LoadingState.Loading ||
+                passedAssignmentRequestState === LoadingState.Loading ||
+                failedAssignmentRequestState === LoadingState.Loading ? (
                   <Loader />
                 ) : seminars.length > 0 ? (
                   <SeminarContent
