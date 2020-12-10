@@ -16,6 +16,7 @@ import { Person } from '../modules/student/entities/person.entity';
 import { SubmissionLatest } from '../modules/student/entities/submissionLatest.entity';
 import { Teacher } from '../modules/auth/entities/teacher.entity';
 import { AttendanceDeadline } from '../modules/seminar/entities/attendanceDeadline';
+import { ActiveRequests } from '../modules/review/entities/activeRequests.entity';
 
 export const dbConfig: PostgresConnectionOptions = {
   type: 'postgres',
@@ -43,5 +44,6 @@ export const dbConfig: PostgresConnectionOptions = {
     SubmissionLatest,
     Teacher,
     AttendanceDeadline,
+    ActiveRequests,
   ],
 };

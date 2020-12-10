@@ -12,6 +12,7 @@ import { ExitToApp } from '@material-ui/icons';
 import AssignmentIcon from '@material-ui/icons/Assignment';
 import GroupIcon from '@material-ui/icons/Group';
 import { UserContext } from '../../App';
+import CommentIcon from '@material-ui/icons/Comment';
 
 interface MenuBarProps {
   handleUserLogOut: () => void;
@@ -37,11 +38,19 @@ const MenuBarComponent: React.FC<MenuBarProps> = ({ handleUserLogOut }) => {
               </Button>
             </Link>
           </div>
-          <div css={lastMenuItemWrapper}>
+          <div css={menuItemWrapper}>
             <Link to={Routes.Seminars} css={title}>
               <Button color="inherit">
                 <GroupIcon />
                 <span css={buttonText}>{t('menuBar.seminars')}</span>
+              </Button>
+            </Link>
+          </div>
+          <div css={lastMenuItemWrapper}>
+            <Link to={Routes.Reviews} css={title}>
+              <Button color="inherit">
+                <CommentIcon />
+                <span css={buttonText}>{t('menuBar.reviews')}</span>
               </Button>
             </Link>
           </div>

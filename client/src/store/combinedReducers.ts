@@ -4,6 +4,7 @@ import * as assignment from './assignment/reducers';
 import * as evaluation from './evaluation/reducers';
 import * as seminar from './seminar/reducers';
 import * as student from './student/reducers';
+import * as review from './review/reducers';
 
 export interface State {
   auth: auth.State;
@@ -11,6 +12,7 @@ export interface State {
   evaluation: evaluation.State;
   seminar: seminar.State;
   student: student.State;
+  review: review.State;
 }
 
 export const initialState: State = {
@@ -19,6 +21,7 @@ export const initialState: State = {
   evaluation: evaluation.initialState,
   seminar: seminar.initialState,
   student: student.initialState,
+  review: review.initialState,
 };
 
 export const reducer = combineReducers<State>({
@@ -27,4 +30,5 @@ export const reducer = combineReducers<State>({
   evaluation: evaluation.evaluationReducer,
   seminar: seminar.seminarReducer,
   student: student.studentReducer,
+  review: review.reviewReducer,
 });

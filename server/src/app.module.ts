@@ -7,6 +7,7 @@ import { SeminarModule } from './modules/seminar/seminar.module';
 import { StudentModule } from './modules/student/student.module';
 import { AuthModule } from './modules/auth/auth.module';
 import { dbConfig } from './config/db';
+import { ReviewModule } from './modules/review/review.module';
 
 @Module({
   imports: [
@@ -16,6 +17,7 @@ import { dbConfig } from './config/db';
     SeminarModule,
     StudentModule,
     AuthModule,
+    ReviewModule,
   ],
   controllers: [AppController],
   providers: [],

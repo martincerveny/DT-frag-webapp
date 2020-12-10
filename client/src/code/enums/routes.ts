@@ -5,4 +5,5 @@ export enum Routes {
   Seminars = '/seminars',
   StudentView = '/student/:studentId',
   Student = '/student',
+  Reviews = '/reviews',
 }

@@ -22,6 +22,7 @@ export const translates: {
   'menuBar.dashboard': 'Frag dashboard',
   'menuBar.assignments': 'Assignments',
   'menuBar.seminars': 'Seminars',
+  'menuBar.reviews': 'Reviews',
   'menuBar.logout': 'Logout',
   'seminar.dashboard': 'Seminar Dashboard',
   'seminar.seminar': 'Seminar',
@@ -59,4 +60,6 @@ export const translates: {
   'tooltip.pass': 'Pass',
   'tooltip.fail': 'Fail',
   'tooltip.notSubmitted': 'Not submitted',
+  'review.dashboard': 'Review Dashboard',
+  'review.selectAssignment': 'Select an assignment',
 };
