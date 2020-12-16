@@ -6,7 +6,7 @@ import { Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow
 import { Notepads } from '../../../code/interfaces/notepads';
 import { t } from '../../../code/helpers/translations';
 import { PadAssignment } from '../../../code/interfaces/padAssignment';
-import { NotepadTableRow } from './shared/NotepadTableRow';
+import { CollapseTableRow } from './CollapseTableRow';
 import { NoData } from '../../shared/NoData';
 
 interface PadAssignmentsTableProps {
@@ -15,15 +15,12 @@ interface PadAssignmentsTableProps {
 
 const PadAssignmentsTableComponent: React.FC<PadAssignmentsTableProps> = ({ notepads }) => {
   const [selectedRowIndex, setSelectedRowIndex] = React.useState<number | null>(null);
-  const [data, setData] = React.useState<string>('');
 
-  const handleClick = (rowIndex: number | null, data: string) => {
+  const handleClick = (rowIndex: number) => {
     if (selectedRowIndex === rowIndex) {
       setSelectedRowIndex(null);
-      setData('');
     } else {
       setSelectedRowIndex(rowIndex);
-      setData(data);
     }
   };
 
@@ -44,14 +41,14 @@ const PadAssignmentsTableComponent: React.FC<PadAssignmentsTableProps> = ({ note
           <TableBody>
             {notepads && notepads.padAssignments.length > 0 ? (
               notepads.padAssignments.map((pa: PadAssignment, rowIndex: number) => (
-                <NotepadTableRow
+                <CollapseTableRow
                   key={rowIndex}
                   name={pa.assignment_name}
                   stamp={pa.stamp}
-                  data={data}
+                  data={pa.data}
                   rowIndex={rowIndex}
                   selectedRowIndex={selectedRowIndex}
-                  handleClick={() => handleClick(rowIndex, pa.data)}
+                  handleClick={() => handleClick(rowIndex)}
                 />
               ))
             ) : (

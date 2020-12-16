@@ -56,7 +56,7 @@ const SeminarContentComponent: React.FC<SeminarContentProps> = ({
   fetchActivityMaxPts,
 }) => {
   useEffect(() => {
-    const seminarIds = Array.prototype.map.call(seminars, s => s.id).toString();
+    const seminarIds = Array.prototype.map.call(seminars, (s: Seminar) => s.id).toString();
     fetchEnrollments(seminarIds);
     fetchAttendance(seminarIds);
     fetchActivityMaxPts();

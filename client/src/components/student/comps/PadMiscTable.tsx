@@ -6,7 +6,7 @@ import { Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow
 import { Notepads } from '../../../code/interfaces/notepads';
 import { t } from '../../../code/helpers/translations';
 import { PadMisc } from '../../../code/interfaces/padMisc';
-import { NotepadTableRow } from './shared/NotepadTableRow';
+import { CollapseTableRow } from './CollapseTableRow';
 import { NoData } from '../../shared/NoData';
 
 interface PadMiscTableProps {
@@ -15,15 +15,12 @@ interface PadMiscTableProps {
 
 const PadMiscTableComponent: React.FC<PadMiscTableProps> = ({ notepads }) => {
   const [selectedRowIndex, setSelectedRowIndex] = React.useState<number | null>(null);
-  const [data, setData] = React.useState<string>('');
 
-  const handleClick = (rowIndex: number | null, data: string) => {
+  const handleClick = (rowIndex: number | null) => {
     if (selectedRowIndex === rowIndex) {
       setSelectedRowIndex(null);
-      setData('');
     } else {
       setSelectedRowIndex(rowIndex);
-      setData(data);
     }
   };
 
@@ -44,14 +41,14 @@ const PadMiscTableComponent: React.FC<PadMiscTableProps> = ({ notepads }) => {
           <TableBody>
             {notepads && notepads.padMisc.length > 0 ? (
               notepads.padMisc.map((pm: PadMisc, rowIndex: number) => (
-                <NotepadTableRow
+                <CollapseTableRow
                   key={rowIndex}
                   name={pm.name}
                   stamp={pm.stamp}
-                  data={data}
+                  data={pm.data}
                   rowIndex={rowIndex}
                   selectedRowIndex={selectedRowIndex}
-                  handleClick={() => handleClick(rowIndex, pm.data)}
+                  handleClick={() => handleClick(rowIndex)}
                 />
               ))
             ) : (

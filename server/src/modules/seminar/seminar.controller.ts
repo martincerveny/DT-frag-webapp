@@ -8,7 +8,7 @@ import { AttendanceDeadline } from './entities/attendanceDeadline';
 import { ActivityMax } from './entities/activityMax.entity';
 import { ActivityPts } from './entities/activityPts.entity';
 
-@UseGuards(AuthGuard)
+// @UseGuards(AuthGuard)
 @Controller('api/seminars')
 export class SeminarController {
   constructor(private readonly seminarService: SeminarService) {}

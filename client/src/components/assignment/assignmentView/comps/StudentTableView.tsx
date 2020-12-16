@@ -20,7 +20,12 @@ import {
 import RadioButtonUncheckedIcon from '@material-ui/icons/RadioButtonUnchecked';
 import FiberManualRecordIcon from '@material-ui/icons/FiberManualRecord';
 import { Evaluation } from '../../../../code/interfaces/evaluation';
-import { getGroupByGroups, removeArrayDuplicatesByProp, sumArrayProps } from '../../../../code/helpers/helpers';
+import {
+  getDateString,
+  getGroupByGroups,
+  removeArrayDuplicatesByProp,
+  sumArrayProps,
+} from '../../../../code/helpers/helpers';
 import { colors } from '../../../../styles/colors';
 import { t } from '../../../../code/helpers/translations';
 import { TestDescription } from '../../../shared/TestDescription';
@@ -127,7 +132,7 @@ const StudentTableViewComponent: React.FC<StudentTableViewProps> = ({ evaluation
                             <TableCell component="th" scope="row">
                               {e.author_name}
                             </TableCell>
-                            <TableCell align="left">{new Date(studentEval[0].stamp).toLocaleDateString()}</TableCell>
+                            <TableCell align="left">{getDateString(studentEval[0].stamp)}</TableCell>
                             {getGroupByGroups(uniqueTestGroups).map((group: string, groupIndex: number) => {
                               const studentTests = studentEval
                                 .filter((mse: Evaluation) => group === mse.group && mse.name)

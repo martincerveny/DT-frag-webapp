@@ -16,7 +16,7 @@ export const getGroupByGroups = (tests: Evaluation[]): Array<string> => {
 };
 
 export const getDateString = (date: string) => {
-  return new Date(date).toDateString();
+  return new Date(date).toLocaleDateString();
 };
 
 export const getRemainingDays = (date: string): string => {

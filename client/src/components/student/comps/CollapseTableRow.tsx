@@ -3,11 +3,11 @@ import React from 'react';
 import styled from '@emotion/styled';
 import { css, jsx } from '@emotion/core';
 import { Box, Button, Collapse, TableCell, TableRow } from '@material-ui/core';
-import { t } from '../../../../code/helpers/translations';
-import { colors } from '../../../../styles/colors';
-import { getDateString } from '../../../../code/helpers/helpers';
+import { t } from '../../../code/helpers/translations';
+import { colors } from '../../../styles/colors';
+import { getDateString } from '../../../code/helpers/helpers';
 
-interface NotepadTableRowProps {
+interface CollapseTableRowProps {
   name: string;
   stamp: string;
   data: string;
@@ -16,7 +16,7 @@ interface NotepadTableRowProps {
   handleClick: (rowIndex: number | null, data: string) => void;
 }
 
-const NotepadTableRowComponent: React.FC<NotepadTableRowProps> = ({
+const CollapseTableRowComponent: React.FC<CollapseTableRowProps> = ({
   name,
   stamp,
   data,
@@ -39,7 +39,7 @@ const NotepadTableRowComponent: React.FC<NotepadTableRowProps> = ({
             color="primary"
             onClick={() => handleClick(rowIndex, data)}
           >
-            {selectedRowIndex === rowIndex ? t('student.notepads.hide') : t('student.notepads.show')}
+            {selectedRowIndex === rowIndex ? t('app.hide') : t('app.show')}
           </Button>
         </TableCell>
       </TableRow>
@@ -59,9 +59,9 @@ const NotepadTableRowComponent: React.FC<NotepadTableRowProps> = ({
   );
 };
 
-const StyledNotepadTableRowComponent = styled(NotepadTableRowComponent)``;
+const StyledCollapseTableRowComponent = styled(CollapseTableRowComponent)``;
 
-export const NotepadTableRow = (props: any) => <StyledNotepadTableRowComponent {...props} />;
+export const CollapseTableRow = (props: any) => <StyledCollapseTableRowComponent {...props} />;
 
 const dataWrapper = css`
   margin-top: 20px;

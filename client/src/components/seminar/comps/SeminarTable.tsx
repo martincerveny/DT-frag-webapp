@@ -96,7 +96,7 @@ const SeminarTableComponent: React.FC<SeminarTableProps> = ({
     return (
       <React.Fragment>
         {sd.studentAssignmentsPassed.map((sap: AuthorAssignment, index: number) => (
-          <Link key={index} to={`${Routes.Assignments}/${sap.assignment_id}`}>
+          <Link key={index} to={`${Routes.Assignment}/${sap.assignment_id}`}>
             <Tooltip title={sap.assignment_name} placement="top">
               <SquareFill size={20} css={passedButton} />
             </Tooltip>
@@ -104,7 +104,7 @@ const SeminarTableComponent: React.FC<SeminarTableProps> = ({
         ))}
 
         {sd.studentAssignmentsFailed.map((sanp: AuthorAssignment, index: number) => (
-          <Link key={index} to={`${Routes.Assignments}/${sanp.assignment_id}`}>
+          <Link key={index} to={`${Routes.Assignment}/${sanp.assignment_id}`}>
             <Tooltip title={sanp.assignment_name} placement="top">
               <Square size={20} css={notPassedButton} />
             </Tooltip>
@@ -112,7 +112,7 @@ const SeminarTableComponent: React.FC<SeminarTableProps> = ({
         ))}
 
         {sd.studentAssignmentsNotSubmitted.map((nsa: Assignment, index: number) => (
-          <Link key={index} to={`${Routes.Assignments}/${nsa.id}`}>
+          <Link key={index} to={`${Routes.Assignment}/${nsa.id}`}>
             <Tooltip title={nsa.name} placement="top">
               <XSquareFill size={20} css={notSubmittedButton} />
             </Tooltip>

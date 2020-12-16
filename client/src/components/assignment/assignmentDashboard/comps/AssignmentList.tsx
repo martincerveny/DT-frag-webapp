@@ -48,7 +48,7 @@ const AssignmentListComponent: React.FC<AssignmentListProps> = ({
               <ListItem key={index}>
                 <Grid container direction="row" justify="space-around" alignItems="center">
                   <Button variant="text">
-                    <Link to={`${Routes.Assignments}/${a.id}`} css={linkName}>
+                    <Link to={`${Routes.Assignment}/${a.id}`} css={linkName}>
                       {a.name}
                     </Link>
                   </Button>

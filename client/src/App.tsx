@@ -20,6 +20,7 @@ import { LoadingState } from './code/enums/loading';
 import { Loader } from './components/shared/Loader';
 import { t } from './code/helpers/translations';
 import { ReviewDashboardContainer } from './components/review/reviewDashboard/ReviewDashboardContainer';
+import { ReviewDetailContainer } from './components/review/reviewDetail/ReviewDetailContainer';
 
 export interface StateProps {
   loggedUser: undefined | Person;
@@ -84,6 +85,9 @@ const App: React.FC<AppProps> = ({ loggedUser, refreshUserFromCookie, logUserOut
           </Route>
           <Route path={Routes.StudentView}>
             <StudentViewContainer />
+          </Route>
+          <Route path={Routes.ReviewDetail}>
+            <ReviewDetailContainer />
           </Route>
           <Route path={Routes.Reviews}>
             <ReviewDashboardContainer />
