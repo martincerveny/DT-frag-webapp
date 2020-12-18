@@ -3,12 +3,13 @@ import React, { useEffect } from 'react';
 import styled from '@emotion/styled';
 import { css, jsx } from '@emotion/core';
 import { Container, Grid, Paper, Typography } from '@material-ui/core';
-import { Bar, BarChart, CartesianGrid, Line, LineChart, Tooltip, XAxis, YAxis } from 'recharts';
+import { Bar, BarChart, CartesianGrid, Tooltip, XAxis, YAxis } from 'recharts';
 import { Assignment } from '../../../code/interfaces/assignment';
 import {
   fetchAssignments,
   fetchFailedAssignments,
   fetchPassedAssignments,
+  fetchSubmissionCountPerDay,
   fetchSubmissionCountPerHour,
 } from '../../../store/assignment/actions';
 import { AssignmentList } from './comps/AssignmentList';
@@ -21,6 +22,8 @@ import { NoData } from '../../shared/NoData';
 import { AuthorAssignment } from '../../../code/interfaces/authorAssignment';
 import { LoadingState } from '../../../code/enums/loading';
 import { Loader } from '../../shared/Loader';
+import { SubmissionCountPerDay } from '../../../code/interfaces/submissionCountPerDay';
+import { getDayOfWeek } from '../../../code/helpers/helpers';
 
 export interface StateProps {
   assignments: Assignment[];
@@ -28,6 +31,7 @@ export interface StateProps {
   failedAssignments: AuthorAssignment[];
   allEnrollments: Enrollment[];
   submissionCountPerHour: SubmissionCountPerHour[];
+  submissionCountPerDay: SubmissionCountPerDay[];
   assignmentRequestState: LoadingState;
   passedAssignmentRequestState: LoadingState;
   failedAssignmentRequestState: LoadingState;
@@ -39,6 +43,7 @@ export interface DispatchProps {
   fetchFailedAssignments: typeof fetchFailedAssignments;
   fetchEnrollments: typeof fetchEnrollments;
   fetchSubmissionCountPerHour: typeof fetchSubmissionCountPerHour;
+  fetchSubmissionCountPerDay: typeof fetchSubmissionCountPerDay;
 }
 
 type AssignmentDashboardProps = DispatchProps & StateProps;
@@ -57,6 +62,8 @@ const AssignmentDashboardComponent: React.FC<AssignmentDashboardProps> = ({
   assignmentRequestState,
   passedAssignmentRequestState,
   failedAssignmentRequestState,
+  fetchSubmissionCountPerDay,
+  submissionCountPerDay,
 }) => {
   useEffect(() => {
     fetchAssignments();
@@ -64,33 +71,45 @@ const AssignmentDashboardComponent: React.FC<AssignmentDashboardProps> = ({
     fetchFailedAssignments();
     fetchEnrollments();
     fetchSubmissionCountPerHour();
-  }, [fetchAssignments, fetchPassedAssignments, fetchFailedAssignments, fetchEnrollments, fetchSubmissionCountPerHour]);
+    fetchSubmissionCountPerDay();
+  }, [
+    fetchAssignments,
+    fetchPassedAssignments,
+    fetchFailedAssignments,
+    fetchEnrollments,
+    fetchSubmissionCountPerHour,
+    fetchSubmissionCountPerDay,
+  ]);
 
-  const exampleData = [
-    { name: 'Page A', uv: 200 },
-    {
-      name: 'Page B',
-      uv: 1900,
-    },
-    { name: 'Page C', uv: 100 },
-    { name: 'Page D', uv: 1200 },
-    { name: 'Page D', uv: 50 },
-  ];
-
-  const renderLineChart = (
-    <LineChart width={500} height={300} data={exampleData}>
-      <Line type="monotone" dataKey="uv" stroke={colors.lightPurple} />
-      <CartesianGrid stroke="#ccc" />
-      <XAxis dataKey="name" />
-      <YAxis />
-    </LineChart>
+  const renderFirstStats = (
+    <BarChart
+      width={575}
+      height={300}
+      data={submissionCountPerDay.map((s: SubmissionCountPerDay) => ({
+        day: getDayOfWeek(s.day),
+        submission_count: parseInt(s.submission_count, 10),
+      }))}
+    >
+      <CartesianGrid strokeDasharray="3 3" />
+      <XAxis name="Day" dataKey="day" />
+      <YAxis dataKey="submission_count" domain={[0, 'dataMax']} />
+      <Tooltip />
+      <Bar name="Submission count" dataKey="submission_count" fill={colors.lightPurple} />
+    </BarChart>
   );
 
-  const renderBarChart = (
-    <BarChart width={500} height={300} data={submissionCountPerHour}>
+  const renderSecondStats = (
+    <BarChart
+      width={575}
+      height={300}
+      data={submissionCountPerHour.map((s: SubmissionCountPerHour) => ({
+        ...s,
+        submission_count: parseInt(s.submission_count, 10),
+      }))}
+    >
       <CartesianGrid strokeDasharray="3 3" />
       <XAxis name="Hour of the day" dataKey="hour" />
-      <YAxis />
+      <YAxis dataKey="submission_count" domain={[0, 'dataMax']} />
       <Tooltip />
       <Bar name="Submission count" dataKey="submission_count" fill={colors.lightPurple} />
     </BarChart>
@@ -132,7 +151,7 @@ const AssignmentDashboardComponent: React.FC<AssignmentDashboardProps> = ({
                 <Typography component="h2" variant="h6" color="primary" gutterBottom css={heading}>
                   {t('assignment.statistics.graph1')}
                 </Typography>
-                <div css={content}>{submissionCountPerHour.length > 0 ? renderLineChart : <NoData />}</div>
+                <div css={content}>{submissionCountPerDay.length > 0 ? renderFirstStats : <NoData />}</div>
               </Grid>
             </Paper>
           </Grid>
@@ -143,7 +162,7 @@ const AssignmentDashboardComponent: React.FC<AssignmentDashboardProps> = ({
                 <Typography component="h2" variant="h6" color="primary" gutterBottom css={heading}>
                   {t('assignment.statistics.graph2')}
                 </Typography>
-                <div css={content}>{submissionCountPerHour.length > 0 ? renderBarChart : <NoData />}</div>
+                <div css={content}>{submissionCountPerHour.length > 0 ? renderSecondStats : <NoData />}</div>
               </Grid>
             </Paper>
           </Grid>

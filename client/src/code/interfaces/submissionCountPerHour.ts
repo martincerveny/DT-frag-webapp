@@ -1,4 +1,4 @@
 export interface SubmissionCountPerHour {
   hour: number;
-  submission_count: number;
+  submission_count: string;
 }

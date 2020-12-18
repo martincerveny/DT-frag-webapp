@@ -7,12 +7,14 @@ import { api, showMessage } from '../../code/helpers/api';
 import { SubmissionCountPerHour } from '../../code/interfaces/submissionCountPerHour';
 import { LoadingState } from '../../code/enums/loading';
 import { AuthorAssignment } from '../../code/interfaces/authorAssignment';
+import { SubmissionCountPerDay } from '../../code/interfaces/submissionCountPerDay';
 
 export enum ActionTypes {
   SET_ASSIGNMENTS = '[assignment] SET_ASSIGNMENTS',
   SET_PASSED_ASSIGNMENTS = '[assignment] SET_PASSED_ASSIGNMENTS',
   SET_FAILED_ASSIGNMENTS = '[assignment] SET_FAILED_ASSIGNMENTS',
   SET_SUBMISSION_COUNT_PER_HOUR = '[assignment] SET_SUBMISSION_COUNT_PER_HOUR',
+  SET_SUBMISSION_COUNT_PER_DAY = '[assignment] SET_SUBMISSION_COUNT_PER_DAY',
   SET_ASSIGNMENT = '[assignment] SET_ASSIGNMENT',
   SET_ASSIGNMENT_REQUEST_STATE = '[assignment] SET_ASSIGNMENT_REQUEST_STATE',
   SET_PASSED_ASSIGNMENTS_REQUEST_STATE = '[assignment] SET_PASSED_ASSIGNMENTS_REQUEST_STATE',
@@ -31,6 +33,10 @@ export const setFailedAssignments = action(
 export const setSubmissionCountPerHour = action(
   ActionTypes.SET_SUBMISSION_COUNT_PER_HOUR,
   payload<{ submissionCountPerHour: SubmissionCountPerHour[] }>(),
+);
+export const setSubmissionCountPerDay = action(
+  ActionTypes.SET_SUBMISSION_COUNT_PER_DAY,
+  payload<{ submissionCountPerDay: SubmissionCountPerDay[] }>(),
 );
 export const setAssignment = action(ActionTypes.SET_ASSIGNMENT, payload<{ assignment: Assignment }>());
 export const setAssignmentRequestState = action(
@@ -116,6 +122,19 @@ export const fetchSubmissionCountPerHour: ActionCreator<ThunkAction<Promise<void
       .get(`/assignments/submissions/countperhour`)
       .then(response => {
         dispatch(setSubmissionCountPerHour({ submissionCountPerHour: response.data }));
+      })
+      .catch(error => {
+        showMessage(error.message, 'error');
+      });
+  };
+};
+
+export const fetchSubmissionCountPerDay: ActionCreator<ThunkAction<Promise<void>, State, any, any>> = () => {
+  return async (dispatch: Dispatch<Action>): Promise<void> => {
+    await api
+      .get(`/assignments/submissions/countperday`)
+      .then(response => {
+        dispatch(setSubmissionCountPerDay({ submissionCountPerDay: response.data }));
       })
       .catch(error => {
         showMessage(error.message, 'error');

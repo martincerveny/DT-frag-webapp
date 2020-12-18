@@ -1,35 +1,35 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { ActiveRequests } from './entities/activeRequests.entity';
-import { ActiveRequestsDto } from './dto/activeRequestsDto';
+import { ReviewRequestsDto } from './dto/reviewRequestsDto';
 import { Review } from './entities/review.entity';
 import { ReviewDto } from './dto/reviewDto';
 import { Annotation } from './entities/annotation.entity';
 import { AnnotationDto } from './dto/annotationDto';
+import { ReviewRequest } from './entities/reviewRequest.entity';
 
 @Injectable()
 export class ReviewService {
   constructor(
-    @InjectRepository(ActiveRequests)
-    private activeRequestsRepository: Repository<ActiveRequests>,
+    @InjectRepository(ReviewRequest)
+    private reviewRequestRepository: Repository<ReviewRequest>,
     @InjectRepository(Review)
     private reviewRepository: Repository<Review>,
     @InjectRepository(Annotation)
     private annotationRepository: Repository<Annotation>,
   ) {}
 
-  findActiveRequestsByAssignment(id: number): Promise<ActiveRequestsDto[]> {
-    return this.activeRequestsRepository
-      .createQueryBuilder('active_requests')
+  findReviewRequestsByAssignment(id: number): Promise<ReviewRequestsDto[]> {
+    return this.reviewRequestRepository
+      .createQueryBuilder('review_request')
       .select([
-        'active_requests.student as student',
-        'active_requests.assignment_id as assignment_id',
-        'active_requests.count as count',
+        'review_request.student as student',
+        'review_request.assignment_id as assignment_id',
+        'review_request.count as count',
         'person.name as name',
       ])
-      .leftJoin('person', 'person', 'person.id = active_requests.student')
-      .where('active_requests.assignment_id = :id', { id })
+      .leftJoin('person', 'person', 'person.id = review_request.student')
+      .where('review_request.assignment_id = :id', { id })
       .getRawMany();
   }
 

@@ -16,9 +16,10 @@ import { Person } from '../modules/student/entities/person.entity';
 import { SubmissionLatest } from '../modules/student/entities/submissionLatest.entity';
 import { Teacher } from '../modules/auth/entities/teacher.entity';
 import { AttendanceDeadline } from '../modules/seminar/entities/attendanceDeadline';
-import { ActiveRequests } from '../modules/review/entities/activeRequests.entity';
 import { Review } from '../modules/review/entities/review.entity';
 import { Annotation } from '../modules/review/entities/annotation.entity';
+import { EvalGrade } from '../modules/evaluation/entities/evalGrade.entity';
+import { ReviewRequest } from '../modules/review/entities/reviewRequest.entity';
 
 export const dbConfig: PostgresConnectionOptions = {
   type: 'postgres',
@@ -46,8 +47,9 @@ export const dbConfig: PostgresConnectionOptions = {
     SubmissionLatest,
     Teacher,
     AttendanceDeadline,
-    ActiveRequests,
     Review,
     Annotation,
+    EvalGrade,
+    ReviewRequest,
   ],
 };

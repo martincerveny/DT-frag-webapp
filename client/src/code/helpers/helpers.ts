@@ -1,5 +1,6 @@
-import _ from "underscore";
-import {Evaluation} from "../interfaces/evaluation";
+import _ from 'underscore';
+import { Evaluation } from '../interfaces/evaluation';
+import moment from 'moment';
 
 export const removeArrayDuplicatesByProp = (arr: Array<any>, keyProps: Array<string>): any => {
   return Object.values(
@@ -48,4 +49,10 @@ export const sumArrayProps = (array: Array<any>, key: string) => {
 export const getFileExtension = (file: string): string => {
   const dotIndex = file.lastIndexOf('.');
   return file.substring(dotIndex + 1, file.length);
+};
+
+export const getDayOfWeek = (dayNumber: number): string => {
+  return moment()
+    .weekday(dayNumber)
+    .format('dddd');
 };

@@ -8,18 +8,21 @@ import {
   setFailedAssignmentsRequestState,
   setPassedAssignments,
   setPassedAssignmentsRequestState,
+  setSubmissionCountPerDay,
   setSubmissionCountPerHour,
 } from './actions';
 import { Assignment } from '../../code/interfaces/assignment';
 import { SubmissionCountPerHour } from '../../code/interfaces/submissionCountPerHour';
 import { LoadingState } from '../../code/enums/loading';
 import { AuthorAssignment } from '../../code/interfaces/authorAssignment';
+import { SubmissionCountPerDay } from '../../code/interfaces/submissionCountPerDay';
 
 export interface State {
   assignments: Assignment[];
   passedAssignments: AuthorAssignment[];
   failedAssignments: AuthorAssignment[];
   submissionCountPerHour: SubmissionCountPerHour[];
+  submissionCountPerDay: SubmissionCountPerDay[];
   assignment: Assignment | undefined;
   assignmentRequestState: LoadingState;
   passedAssignmentRequestState: LoadingState;
@@ -31,6 +34,7 @@ export const initialState: State = {
   passedAssignments: [],
   failedAssignments: [],
   submissionCountPerHour: [],
+  submissionCountPerDay: [],
   assignment: undefined,
   assignmentRequestState: LoadingState.Initial,
   passedAssignmentRequestState: LoadingState.Initial,
@@ -50,6 +54,9 @@ export const assignmentReducer = reducer<State>(
   }),
   on(setSubmissionCountPerHour, (state: State, { payload }) => {
     state.submissionCountPerHour = payload.submissionCountPerHour;
+  }),
+  on(setSubmissionCountPerDay, (state: State, { payload }) => {
+    state.submissionCountPerDay = payload.submissionCountPerDay;
   }),
   on(setAssignment, (state: State, { payload }) => {
     state.assignment = payload.assignment;

@@ -9,8 +9,8 @@ export const translates: {
   'app.hide': 'Hide',
   'app.timeout': 'Connection timeout',
   'assignment.dashboard': 'Assignment Dashboard',
-  'assignment.statistics.graph1': 'Statistics 1',
-  'assignment.statistics.graph2': 'All submissions per hour of the day',
+  'assignment.statistics.graph1': 'Submissions per day of the week',
+  'assignment.statistics.graph2': 'Submissions per hour of the day',
   'assignmentView.stats': 'Statistics',
   'assignmentView.students': 'Students',
   'assignmentView.assignment': 'Assignment',
@@ -68,4 +68,6 @@ export const translates: {
   'review.line': 'Line',
   'review.note': 'Note',
   'review.date': 'Date',
+  'review.requests': 'Review requests',
+  'review.assignments': 'Assignments',
 };

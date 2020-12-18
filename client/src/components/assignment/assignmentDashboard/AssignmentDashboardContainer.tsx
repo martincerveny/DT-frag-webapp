@@ -5,6 +5,7 @@ import {
   fetchAssignments,
   fetchFailedAssignments,
   fetchPassedAssignments,
+  fetchSubmissionCountPerDay,
   fetchSubmissionCountPerHour,
 } from '../../../store/assignment/actions';
 import { AssignmentDashboard, DispatchProps, StateProps } from './AssignmentDashboard';
@@ -16,6 +17,7 @@ const mapStateToProps = (state: State): StateProps => ({
   failedAssignments: state.assignment.failedAssignments,
   allEnrollments: state.seminar.allEnrollments,
   submissionCountPerHour: state.assignment.submissionCountPerHour,
+  submissionCountPerDay: state.assignment.submissionCountPerDay,
   assignmentRequestState: state.assignment.assignmentRequestState,
   passedAssignmentRequestState: state.assignment.passedAssignmentRequestState,
   failedAssignmentRequestState: state.assignment.failedAssignmentRequestState,
@@ -29,6 +31,7 @@ const mapDispatchToProps = (dispatch: Dispatch): DispatchProps => ({
       fetchFailedAssignments,
       fetchEnrollments,
       fetchSubmissionCountPerHour,
+      fetchSubmissionCountPerDay,
     },
     dispatch,
   ),

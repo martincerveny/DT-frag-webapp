@@ -2,7 +2,7 @@
 import React, { useEffect } from 'react';
 import styled from '@emotion/styled';
 import { css, jsx } from '@emotion/core';
-import { Button, Container, Grid, Paper, Typography } from '@material-ui/core';
+import { Button, Container, Grid, GridList, GridListTile, Paper, Typography } from '@material-ui/core';
 import { t } from '../../../code/helpers/translations';
 import { Assignment } from '../../../code/interfaces/assignment';
 import { fetchAssignments } from '../../../store/assignment/actions';
@@ -46,10 +46,10 @@ const ReviewDashboardComponent: React.FC<ReviewDashboardProps> = ({
   };
 
   const renderAssignmentButtons = (
-    <Grid item xs={6}>
+    <Grid item xs={4}>
       <Grid container direction="column" css={assignmentButtonsWrapper} justify="center" alignItems="flex-start">
         <Typography component="h3" variant="subtitle1" color="primary" gutterBottom css={subHeading}>
-          Assignments
+          {t('review.assignments')}
         </Typography>
         {assignments.map((a: Assignment, index: number) => (
           <Button
@@ -69,10 +69,10 @@ const ReviewDashboardComponent: React.FC<ReviewDashboardProps> = ({
 
   const renderReviewRequests = () => {
     return (
-      <Grid item xs={6}>
+      <Grid item xs={8}>
         <Grid container direction="column" alignItems="flex-start" justify="flex-start">
           <Typography component="h3" variant="subtitle1" color="primary" gutterBottom css={subHeading}>
-            Review requests
+            {t('review.requests')}
           </Typography>
           {selectedAssignment === null ? (
             <Grid item css={infoWrapper}>
@@ -81,13 +81,15 @@ const ReviewDashboardComponent: React.FC<ReviewDashboardProps> = ({
           ) : reviewRequestsRequestState === LoadingState.Loading ? (
             <Loader />
           ) : reviewRequests.length > 0 ? (
-            reviewRequests.map((rr: ReviewRequest, index: number) => (
-              <Grid item css={studentNameWrapper} key={index}>
-                <Link to={`${Routes.Reviews}/student/${rr.student}/assignment/${selectedAssignment}`} css={linkName}>
-                  {rr.name}
-                </Link>
-              </Grid>
-            ))
+            <GridList cellHeight={40} cols={4} css={studentNameWrapper}>
+              {reviewRequests.map((rr: ReviewRequest, index: number) => (
+                <GridListTile key={index}>
+                  <Link to={`${Routes.Reviews}/student/${rr.student}/assignment/${selectedAssignment}`} css={linkName}>
+                    {rr.name}
+                  </Link>
+                </GridListTile>
+              ))}
+            </GridList>
           ) : (
             <Grid item css={infoWrapper}>
               {t('app.noData')}

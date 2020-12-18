@@ -2,7 +2,7 @@
 import React, { useEffect } from 'react';
 import styled from '@emotion/styled';
 import { css, jsx } from '@emotion/core';
-import { Container, Grid, Paper, TableContainer, Typography } from '@material-ui/core';
+import { Container, Grid, Paper, Typography } from '@material-ui/core';
 import { t } from '../../../code/helpers/translations';
 import { Person } from '../../../code/interfaces/person';
 import { fetchStudent } from '../../../store/student/actions';
@@ -13,7 +13,6 @@ import { Review } from '../../../code/interfaces/review';
 import { fetchAnnotations, fetchReviews } from '../../../store/review/actions';
 import { Assignment } from '../../../code/interfaces/assignment';
 import { fetchAssignment } from '../../../store/assignment/actions';
-import { ReviewTable } from './comps/ReviewTable';
 import { NoData } from '../../shared/NoData';
 import { Annotation } from '../../../code/interfaces/annotation';
 import { ReviewContent } from './comps/ReviewContent';

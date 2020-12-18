@@ -7,6 +7,7 @@ import { Submission } from './entities/submission.entity';
 import { SubmissionPerHourCountDto } from './dtos/submissionPerHourCountDto';
 import { getConnection } from 'typeorm';
 import { AuthorAssignmentDto } from './dtos/authorAssignmentDto';
+import { SubmissionPerDayCountDto } from './dtos/submissionPerDayCountDto';
 
 @Injectable()
 export class AssignmentService {
@@ -68,10 +69,10 @@ export class AssignmentService {
           person.login,
           assignment_pts.assignment_id,
           assignment.name
-      FROM frag.person
-      JOIN frag.assignment_pts ON assignment_pts.author = person.id
-      JOIN frag.assignment ON assignment_pts.assignment_id = assignment.id
-      JOIN frag.eval_pass ON eval_pass.assignment_id = assignment.id
+      FROM person
+      JOIN assignment_pts ON assignment_pts.author = person.id
+      JOIN assignment ON assignment_pts.assignment_id = assignment.id
+      JOIN eval_pass ON eval_pass.assignment_id = assignment.id
       WHERE assignment_pts.points < eval_pass.points
       ) as subm
       WHERE author IN (SELECT student FROM enrollment)
@@ -91,6 +92,22 @@ export class AssignmentService {
       .andWhere('author IN (SELECT student FROM enrollment)')
       .groupBy("DATE_PART('hour',stamp)")
       .orderBy('hour', 'ASC')
+      .getRawMany();
+  }
+
+  findSubmissionCountPerDay(): Promise<SubmissionPerDayCountDto[]> {
+    return this.submissionRepository
+      .createQueryBuilder('submission')
+      .select([
+        "DATE_PART('isodow',stamp) as day",
+        'COUNT(*) as submission_count',
+      ])
+      .where(
+        'submission.assignment_id IN (SELECT assignment_id FROM assignment_now)',
+      )
+      .andWhere('author IN (SELECT student FROM enrollment)')
+      .groupBy("DATE_PART('isodow',stamp)")
+      .orderBy('day', 'ASC')
       .getRawMany();
   }
 }

@@ -121,9 +121,7 @@ const StudentTableViewComponent: React.FC<StudentTableViewProps> = ({ evaluation
                   uniqueStudentEvals
                     .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                     .map((e: Evaluation, rowIndex: number) => {
-                      const studentEval = evaluations.filter(
-                        (se: Evaluation) => se.author === e.author && se.name !== 'group',
-                      );
+                      const studentEval = evaluations.filter((se: Evaluation) => se.author === e.author);
                       const points = sumArrayProps(studentEval, 'points');
 
                       return (
