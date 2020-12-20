@@ -119,7 +119,7 @@ export const fetchFailedAssignments: ActionCreator<ThunkAction<Promise<void>, St
 export const fetchSubmissionCountPerHour: ActionCreator<ThunkAction<Promise<void>, State, any, any>> = () => {
   return async (dispatch: Dispatch<Action>): Promise<void> => {
     await api
-      .get(`/assignments/submissions/countperhour`)
+      .get(`/assignments/submissions/perHour`)
       .then(response => {
         dispatch(setSubmissionCountPerHour({ submissionCountPerHour: response.data }));
       })
@@ -132,7 +132,7 @@ export const fetchSubmissionCountPerHour: ActionCreator<ThunkAction<Promise<void
 export const fetchSubmissionCountPerDay: ActionCreator<ThunkAction<Promise<void>, State, any, any>> = () => {
   return async (dispatch: Dispatch<Action>): Promise<void> => {
     await api
-      .get(`/assignments/submissions/countperday`)
+      .get(`/assignments/submissions/perDay`)
       .then(response => {
         dispatch(setSubmissionCountPerDay({ submissionCountPerDay: response.data }));
       })

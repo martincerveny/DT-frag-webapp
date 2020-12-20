@@ -10,7 +10,7 @@ import { ReviewRequestsDto } from './dto/reviewRequestsDto';
 export class ReviewController {
   constructor(private readonly reviewService: ReviewService) {}
 
-  @Get('/requests/:id/assignment')
+  @Get('/requests/assignment/:id')
   findReviewRequestsByAssignment(
     @Param('id') id,
   ): Promise<ReviewRequestsDto[]> {

@@ -72,7 +72,7 @@ export const fetchAttendanceByStudent: ActionCreator<ThunkAction<Promise<void>, 
   return async (dispatch: Dispatch<Action>): Promise<void> => {
     dispatch(setStudentAttendanceRequestState({ studentAttendanceRequestState: LoadingState.Loading }));
     await api
-      .get(`/student/attendance/${id}/student`)
+      .get(`/student/${id}/attendance`)
       .then(response => {
         dispatch(setStudentAttendance({ studentAttendance: response.data }));
         dispatch(setStudentAttendanceRequestState({ studentAttendanceRequestState: LoadingState.Success }));
@@ -88,7 +88,7 @@ export const fetchActivityByStudent: ActionCreator<ThunkAction<Promise<void>, St
   return async (dispatch: Dispatch<Action>): Promise<void> => {
     dispatch(setStudentActivityRequestState({ studentActivityRequestState: LoadingState.Loading }));
     await api
-      .get(`/student/activity/${id}/student`)
+      .get(`/student/${id}/activity`)
       .then(response => {
         dispatch(setActivity({ activity: response.data }));
         dispatch(setStudentActivityRequestState({ studentActivityRequestState: LoadingState.Success }));
@@ -104,7 +104,7 @@ export const fetchNotepadsByStudent: ActionCreator<ThunkAction<Promise<void>, St
   return async (dispatch: Dispatch<Action>): Promise<void> => {
     dispatch(setStudentNotepadsRequestState({ studentNotepadsRequestState: LoadingState.Loading }));
     await api
-      .get(`/student/notepads/${id}`)
+      .get(`/student/${id}/notepads`)
       .then(response => {
         dispatch(setNotepads({ notepads: response.data }));
         dispatch(setStudentNotepadsRequestState({ studentNotepadsRequestState: LoadingState.Success }));

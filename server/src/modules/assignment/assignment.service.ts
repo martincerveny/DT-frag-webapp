@@ -61,7 +61,8 @@ export class AssignmentService {
   }
 
   async findFailedAssignments(): Promise<AuthorAssignmentDto[]> {
-    return getConnection().query(`SELECT DISTINCT subm.author,
+    const connection = getConnection();
+    return connection.query(`SELECT DISTINCT subm.author,
       subm.assignment_id,
       subm.name as assignment_name
       FROM (

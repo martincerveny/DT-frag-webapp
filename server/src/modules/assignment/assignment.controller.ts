@@ -6,7 +6,7 @@ import { AuthGuard } from '../shared/guards/auth.guard';
 import { AuthorAssignmentDto } from './dtos/authorAssignmentDto';
 import { SubmissionPerDayCountDto } from './dtos/submissionPerDayCountDto';
 
-// @UseGuards(AuthGuard)
+@UseGuards(AuthGuard)
 @Controller('api/assignments')
 export class AssignmentController {
   constructor(private readonly assignmentService: AssignmentService) {}
@@ -21,12 +21,12 @@ export class AssignmentController {
     return this.assignmentService.findAssignment(id);
   }
 
-  @Get('/submissions/countperhour')
+  @Get('/submissions/perHour')
   findSubmissionCountPerHour(): Promise<SubmissionPerHourCountDto[]> {
     return this.assignmentService.findSubmissionCountPerHour();
   }
 
-  @Get('/submissions/countperday')
+  @Get('/submissions/perDay')
   findSubmissionCountPerDay(): Promise<SubmissionPerDayCountDto[]> {
     return this.assignmentService.findSubmissionCountPerDay();
   }

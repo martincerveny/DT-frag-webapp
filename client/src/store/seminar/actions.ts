@@ -44,7 +44,7 @@ export const fetchSeminars: ActionCreator<ThunkAction<Promise<void>, State, any,
   return async (dispatch: Dispatch<Action>): Promise<void> => {
     setSeminarRequestState({ seminarRequestState: LoadingState.Loading });
     await api
-      .get(`/seminars/${id}/tutor`)
+      .get(`/seminars/tutor/${id}`)
       .then(response => {
         setSeminarRequestState({ seminarRequestState: LoadingState.Success });
         dispatch(setSeminars({ seminars: response.data }));

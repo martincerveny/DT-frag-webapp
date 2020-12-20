@@ -21,7 +21,7 @@ export const fetchEvaluations: ActionCreator<ThunkAction<Promise<void>, State, a
   return async (dispatch: Dispatch<Action>): Promise<void> => {
     dispatch(setEvaluationsRequestState({ evaluationsRequestState: LoadingState.Loading }));
     await api
-      .get(`/evals/${id}/assignment`)
+      .get(`/evals/assignment/${id}`)
       .then(response => {
         dispatch(setEvaluations({ evaluations: response.data }));
         dispatch(setEvaluationsRequestState({ evaluationsRequestState: LoadingState.Success }));
@@ -37,7 +37,7 @@ export const fetchEvaluationsByStudent: ActionCreator<ThunkAction<Promise<void>,
   return async (dispatch: Dispatch<Action>): Promise<void> => {
     dispatch(setEvaluationsRequestState({ evaluationsRequestState: LoadingState.Loading }));
     await api
-      .get(`/evals/${id}/student`)
+      .get(`/evals/student/${id}`)
       .then(response => {
         dispatch(setEvaluations({ evaluations: response.data }));
         dispatch(setEvaluationsRequestState({ evaluationsRequestState: LoadingState.Success }));

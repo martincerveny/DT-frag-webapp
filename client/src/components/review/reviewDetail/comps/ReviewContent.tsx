@@ -26,7 +26,6 @@ const ReviewContentComponent: React.FC<ReviewContentProps> = ({
 }) => {
   useEffect(() => {
     const reviewIds = Array.prototype.map.call(reviews, (r: Review) => r.review_id).toString();
-    console.log(reviewIds);
     fetchAnnotations(reviewIds);
   }, [reviews, fetchAnnotations]);
 

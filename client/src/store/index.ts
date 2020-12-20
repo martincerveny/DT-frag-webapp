@@ -1,9 +1,14 @@
 import { applyMiddleware, createStore } from 'redux';
-import logger from 'redux-logger';
 import thunk from 'redux-thunk';
-
 import { reducer, State } from './combinedReducers';
 
-const store = createStore<State, any, any, any>(reducer, applyMiddleware(thunk, logger));
+let middleware: any[] = [thunk];
+
+if (process.env.REACT_APP_DEBUG !== 'false') {
+  const { logger } = require(`redux-logger`);
+  middleware = [...middleware, logger];
+}
+
+const store = createStore<State, any, any, any>(reducer, applyMiddleware(...middleware));
 
 export default store;

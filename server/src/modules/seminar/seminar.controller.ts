@@ -8,12 +8,12 @@ import { AttendanceDeadline } from './entities/attendanceDeadline';
 import { ActivityMax } from './entities/activityMax.entity';
 import { ActivityPts } from './entities/activityPts.entity';
 
-// @UseGuards(AuthGuard)
+@UseGuards(AuthGuard)
 @Controller('api/seminars')
 export class SeminarController {
   constructor(private readonly seminarService: SeminarService) {}
 
-  @Get('/:id/tutor')
+  @Get('/tutor/:id')
   findSeminarsByTutor(@Param('id') id): Promise<Seminar[]> {
     return this.seminarService.findSeminarsByTutor(id);
   }

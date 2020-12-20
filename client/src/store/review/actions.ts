@@ -40,7 +40,7 @@ export const fetchReviewRequests: ActionCreator<ThunkAction<Promise<void>, State
   return async (dispatch: Dispatch<Action>): Promise<void> => {
     dispatch(setReviewRequestsRequestState({ reviewRequestsRequestState: LoadingState.Loading }));
     await api
-      .get(`/reviews/requests/${id}/assignment`)
+      .get(`/reviews/requests/assignment/${id}`)
       .then(response => {
         dispatch(setReviewRequests({ reviewRequests: response.data }));
         dispatch(setReviewRequestsRequestState({ reviewRequestsRequestState: LoadingState.Success }));

@@ -8,12 +8,12 @@ import { AuthGuard } from '../shared/guards/auth.guard';
 export class EvaluationController {
   constructor(private readonly evaluationService: EvaluationService) {}
 
-  @Get('/:id/assignment')
+  @Get('/assignment/:id')
   findEvalsByAssignment(@Param('id') id): Promise<EvaluationDto[]> {
     return this.evaluationService.findEvalsByAssignment(id);
   }
 
-  @Get('/:id/student')
+  @Get('/student/:id')
   findEvalsByStudent(@Param('id') id): Promise<EvaluationDto[]> {
     return this.evaluationService.findEvalsByStudent(id);
   }

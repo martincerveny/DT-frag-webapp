@@ -12,7 +12,7 @@ import { Activity } from './entities/activity.entity';
 export class StudentController {
   constructor(private readonly studentService: StudentService) {}
 
-  @Get('/notepads/:id')
+  @Get('/:id/notepads')
   findNotepadsByStudent(@Param('id') id): Promise<NotepadsDto> {
     return this.studentService.findNotepadsByStudent(id);
   }
@@ -27,12 +27,12 @@ export class StudentController {
     return this.studentService.findSubmissionFiles(id);
   }
 
-  @Get('/attendance/:id/student')
+  @Get('/:id/attendance')
   findAttendanceByStudent(@Param('id') id): Promise<StudentAttendanceDto[]> {
     return this.studentService.findAttendanceByStudent(id);
   }
 
-  @Get('/activity/:id/student')
+  @Get('/:id/activity')
   findActivityByStudent(@Param('id') id): Promise<Activity[]> {
     return this.studentService.findActivityByStudent(id);
   }
