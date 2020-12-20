@@ -45,6 +45,9 @@ const SourceCodeComponent: React.FC<SourceCodeProps> = ({ studentFiles, studentF
     setOpen(false);
   };
 
+  /**
+   * Modal window
+   */
   const renderDialogWindow = (
     <div>
       <Dialog onClose={handleCloseDialog} aria-labelledby="customized-dialog-title" open={open} fullWidth maxWidth="xl">

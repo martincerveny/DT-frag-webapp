@@ -59,6 +59,9 @@ const AssignmentTableComponent: React.FC<AssignmentTableProps> = ({
     }
   };
 
+  /**
+   * Test button with collapsible row
+   */
   const renderTestButton = (test: Evaluation, rowIndex: number, testIndex: number) => {
     return (
       <Tooltip title={test.group} placement="top" key={testIndex}>
@@ -89,9 +92,11 @@ const AssignmentTableComponent: React.FC<AssignmentTableProps> = ({
             </TableHead>
             <TableBody>
               {assignments.map((a: Assignment, rowIndex: number) => {
+                // filter all evaluations for each assignment, except test with name group
                 const assignmentEvals = evaluations.filter(
                   (ae: Evaluation) => ae.assignment_id === a.id && ae.name !== 'group',
                 );
+                // make group by test group
                 const groupByAssignmentEvals = Object.values(_.groupBy(assignmentEvals, 'group'));
 
                 return (

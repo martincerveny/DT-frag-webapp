@@ -36,6 +36,9 @@ export const setAnnotationsRequestState = action(
   payload<{ annotationsRequestState: LoadingState }>(),
 );
 
+/**
+ * Fetch review requests by assignment ID
+ */
 export const fetchReviewRequests: ActionCreator<ThunkAction<Promise<void>, State, any, any>> = (id: number) => {
   return async (dispatch: Dispatch<Action>): Promise<void> => {
     dispatch(setReviewRequestsRequestState({ reviewRequestsRequestState: LoadingState.Loading }));
@@ -52,6 +55,9 @@ export const fetchReviewRequests: ActionCreator<ThunkAction<Promise<void>, State
   };
 };
 
+/**
+ * Fetch reviews by student ID and assignment ID
+ */
 export const fetchReviews: ActionCreator<ThunkAction<Promise<void>, State, any, any>> = (
   studentId: number,
   assignmentId: number,
@@ -71,6 +77,9 @@ export const fetchReviews: ActionCreator<ThunkAction<Promise<void>, State, any, 
   };
 };
 
+/**
+ * Fetch annotations for reviews by review ID's
+ */
 export const fetchAnnotations: ActionCreator<ThunkAction<Promise<void>, State, any, any>> = (ids: string) => {
   return async (dispatch: Dispatch<Action>): Promise<void> => {
     dispatch(setAnnotationsRequestState({ annotationsRequestState: LoadingState.Loading }));

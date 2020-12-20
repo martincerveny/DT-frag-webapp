@@ -4,6 +4,9 @@ import { Injectable } from '@nestjs/common';
 import { Request } from 'express';
 import { getLdapConfig } from '../../config/ldap';
 
+/**
+ * Set passport strategy to LDAP
+ */
 @Injectable()
 export class LdapStrategy extends PassportStrategy(Strategy, 'ldap') {
   constructor() {

@@ -3,6 +3,9 @@ import { EvaluationService } from './evaluation.service';
 import { EvaluationDto } from './dtos/evaluationDto';
 import { AuthGuard } from '../shared/guards/auth.guard';
 
+/**
+ * Routes for evaluations
+ */
 @UseGuards(AuthGuard)
 @Controller('api/evals')
 export class EvaluationController {

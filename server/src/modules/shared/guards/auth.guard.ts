@@ -3,6 +3,9 @@ import { Observable } from 'rxjs';
 import * as jwt from 'jsonwebtoken';
 import { AuthService } from '../../auth/auth.service';
 
+/**
+ * Makes an authorization process
+ */
 @Injectable()
 export class AuthGuard implements CanActivate {
   constructor(private readonly authService: AuthService) {
@@ -16,6 +19,9 @@ export class AuthGuard implements CanActivate {
     return this.validateRequest(request);
   }
 
+  /**
+   * Validates each request, whether is teacher successfully logged in, based on JWT token
+   */
   async validateRequest(request): Promise<boolean> {
     if (!request.header('Authorization')) {
       return false;

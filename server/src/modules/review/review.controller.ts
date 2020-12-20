@@ -5,6 +5,9 @@ import { ReviewDto } from './dto/reviewDto';
 import { AnnotationDto } from './dto/annotationDto';
 import { ReviewRequestsDto } from './dto/reviewRequestsDto';
 
+/**
+ * Routes for reviews
+ */
 @UseGuards(AuthGuard)
 @Controller('api/reviews')
 export class ReviewController {

@@ -62,6 +62,9 @@ const SeminarTableComponent: React.FC<SeminarTableProps> = ({
     </TableHead>
   );
 
+  /**
+   * Get data for each student - assignments, attendance, activity
+   */
   const getStudentDetails = (e: Enrollment): StudentDetails => {
     const studentAttendance = attendance
       .filter((a: Attendance) => a['student'] === e.student)
@@ -92,6 +95,9 @@ const SeminarTableComponent: React.FC<SeminarTableProps> = ({
     };
   };
 
+  /**
+   * Render failed / passed / not submitted assignments
+   */
   const renderAssignments = (sd: StudentDetails) => {
     return (
       <React.Fragment>
@@ -122,6 +128,9 @@ const SeminarTableComponent: React.FC<SeminarTableProps> = ({
     );
   };
 
+  /**
+   * Count and render attendance / absence
+   */
   const renderAttendance = (studentAttendance: Attendance[]) => {
     if (attendanceDeadline) {
       const seminarWeeksCount = 11;
@@ -149,6 +158,9 @@ const SeminarTableComponent: React.FC<SeminarTableProps> = ({
     }
   };
 
+  /**
+   * Show activity points in progress bar
+   */
   const renderActivity = (studentDetails: StudentDetails) => {
     return (
       activityMax && (

@@ -78,6 +78,9 @@ const AssignmentViewComponent: React.FC<AssignmentViewProps> = ({
     );
   };
 
+  /**
+   * Render data component for selection from menu
+   */
   const renderDataComponent = () => {
     if (selectedMenuItem === AssignmentViewMenu.Stats) {
       return <GeneralTestGroupView evaluations={evaluations} evaluationsRequestState={evaluationsRequestState} />;

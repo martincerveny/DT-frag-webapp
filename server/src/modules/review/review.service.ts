@@ -19,6 +19,9 @@ export class ReviewService {
     private annotationRepository: Repository<Annotation>,
   ) {}
 
+  /**
+   * Returns review requests based on assignment ID
+   */
   findReviewRequestsByAssignment(id: number): Promise<ReviewRequestsDto[]> {
     return this.reviewRequestRepository
       .createQueryBuilder('review_request')
@@ -33,6 +36,9 @@ export class ReviewService {
       .getRawMany();
   }
 
+  /**
+   * Returns reviews based on student ID and assignment ID
+   */
   findReviews(studentId: number, assignmentId: number): Promise<ReviewDto[]> {
     return this.reviewRepository
       .createQueryBuilder('review')
@@ -59,6 +65,9 @@ export class ReviewService {
       .getRawMany();
   }
 
+  /**
+   * Returns annotations for reviews based on review ID's
+   */
   findAnnotationsByReview(ids: string): Promise<AnnotationDto[]> {
     const idsArray = ids.split(',');
     return this.annotationRepository

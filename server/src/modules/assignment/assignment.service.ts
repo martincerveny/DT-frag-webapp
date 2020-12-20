@@ -20,6 +20,9 @@ export class AssignmentService {
     private submissionRepository: Repository<Submission>,
   ) {}
 
+  /**
+   * Returns all assignments
+   */
   findAll(): Promise<Assignment[]> {
     return this.assignmentRepository
       .createQueryBuilder('assignment')
@@ -39,10 +42,16 @@ export class AssignmentService {
       .getRawMany();
   }
 
+  /**
+   * Returns one assignment based on ID
+   */
   findAssignment(id: number): Promise<Assignment> {
     return this.assignmentRepository.findOne(id);
   }
 
+  /**
+   * Returns passed assignments
+   */
   findPassedAssignments(): Promise<AuthorAssignmentDto[]> {
     return this.assignmentPassedRepository
       .createQueryBuilder('assignmentPassed')
@@ -60,6 +69,9 @@ export class AssignmentService {
       .getRawMany();
   }
 
+  /**
+   * Returns failed assignments
+   */
   async findFailedAssignments(): Promise<AuthorAssignmentDto[]> {
     const connection = getConnection();
     return connection.query(`SELECT DISTINCT subm.author,
@@ -80,6 +92,9 @@ export class AssignmentService {
       `);
   }
 
+  /**
+   * Returns submission count per each hour of the day
+   */
   findSubmissionCountPerHour(): Promise<SubmissionPerHourCountDto[]> {
     return this.submissionRepository
       .createQueryBuilder('submission')
@@ -96,6 +111,9 @@ export class AssignmentService {
       .getRawMany();
   }
 
+  /**
+   * Returns submission count per each day of the week
+   */
   findSubmissionCountPerDay(): Promise<SubmissionPerDayCountDto[]> {
     return this.submissionRepository
       .createQueryBuilder('submission')

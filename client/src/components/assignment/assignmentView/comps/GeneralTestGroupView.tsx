@@ -47,6 +47,9 @@ const GeneralTestGroupViewComponent: React.FC<GeneralTestGroupViewProps> = ({
     );
   };
 
+  /**
+   * Count passed / failed evaluations in percents
+   */
   const getStatPercents = (test: string, group: string) => {
     const passedTestEvaluations = evaluations.filter(
       (e: Evaluation) => e.group === group && e.name === test && e.passed,
@@ -71,6 +74,7 @@ const GeneralTestGroupViewComponent: React.FC<GeneralTestGroupViewProps> = ({
         <List component="nav" aria-label="main mailbox folders">
           {tests.length > 0 ? (
             getGroupByGroups(tests).map((ag: string, index: any) => {
+              // stats for the group
               const groupPercents = getStatPercents('group', ag);
 
               return (
@@ -87,6 +91,7 @@ const GeneralTestGroupViewComponent: React.FC<GeneralTestGroupViewProps> = ({
 
                     {tests.map((t: Evaluation, index) => {
                       if (t.group === ag && t.name !== 'group') {
+                        // stats for tests
                         const percents = getStatPercents(t.name, ag);
                         return (
                           <Grid key={index} container direction="row" justify="flex-start" alignItems="center">

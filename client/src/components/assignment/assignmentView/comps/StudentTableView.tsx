@@ -77,6 +77,9 @@ const StudentTableViewComponent: React.FC<StudentTableViewProps> = ({ evaluation
     }
   };
 
+  /**
+   * Render clickable test button with collapse row
+   */
   const renderTestButton = (test: Evaluation, testIndex: number, groupIndex: number, rowIndex: number) => {
     return (
       <Tooltip title={test.name} placement="top" key={testIndex}>
@@ -118,9 +121,11 @@ const StudentTableViewComponent: React.FC<StudentTableViewProps> = ({ evaluation
               {renderTableHead}
               <TableBody>
                 {evaluations.length > 0 ? (
+                  // unique student evaluations - list of all students
                   uniqueStudentEvals
                     .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                     .map((e: Evaluation, rowIndex: number) => {
+                      // filter data for each student
                       const studentEval = evaluations.filter((se: Evaluation) => se.author === e.author);
                       const points = sumArrayProps(studentEval, 'points');
 
@@ -132,6 +137,7 @@ const StudentTableViewComponent: React.FC<StudentTableViewProps> = ({ evaluation
                             </TableCell>
                             <TableCell align="left">{getDateString(studentEval[0].stamp)}</TableCell>
                             {getGroupByGroups(uniqueTestGroups).map((group: string, groupIndex: number) => {
+                              // filter tests for each group
                               const studentTests = studentEval
                                 .filter((mse: Evaluation) => group === mse.group && mse.name !== 'group')
                                 .sort((s1: Evaluation, s2: Evaluation) => Number(s1.sequence) - Number(s2.sequence));

@@ -49,6 +49,9 @@ const ReviewTableRowComponent: React.FC<ReviewTableRowProps> = ({
     setOpen(false);
   };
 
+  /**
+   * Modal window with source code
+   */
   const renderDialogWindow = (
     <Dialog onClose={handleCloseDialog} aria-labelledby="customized-dialog-title" open={open} fullWidth maxWidth="xl">
       <DialogTitle>

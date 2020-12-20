@@ -14,6 +14,9 @@ interface NotepadsProps {
   studentNotepadsRequestState: LoadingState;
 }
 
+/**
+ * Renders both notepads - for assignments and misc
+ */
 const NotepadsContentComponent: React.FC<NotepadsProps> = ({ notepads, studentNotepadsRequestState }) => {
   return (
     <div css={content}>

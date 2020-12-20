@@ -26,6 +26,9 @@ const AssignmentListComponent: React.FC<AssignmentListProps> = ({
   failedAssignments,
   allEnrollments,
 }) => {
+  /**
+   * Count passed / not passed / not submitted assignments in percents
+   */
   const countStats = (a: Assignment) => {
     const studentsPassed = passedAssignments.filter((i: AuthorAssignment) => i.assignment_id === a.id);
     const studentsNotPassed = failedAssignments.filter((i: AuthorAssignment) => i.assignment_id === a.id);

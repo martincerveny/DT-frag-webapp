@@ -7,6 +7,9 @@ import { AuthGuard } from '../shared/guards/auth.guard';
 import { StudentAttendanceDto } from './dtos/studentAttendanceDto';
 import { Activity } from './entities/activity.entity';
 
+/**
+ * Student routes
+ */
 @UseGuards(AuthGuard)
 @Controller('api/student')
 export class StudentController {
@@ -22,7 +25,7 @@ export class StudentController {
     return this.studentService.findStudent(id);
   }
 
-  @Get('/files/:id')
+  @Get('/:id/files')
   findSubmissionFiles(@Param('id') id): Promise<SubmissionFileDto[]> {
     return this.studentService.findSubmissionFiles(id);
   }

@@ -11,6 +11,9 @@ import { AuthService } from './auth.service';
 import { TeacherDto } from './dtos/TeacherDto';
 import { AuthGuard } from '../shared/guards/auth.guard';
 
+/**
+ * Routes for authentication
+ */
 @Controller('api/auth')
 export class AuthController {
   constructor(private readonly authService: AuthService) {}

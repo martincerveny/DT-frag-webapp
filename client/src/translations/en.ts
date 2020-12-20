@@ -1,3 +1,6 @@
+/**
+ * Translations
+ */
 export const translates: {
   [key: string]: string;
 } = {

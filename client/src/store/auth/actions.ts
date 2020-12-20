@@ -23,12 +23,18 @@ export enum ActionTypes {
 
 export const setLoggedUser = action(ActionTypes.SET_LOGGED_USER, payload<{ user: Person | undefined }>());
 export const logOut = action(ActionTypes.LOG_OUT, payload<undefined>());
-export const setLoginRequestState = action(ActionTypes.SET_LOGIN_REQUEST_STATE, payload<{ loginRequestState: LoadingState }>());
+export const setLoginRequestState = action(
+  ActionTypes.SET_LOGIN_REQUEST_STATE,
+  payload<{ loginRequestState: LoadingState }>(),
+);
 export const setRefreshCookieState = action(
   ActionTypes.SET_REFRESH_COOKIE_STATE,
   payload<{ refreshCookieState: LoadingState }>(),
 );
 
+/**
+ * Make a login process
+ */
 export const login: ActionCreator<ThunkAction<Promise<void>, State, any, any>> = (
   username: string,
   password: string,
@@ -59,6 +65,9 @@ export const login: ActionCreator<ThunkAction<Promise<void>, State, any, any>> =
   };
 };
 
+/**
+ * Refresh user from cookie for authorization
+ */
 export const refreshUserFromCookie: ActionCreator<ThunkAction<Promise<void>, State, any, any>> = () => {
   return async (dispatch: Dispatch<Action>): Promise<void> => {
     dispatch(setRefreshCookieState({ refreshCookieState: LoadingState.Loading }));
@@ -82,6 +91,9 @@ export const refreshUserFromCookie: ActionCreator<ThunkAction<Promise<void>, Sta
   };
 };
 
+/**
+ * Make a logout process
+ */
 export const logUserOut: ActionCreator<ThunkAction<Promise<void>, State, any, any>> = (id: number) => {
   return async (dispatch: Dispatch<Action>): Promise<void> => {
     dispatch(logOut(undefined));

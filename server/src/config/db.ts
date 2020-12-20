@@ -21,6 +21,9 @@ import { Annotation } from '../modules/review/entities/annotation.entity';
 import { EvalGrade } from '../modules/evaluation/entities/evalGrade.entity';
 import { ReviewRequest } from '../modules/review/entities/reviewRequest.entity';
 
+/**
+ * PostgreSQL database configuration
+ */
 export const dbConfig: PostgresConnectionOptions = {
   type: 'postgres',
   host: process.env.DB_HOST,

@@ -9,7 +9,7 @@ import { Attendance } from '../../code/interfaces/attendance';
 import { ActivityPts } from '../../code/interfaces/activityPts';
 import { LoadingState } from '../../code/enums/loading';
 import { AttendanceDeadline } from '../../code/interfaces/attendanceDeadline';
-import {ActivityMax} from "../../code/interfaces/activityMax";
+import { ActivityMax } from '../../code/interfaces/activityMax';
 
 export enum ActionTypes {
   SET_SEMINARS = '[seminar] SET_SEMINARS',
@@ -40,6 +40,9 @@ export const setSeminarRequestState = action(
   payload<{ seminarRequestState: LoadingState }>(),
 );
 
+/**
+ * Fetch all seminars by tutor ID
+ */
 export const fetchSeminars: ActionCreator<ThunkAction<Promise<void>, State, any, any>> = (id: number) => {
   return async (dispatch: Dispatch<Action>): Promise<void> => {
     setSeminarRequestState({ seminarRequestState: LoadingState.Loading });
@@ -55,6 +58,9 @@ export const fetchSeminars: ActionCreator<ThunkAction<Promise<void>, State, any,
   };
 };
 
+/**
+ * Fetch enrollments for seminars by their ID's
+ */
 export const fetchEnrollments: ActionCreator<ThunkAction<Promise<void>, State, any, any>> = (ids?: string) => {
   return async (dispatch: Dispatch<Action>): Promise<void> => {
     try {
@@ -73,6 +79,9 @@ export const fetchEnrollments: ActionCreator<ThunkAction<Promise<void>, State, a
   };
 };
 
+/**
+ * Fetch attendance for seminars by their ID's
+ */
 export const fetchAttendance: ActionCreator<ThunkAction<Promise<void>, State, any, any>> = (ids: string) => {
   return async (dispatch: Dispatch<Action>): Promise<void> => {
     await api
@@ -86,6 +95,9 @@ export const fetchAttendance: ActionCreator<ThunkAction<Promise<void>, State, an
   };
 };
 
+/**
+ * Fetch attendance deadline
+ */
 export const fetchAttendanceDeadline: ActionCreator<ThunkAction<Promise<void>, State, any, any>> = () => {
   return async (dispatch: Dispatch<Action>): Promise<void> => {
     await api
@@ -99,6 +111,9 @@ export const fetchAttendanceDeadline: ActionCreator<ThunkAction<Promise<void>, S
   };
 };
 
+/**
+ * Fetch activity points
+ */
 export const fetchActivityPts: ActionCreator<ThunkAction<Promise<void>, State, any, any>> = () => {
   return async (dispatch: Dispatch<Action>): Promise<void> => {
     await api
@@ -112,15 +127,18 @@ export const fetchActivityPts: ActionCreator<ThunkAction<Promise<void>, State, a
   };
 };
 
+/**
+ * Fetch max activity points
+ */
 export const fetchActivityMaxPts: ActionCreator<ThunkAction<Promise<void>, State, any, any>> = () => {
   return async (dispatch: Dispatch<Action>): Promise<void> => {
     await api
-        .get(`/seminars/activityMax`)
-        .then(response => {
-          dispatch(setActivityMaxPts({ activityMax: response.data }));
-        })
-        .catch(error => {
-          showMessage(error.message, 'error');
-        });
+      .get(`/seminars/activityMax`)
+      .then(response => {
+        dispatch(setActivityMaxPts({ activityMax: response.data }));
+      })
+      .catch(error => {
+        showMessage(error.message, 'error');
+      });
   };
 };

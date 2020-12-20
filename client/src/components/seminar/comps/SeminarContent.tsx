@@ -64,6 +64,9 @@ const SeminarContentComponent: React.FC<SeminarContentProps> = ({
     fetchAttendanceDeadline();
   }, [seminars, fetchActivityPts, fetchAttendanceDeadline, fetchAttendance, fetchEnrollments, fetchActivityMaxPts]);
 
+  /**
+   * Description of all used icons
+   */
   const renderIconDescription = () => {
     return (
       <Grid container direction="column" css={iconDescriptionWrapper}>

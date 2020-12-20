@@ -52,6 +52,9 @@ export const setStudentFilesRequestState = action(
   payload<{ studentFilesRequestState: LoadingState }>(),
 );
 
+/**
+ * Fetch student by ID
+ */
 export const fetchStudent: ActionCreator<ThunkAction<Promise<void>, State, any, any>> = (id: number) => {
   return async (dispatch: Dispatch<Action>): Promise<void> => {
     dispatch(setStudentRequestState({ studentRequestState: LoadingState.Loading }));
@@ -68,6 +71,9 @@ export const fetchStudent: ActionCreator<ThunkAction<Promise<void>, State, any, 
   };
 };
 
+/**
+ * Fetch attendance for student by student ID
+ */
 export const fetchAttendanceByStudent: ActionCreator<ThunkAction<Promise<void>, State, any, any>> = (id: number) => {
   return async (dispatch: Dispatch<Action>): Promise<void> => {
     dispatch(setStudentAttendanceRequestState({ studentAttendanceRequestState: LoadingState.Loading }));
@@ -84,6 +90,9 @@ export const fetchAttendanceByStudent: ActionCreator<ThunkAction<Promise<void>, 
   };
 };
 
+/**
+ * Fetch activity for student by student ID
+ */
 export const fetchActivityByStudent: ActionCreator<ThunkAction<Promise<void>, State, any, any>> = (id: number) => {
   return async (dispatch: Dispatch<Action>): Promise<void> => {
     dispatch(setStudentActivityRequestState({ studentActivityRequestState: LoadingState.Loading }));
@@ -100,6 +109,9 @@ export const fetchActivityByStudent: ActionCreator<ThunkAction<Promise<void>, St
   };
 };
 
+/**
+ * Fetch notepads for student by student ID
+ */
 export const fetchNotepadsByStudent: ActionCreator<ThunkAction<Promise<void>, State, any, any>> = (id: number) => {
   return async (dispatch: Dispatch<Action>): Promise<void> => {
     dispatch(setStudentNotepadsRequestState({ studentNotepadsRequestState: LoadingState.Loading }));
@@ -116,13 +128,16 @@ export const fetchNotepadsByStudent: ActionCreator<ThunkAction<Promise<void>, St
   };
 };
 
+/**
+ * Fetch source code by student ID
+ */
 export const fetchSubmissionFilesByStudent: ActionCreator<ThunkAction<Promise<void>, State, any, any>> = (
   id: number,
 ) => {
   return async (dispatch: Dispatch<Action>): Promise<void> => {
     dispatch(setStudentFilesRequestState({ studentFilesRequestState: LoadingState.Loading }));
     await api
-      .get(`/student/files/${id}`)
+      .get(`/student/${id}/files`)
       .then(response => {
         dispatch(setStudentFiles({ studentFiles: response.data }));
         dispatch(setStudentFilesRequestState({ studentFilesRequestState: LoadingState.Success }));

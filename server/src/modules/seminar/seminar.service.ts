@@ -25,6 +25,9 @@ export class SeminarService {
     private attendanceDeadlineRepository: Repository<AttendanceDeadline>,
   ) {}
 
+  /**
+   * Returns seminars based on tutor ID
+   */
   findSeminarsByTutor(id: number): Promise<Seminar[]> {
     return this.seminarRepository
       .createQueryBuilder('seminar')
@@ -38,6 +41,9 @@ export class SeminarService {
       .getRawMany();
   }
 
+  /**
+   * Returns enrollments by seminar ID
+   */
   findEnrollmentBySeminar(ids: string): Promise<Enrollment[]> {
     const idsArray = ids.split(',');
 
@@ -54,6 +60,9 @@ export class SeminarService {
       .getRawMany();
   }
 
+  /**
+   * Returns all seminar enrollments
+   */
   findAllEnrollments(): Promise<Enrollment[]> {
     return this.enrollmentRepository
       .createQueryBuilder('enrollment')
@@ -67,6 +76,9 @@ export class SeminarService {
       .getRawMany();
   }
 
+  /**
+   * Returns attendance based on seminar ID's
+   */
   findAttendanceBySeminar(ids: string): Promise<Attendance[]> {
     const idsArray = ids.split(',');
 
@@ -82,14 +94,23 @@ export class SeminarService {
       .getRawMany();
   }
 
+  /**
+   * Returns attendance deadline
+   */
   findAttendanceDeadline(): Promise<AttendanceDeadline> {
     return this.attendanceDeadlineRepository.findOne();
   }
 
+  /**
+   * Returns all student activity points
+   */
   async findActivityPts(): Promise<ActivityPts[]> {
     return this.activityPtsRepository.find();
   }
 
+  /**
+   * Returns max activity points
+   */
   findActivityMaxPts(): Promise<ActivityMax> {
     return this.activityMaxRepository.findOne();
   }

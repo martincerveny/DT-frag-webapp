@@ -45,6 +45,7 @@ const ReviewTableComponent: React.FC<ReviewTableProps> = ({ review, annotations,
             </TableHead>
             <TableBody>
               {filteredAnnotations.length > 0 ? (
+                // render collapse table row for filtered annotations (based on review id)
                 filteredAnnotations.map((fa: Annotation, rowIndex: number) => {
                   return (
                     <ReviewTableRow

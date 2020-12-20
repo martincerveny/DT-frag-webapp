@@ -45,6 +45,9 @@ const ReviewDashboardComponent: React.FC<ReviewDashboardProps> = ({
     setSelectedAssignment(id);
   };
 
+  /**
+   * Render menu buttons from assignments
+   */
   const renderAssignmentButtons = (
     <Grid item xs={4}>
       <Grid container direction="column" css={assignmentButtonsWrapper} justify="center" alignItems="flex-start">
@@ -67,6 +70,9 @@ const ReviewDashboardComponent: React.FC<ReviewDashboardProps> = ({
     </Grid>
   );
 
+  /**
+   * List of all review requests for selected assignment
+   */
   const renderReviewRequests = () => {
     return (
       <Grid item xs={8}>

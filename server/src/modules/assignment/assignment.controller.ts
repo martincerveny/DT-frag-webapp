@@ -6,6 +6,9 @@ import { AuthGuard } from '../shared/guards/auth.guard';
 import { AuthorAssignmentDto } from './dtos/authorAssignmentDto';
 import { SubmissionPerDayCountDto } from './dtos/submissionPerDayCountDto';
 
+/**
+ * Routes for assignments
+ */
 @UseGuards(AuthGuard)
 @Controller('api/assignments')
 export class AssignmentController {

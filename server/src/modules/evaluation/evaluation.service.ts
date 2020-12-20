@@ -14,6 +14,9 @@ export class EvaluationService {
     private evalLatestRepository: Repository<EvalLatest>,
   ) {}
 
+  /**
+   * Returns all evaluations based on assignment ID
+   */
   findEvalsByAssignment(id: number): Promise<EvaluationDto[]> {
     return this.getFindEvalsQuery()
       .where('eval_out_pts.assignment_id = :id', { id })
@@ -21,12 +24,18 @@ export class EvaluationService {
       .getRawMany();
   }
 
+  /**
+   * Returns all evaluations based on student ID
+   */
   findEvalsByStudent(id: number): Promise<EvaluationDto[]> {
     return this.getFindEvalsQuery()
       .where('person.id = :id', { id })
       .getRawMany();
   }
 
+  /**
+   * Returns base query for evaluations
+   */
   getFindEvalsQuery(): SelectQueryBuilder<EvalLatest> {
     return this.evalLatestRepository
       .createQueryBuilder('eval_latest')

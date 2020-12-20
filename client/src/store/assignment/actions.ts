@@ -52,6 +52,9 @@ export const setFailedAssignmentsRequestState = action(
   payload<{ failedAssignmentRequestState: LoadingState }>(),
 );
 
+/**
+ * Fetch all assignments
+ */
 export const fetchAssignments: ActionCreator<ThunkAction<Promise<void>, State, any, any>> = () => {
   return async (dispatch: Dispatch<Action>): Promise<void> => {
     dispatch(setAssignmentRequestState({ assignmentRequestState: LoadingState.Loading }));
@@ -68,6 +71,9 @@ export const fetchAssignments: ActionCreator<ThunkAction<Promise<void>, State, a
   };
 };
 
+/**
+ * Fetch one assignment based on ID
+ */
 export const fetchAssignment: ActionCreator<ThunkAction<Promise<void>, State, any, any>> = (id: number) => {
   return async (dispatch: Dispatch<Action>): Promise<void> => {
     dispatch(setAssignmentRequestState({ assignmentRequestState: LoadingState.Loading }));
@@ -84,6 +90,9 @@ export const fetchAssignment: ActionCreator<ThunkAction<Promise<void>, State, an
   };
 };
 
+/**
+ * Fetch passed assignments
+ */
 export const fetchPassedAssignments: ActionCreator<ThunkAction<Promise<void>, State, any, any>> = () => {
   return async (dispatch: Dispatch<Action>): Promise<void> => {
     dispatch(setPassedAssignmentsRequestState({ passedAssignmentRequestState: LoadingState.Loading }));
@@ -100,6 +109,9 @@ export const fetchPassedAssignments: ActionCreator<ThunkAction<Promise<void>, St
   };
 };
 
+/**
+ * Fetch failed assignments
+ */
 export const fetchFailedAssignments: ActionCreator<ThunkAction<Promise<void>, State, any, any>> = () => {
   return async (dispatch: Dispatch<Action>): Promise<void> => {
     dispatch(setFailedAssignmentsRequestState({ failedAssignmentRequestState: LoadingState.Loading }));
@@ -116,6 +128,9 @@ export const fetchFailedAssignments: ActionCreator<ThunkAction<Promise<void>, St
   };
 };
 
+/**
+ * Fetch submission count per each hour of the day
+ */
 export const fetchSubmissionCountPerHour: ActionCreator<ThunkAction<Promise<void>, State, any, any>> = () => {
   return async (dispatch: Dispatch<Action>): Promise<void> => {
     await api
@@ -129,6 +144,9 @@ export const fetchSubmissionCountPerHour: ActionCreator<ThunkAction<Promise<void
   };
 };
 
+/**
+ * Fetch submission count per each day of the week
+ */
 export const fetchSubmissionCountPerDay: ActionCreator<ThunkAction<Promise<void>, State, any, any>> = () => {
   return async (dispatch: Dispatch<Action>): Promise<void> => {
     await api

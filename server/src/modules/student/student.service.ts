@@ -28,6 +28,9 @@ export class StudentService {
     private activityRepository: Repository<Activity>,
   ) {}
 
+  /**
+   * Returns both notepads - assignments and misc based on student ID
+   */
   async findNotepadsByStudent(id: number): Promise<NotepadsDto> {
     const padAssignments = await this.padAssignmentRepository
       .createQueryBuilder('padAssignment')
@@ -71,10 +74,16 @@ export class StudentService {
     };
   }
 
+  /**
+   * Returns student by ID
+   */
   findStudent(id: number): Promise<Person> {
     return this.personRepository.findOne(id);
   }
 
+  /**
+   * Returns source code for student ID
+   */
   findSubmissionFiles(id: number): Promise<SubmissionFileDto[]> {
     return this.submissionLatestRepository
       .createQueryBuilder('submission_latest')
@@ -103,6 +112,9 @@ export class StudentService {
       .getRawMany();
   }
 
+  /**
+   * Returns attendance by student ID
+   */
   findAttendanceByStudent(id: number): Promise<StudentAttendanceDto[]> {
     return this.attendanceRepository
       .createQueryBuilder('attendance')
@@ -118,6 +130,9 @@ export class StudentService {
       .getRawMany();
   }
 
+  /**
+   * Returns student activity by student ID
+   */
   findActivityByStudent(id: number): Promise<Activity[]> {
     return this.activityRepository
       .createQueryBuilder('activity')

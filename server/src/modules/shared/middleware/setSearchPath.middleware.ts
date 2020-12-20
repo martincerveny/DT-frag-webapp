@@ -1,6 +1,9 @@
 import { getConnection } from 'typeorm';
 import { Request, Response, NextFunction } from 'express';
 
+/**
+ * Sets search_path globally for each request based on DB_SCHEMA
+ */
 export async function setSearchPathMiddleware(
   req: Request,
   res: Response,

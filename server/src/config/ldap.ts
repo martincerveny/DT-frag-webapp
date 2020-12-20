@@ -1,5 +1,8 @@
 import * as fs from 'fs';
 
+/**
+ * LDAP configuration
+ */
 export const getLdapConfig = () => {
   return {
     passReqToCallback: true,

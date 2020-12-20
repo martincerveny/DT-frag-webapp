@@ -17,6 +17,9 @@ export class AuthService {
     private teacherRepository: Repository<Teacher>,
   ) {}
 
+  /**
+   * Returns teacher based on ID
+   */
   findTeacherById(id: number): Promise<TeacherDto> {
     return this.teacherRepository
       .createQueryBuilder('teacher_list')
@@ -30,6 +33,9 @@ export class AuthService {
       .getRawOne();
   }
 
+  /**
+   * Make an authentication process
+   */
   login(req: any, res: any): Promise<LoginResponseDto> {
     return passport.authenticate('ldap', async (err, user, info) => {
       const error = err || info;
@@ -58,12 +64,18 @@ export class AuthService {
     })(req, res);
   }
 
+  /**
+   * Generates JWT token
+   */
   generateAuthToken(id: number): string {
     return jwt.sign({ id }, process.env.JWT_KEY, {
       expiresIn: TOKEN_EXPIRATION_SECS,
     });
   }
 
+  /**
+   * Parse UCO from description attribute
+   */
   getUserId(user: UserDto): number {
     const { description } = user;
     const ucoIndex = description.indexOf('UCO=');

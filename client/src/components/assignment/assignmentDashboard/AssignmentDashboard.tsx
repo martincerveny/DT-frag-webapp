@@ -81,6 +81,9 @@ const AssignmentDashboardComponent: React.FC<AssignmentDashboardProps> = ({
     fetchSubmissionCountPerDay,
   ]);
 
+  /**
+   * Render graph with submission count per day
+   */
   const renderFirstStats = (
     <BarChart
       width={575}
@@ -98,6 +101,9 @@ const AssignmentDashboardComponent: React.FC<AssignmentDashboardProps> = ({
     </BarChart>
   );
 
+  /**
+   * Render graph with submission count per hour
+   */
   const renderSecondStats = (
     <BarChart
       width={575}

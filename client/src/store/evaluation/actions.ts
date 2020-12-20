@@ -17,6 +17,9 @@ export const setEvaluationsRequestState = action(
   payload<{ evaluationsRequestState: LoadingState }>(),
 );
 
+/**
+ * Fetch all evaluations by assignment ID
+ */
 export const fetchEvaluations: ActionCreator<ThunkAction<Promise<void>, State, any, any>> = (id: number) => {
   return async (dispatch: Dispatch<Action>): Promise<void> => {
     dispatch(setEvaluationsRequestState({ evaluationsRequestState: LoadingState.Loading }));
@@ -33,6 +36,9 @@ export const fetchEvaluations: ActionCreator<ThunkAction<Promise<void>, State, a
   };
 };
 
+/**
+ * Fetch all evaluations by student ID
+ */
 export const fetchEvaluationsByStudent: ActionCreator<ThunkAction<Promise<void>, State, any, any>> = (id: number) => {
   return async (dispatch: Dispatch<Action>): Promise<void> => {
     dispatch(setEvaluationsRequestState({ evaluationsRequestState: LoadingState.Loading }));

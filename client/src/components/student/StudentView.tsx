@@ -178,6 +178,9 @@ const StudentViewComponent: React.FC<StudentViewProps> = ({
     );
   };
 
+  /**
+   * Shows data component based on selection from menu
+   */
   const renderDataComponent = () => {
     if (selectedMenuItem === StudentMenu.Assignment) {
       return (

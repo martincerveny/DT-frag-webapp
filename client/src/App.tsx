@@ -47,6 +47,9 @@ const renderGlobalCssSettings = () => (
   />
 );
 
+/**
+ * App component - render whole app and routes based on not/logged user
+ */
 const App: React.FC<AppProps> = ({ loggedUser, refreshUserFromCookie, logUserOut, refreshCookieState }) => {
   useEffect(() => {
     refreshUserFromCookie();

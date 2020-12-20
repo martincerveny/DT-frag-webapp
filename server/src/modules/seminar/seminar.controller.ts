@@ -8,6 +8,9 @@ import { AttendanceDeadline } from './entities/attendanceDeadline';
 import { ActivityMax } from './entities/activityMax.entity';
 import { ActivityPts } from './entities/activityPts.entity';
 
+/**
+ * Routes for seminars
+ */
 @UseGuards(AuthGuard)
 @Controller('api/seminars')
 export class SeminarController {

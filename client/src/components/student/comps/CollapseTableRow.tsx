@@ -16,6 +16,9 @@ interface CollapseTableRowProps {
   handleClick: (rowIndex: number | null, data: string) => void;
 }
 
+/**
+ * Collapse row - can be shown / hidden
+ */
 const CollapseTableRowComponent: React.FC<CollapseTableRowProps> = ({
   name,
   stamp,
