@@ -34,7 +34,9 @@ const GeneralTestGroupViewComponent: React.FC<GeneralTestGroupViewProps> = ({
         css={buttonGroupWrapper}
       >
         <Tooltip title={t('tooltip.pass')} placement="top">
-          <Button css={buttonWrapperPass(passedPercents)}>{passedPercents} %</Button>
+          <Button color="primary" css={buttonWrapperPass(passedPercents)}>
+            {passedPercents} %
+          </Button>
         </Tooltip>
         <Tooltip title={t('tooltip.fail')} placement="top">
           <Button color="secondary" css={buttonWrapper(failedPercents)}>
@@ -150,5 +152,8 @@ const buttonWrapperPass = (size: number) => {
     min-width: 60px;
     height: 40px;
     background-color: ${colors.green};
+    &:hover {
+      background-color: ${colors.darkGreen} !important;
+    }
   `;
 };

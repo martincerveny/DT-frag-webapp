@@ -220,7 +220,10 @@ const notPassedButton = css`
   &:hover {
     color: ${colors.blue} !important;
     background-color: ${colors.blue} !important;
-  }
+  },
+    &:visited {
+    color: ${colors.blue} !important;
+  },
 `;
 
 const notSubmittedButton = css`

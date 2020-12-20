@@ -133,7 +133,7 @@ const StudentTableViewComponent: React.FC<StudentTableViewProps> = ({ evaluation
                             <TableCell align="left">{getDateString(studentEval[0].stamp)}</TableCell>
                             {getGroupByGroups(uniqueTestGroups).map((group: string, groupIndex: number) => {
                               const studentTests = studentEval
-                                .filter((mse: Evaluation) => group === mse.group && mse.name)
+                                .filter((mse: Evaluation) => group === mse.group && mse.name !== 'group')
                                 .sort((s1: Evaluation, s2: Evaluation) => Number(s1.sequence) - Number(s2.sequence));
 
                               return (
